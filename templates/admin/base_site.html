@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n static simple_tag i18n_switcher %}
+
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}"/>
+{% endblock %}
+
+{% block branding %}
+    {% version as version %}
+    <h1 id="site-name">
+        <img class="logo" src="{% static 'img/logo.png' %}" width="120" height="120">
+        <span class="blocking-logo">
+            <div>{{ site_header|default:_('EIRIB follow-up administration') }}</div>
+            <div class="blocking-version">{% trans 'Version' %}: {{ version }}</div>
+        </span>
+    </h1>
+{% endblock %}
+
+{% block userlinks %}
+{#    <span class="{% if LANGUAGE_CODE == 'en' %}invisible-lang{% endif %}">#}
+{#        <a href="{{ request|switch_i18n:'en' }}">{% trans 'En' %}#}
+{#            <img class="i18n_flag" src="{% static 'img/en.png' %}"/>#}
+{#        </a> /#}
+{#    </span>#}
+{##}
+{#    <span class="{% if LANGUAGE_CODE == 'fa' %}invisible-lang{% endif %}">#}
+{#        <a href="{{ request|switch_i18n:'fa' }}">{% trans 'Fa' %}#}
+{#            <img class="i18n_flag" src="{% static 'img/fa.png' %}"/>#}
+{#        </a> /#}
+{#    </span>#}
+
+    {% if user.is_active and user.is_staff %}
+        {% url 'django-admindocs-docroot' as docsroot %}
+        {% if docsroot %}
+            <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+        {% endif %}
+    {% endif %}
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+{% endblock %}
+
+{% block welcome-msg %}
+    {% if LANGUAGE_CODE == 'en' %}
+        {% trans 'Welcome,' %}
+        <strong>{{ user.title }} {% firstof user.get_full_name user.get_username %}</strong>.
+    {% endif %}
+
+    {% if LANGUAGE_CODE == 'fa' %}
+        <strong>{{ user.title }} {% firstof user.get_full_name user.get_username %}</strong>.
+        {% trans 'Welcome,' %}
+    {% endif %}
+{% endblock %}

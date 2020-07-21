@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-21 15:27+0430\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\EIRIB_FollowUpProject\settings.py:122 .\static\admin\base_site.html:39
+#: .\static\base_site.html:39 .\templates\admin\base_site.html:39
+msgid "En"
+msgstr "انگلیسی"
+
+#: .\EIRIB_FollowUpProject\settings.py:123 .\static\admin\base_site.html:45
+#: .\static\base_site.html:45 .\templates\admin\base_site.html:45
+msgid "Fa"
+msgstr "فارسی"
+
+#: .\EIRIB_FollowUp\admin.py:18
+msgid "Personal info"
+msgstr "اطلاعات شخصی"
+
+#: .\EIRIB_FollowUp\admin.py:21
+msgid "Address Info"
+msgstr "نشانیهای دسترسی"
+
+#: .\EIRIB_FollowUp\admin.py:23
+msgid "Important dates"
+msgstr "تاریخهای مهم"
+
+#: .\EIRIB_FollowUp\admin.py:25
+msgid "Permissions"
+msgstr "سطوح دسترسی"
+
+#: .\EIRIB_FollowUp\admin.py:27
+msgid "Sensitive Info"
+msgstr "اطلاعات حساس"
+
+#: .\EIRIB_FollowUp\apps.py:6 .\EIRIB_FollowUp\apps.py:7
+msgid "EIRIB_FollowUp"
+msgstr "سامانه پیگیری معاونت"
+
+#: .\EIRIB_FollowUp\models.py:12
+msgid "User"
+msgstr "کاربر"
+
+#: .\EIRIB_FollowUp\models.py:13
+msgid "Secretary"
+msgstr "دبیر"
+
+#: .\EIRIB_FollowUp\models.py:17
+msgid "Mr"
+msgstr "جناب آقای"
+
+#: .\EIRIB_FollowUp\models.py:18
+msgid "Mrs"
+msgstr "سرکار خانم"
+
+#: .\EIRIB_FollowUp\models.py:22
+msgid "Moavenat"
+msgstr "واحد اشتغال"
+
+#: .\EIRIB_FollowUp\models.py:23
+msgid "Access Level"
+msgstr "سطح دسترسی"
+
+#: .\EIRIB_FollowUp\models.py:25
+msgid "Title"
+msgstr "عنوان"
+
+#: .\EIRIB_FollowUp\models.py:31
+msgid "last login"
+msgstr "آخرین ورود"
+
+#: .\EIRIB_FollowUp\models.py:36
+msgid "date joined"
+msgstr "تاریخ عضویت"
+
+#: .\EIRIB_FollowUp\utils.py:3
+msgid "EIRIB_FOLLOWUP"
+msgstr "سامانه پیگیری معاونت"
+
+#: .\static\admin\base_site.html:53 .\static\base_site.html:53
+#: .\templates\admin\base_site.html:53
+msgid "Documentation"
+msgstr "مستندات"
+
+#: .\static\admin\base_site.html:57 .\static\base_site.html:57
+#: .\templates\admin\base_site.html:57
+msgid "Change password"
+msgstr "تغییر کلمه عبور"
+
+#: .\static\admin\base_site.html:59 .\static\base_site.html:59
+#: .\templates\admin\base_site.html:59
+msgid "Log out"
+msgstr "خروج"
+
+#: .\static\admin\base_site.html:64 .\static\admin\base_site.html:70
+#: .\static\base_site.html:64 .\static\base_site.html:70
+#: .\templates\admin\base_site.html:64 .\templates\admin\base_site.html:70
+msgid "Welcome,"
+msgstr "خوش آمدید"

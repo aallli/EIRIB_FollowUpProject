@@ -1,0 +1,111 @@
+.i18n_flag {
+    width: 26px;
+    vertical-align: text-top;
+}
+
+.form-row.field-url div.readonly {
+    direction: initial;
+    text-align: -webkit-match-parent;
+}
+
+.invisible-lang {
+    display: none;
+}
+
+.fieldBox.field-person_roles_tabular,
+.fieldBox.field-total_investment_string_formatted,
+.fieldBox.field-total_purchased_stocks_string_formatted,
+.fieldBox.field-total_fund_string_formatted,
+.fieldBox.field-total_sold_stocks_string_formatted,
+.fieldBox.field-legal_roles_tabular,
+.fieldBox.field-total_investment_tabular,
+.fieldBox.field-total_purchased_stocks_tabular {
+    white-space: nowrap;
+}
+
+.fieldBox.field-total_purchased_stocks_tabular label,
+.fieldBox.field-total_investment_tabular label,
+.fieldBox.field-total_fund_tabular label,
+.fieldBox.field-total_sold_stocks_tabular label,
+.fieldBox.field-logo_tag label,
+.fieldBox.field-image_tag label,
+.fieldBox.field-box.field-bias_tag label {
+    display: none;
+}
+
+:lang(fa) .fieldBox.field-total_investment_string_formatted div,
+:lang(fa) .fieldBox.field-total_fund_string_formatted div,
+:lang(fa) .fieldBox.field-total_investment_string_formatted div {
+    padding-right: 150px !important;
+    float: left;
+}
+
+:lang(fa) .stoplink, .inlinestoplink {
+    padding-left: 16px !important;
+}
+
+.bias {
+    width: 20px;
+    height: 20px;
+    border: solid 1px #b3b3b3;
+    border-radius: 10px
+}
+
+.bias2 {
+    background-color: #39E749;
+}
+
+.bias1 {
+    background-color: #3390E7;
+}
+
+.bias0 {
+    background-color: #E7E7E7;
+}
+
+.bias-1 {
+    background-color: #E4E736;
+}
+
+.bias-2 {
+    background-color: #E74C3C;
+}
+
+.fieldBox.field-bias_tag div {
+    float: left;
+}
+
+:lang(fa) .admin-interface .paginator .this-page + a:not(.showall) {
+    margin-right: -25px;
+    margin-left: 25px;
+}
+
+:lang(fa) .admin-interface .paginator .this-page, .admin-interface .paginator a.end {
+    margin-right: 0;
+    margin-left: 25px;
+}
+
+.fieldBox.field-box.field-link_tag label,
+.fieldBox.field-poster_tag label {
+    display: none;
+}
+
+td.field-link_tag div a, .fieldBox.field-box.field-link_tag div a {
+    color: blue !important;
+}
+
+.link_tag {
+    text-align: center;
+    direction: ltr;
+}
+
+#id_Episod_age_rating-0-description li {
+    list-style-type: none;
+    padding: 1px 16px;
+    float: left;
+}
+
+
+:lang(fa) #id_Episod_age_rating-0-description li {
+    float: right;
+}
