@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 from django.db.transaction import atomic
 from jalali_date.admin import ModelAdminJalaliMixin
-from django.utils.translation import ugettext_lazy as _
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel
+
 from EIRIB_FollowUpProject.utils import execute_query
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.admin import UserAdmin as _UserAdmin
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -15,7 +16,7 @@ class BaseModelAdmin(admin.ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(ModelAdminJalaliMixin, UserAdmin, BaseModelAdmin):
+class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
     fieldsets = (
         (_('Personal info'), {
             'fields': (('username', 'first_name', 'last_name', '_title'),
@@ -53,7 +54,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
         if request.user.access_level == AccessLevel.USER:
-            self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject', 'description',
+            self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
+                                    'description',
                                     'first_actor', 'second_actor', 'follow_grade', 'first_supervisor',
                                     'second_supervisor']
         else:
@@ -63,25 +65,25 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
     @atomic
     def save_model(self, request, obj, form, change):
-        query='''
+        query = '''
                 UPDATE tblmosavabat
                 SET natije = ?
                '''
-        if request.user.access_level==AccessLevel.SECRETARY:
-            query +=", sharh='%s' " % obj.description
-            query +=", peygiri1='%s' " % obj.first_actor
-            query +=", peygiri2='%s' " % obj.second_actor
-            query +=", tarikh=%s " % obj.date
-            query +=", lozoomepeygiri='%s' " % obj.follow_grade
-            query +=", jalaseh='%s' " % obj.session
-            query +=", muzoo='%s' " % obj.subject
-            query +=", gooyandeh='%s' " % obj.assigner
-            query +=", vahed='%s' " % obj.first_supervisor
-            query +=", vahed2='%s' " % obj.second_supervisor
-            query +=", mosavabatcode=%s " % obj.code
-            query +=", TarikhBaznegari = '%s' " % obj.review_date
+        if request.user.access_level == AccessLevel.SECRETARY:
+            query += ", sharh='%s' " % obj.description
+            query += ", peygiri1='%s' " % obj.first_actor
+            query += ", peygiri2='%s' " % obj.second_actor
+            query += ", tarikh=%s " % obj.date
+            query += ", lozoomepeygiri='%s' " % obj.follow_grade
+            query += ", jalaseh='%s' " % obj.session
+            query += ", muzoo='%s' " % obj.subject
+            query += ", gooyandeh='%s' " % obj.assigner
+            query += ", vahed='%s' " % obj.first_supervisor
+            query += ", vahed2='%s' " % obj.second_supervisor
+            query += ", mosavabatcode=%s " % obj.code
+            query += ", TarikhBaznegari = '%s' " % obj.review_date
         params = (obj.result, obj.row)
-        query+='''
+        query += '''
                 WHERE ID = ?
                '''
         execute_query(query, params, True)

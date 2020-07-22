@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-22 13:01+0430\n"
+"POT-Creation-Date: 2020-07-22 18:57+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,28 +42,30 @@ msgstr "به اتوماسیون اداری معاونت فضای مجازی خو
 msgid "Successful"
 msgstr ""
 
-#: .\EIRIB_FollowUp\admin.py:20
+#: .\EIRIB_FollowUp\admin.py:21
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:23
+#: .\EIRIB_FollowUp\admin.py:24
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:25
+#: .\EIRIB_FollowUp\admin.py:26
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:27
+#: .\EIRIB_FollowUp\admin.py:28
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:29
+#: .\EIRIB_FollowUp\admin.py:30
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
 #: .\EIRIB_FollowUp\apps.py:7
-msgid "EIRIB_FollowUp"
+#, fuzzy
+#| msgid "EIRIB_FollowUp"
+msgid "EIRIB Follow-Up"
 msgstr "سامانه پیگیری معاونت"
 
 #: .\EIRIB_FollowUp\models.py:11 .\EIRIB_FollowUp\models.py:57
@@ -208,7 +210,17 @@ msgstr ""
 "توجه: هنگام ایجاد کاربر جدید، ابتدا نام کاربری و کلمه عبور تعریف کرده و عمل "
 "ذخیره را انجام داده و سپس سایر مشخصات را تکمیل نمایید."
 
-#: .\EIRIB_FollowUp\utils.py:11
+#: .\EIRIB_FollowUp\utils.py:10
+msgid "The two password fields didn’t match."
+msgstr "تکرار کلمه عبور صحیح نیست."
+
+#: .\EIRIB_FollowUp\utils.py:12
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr "لطفا ابتدا کلمه عبور قبلی خود را وارد کرده، سپس کلمه عبور جدید را دو بار در محلهای مربوط تکرار کنید."
+
+#: .\EIRIB_FollowUp\utils.py:16
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using <a href=\"{}\">this form</a>."

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'colorfield',
 
     # django apps
-    'django.contrib.admin',
+    'EIRIB_FollowUpProject.apps.AdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
