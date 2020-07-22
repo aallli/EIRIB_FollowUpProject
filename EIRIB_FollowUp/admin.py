@@ -1,8 +1,10 @@
-from EIRIB_FollowUp.models import User
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.db.transaction import atomic
 from jalali_date.admin import ModelAdminJalaliMixin
 from django.utils.translation import ugettext_lazy as _
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel
+from EIRIB_FollowUpProject.utils import execute_query
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -28,3 +30,59 @@ class UserAdmin(ModelAdminJalaliMixin, UserAdmin, BaseModelAdmin):
     )
     list_filter = ('moavenat', 'access_level', 'is_active', 'is_superuser', 'groups', 'query_name')
     readonly_fields = ['last_login_jalali', 'date_joined_jalali']
+
+
+@admin.register(Enactment)
+class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
+    model = Enactment
+    fields = (('row', 'session', 'date', 'review_date'),
+              ('assigner', 'subject'),
+              'description', 'result',
+              ('first_actor', 'second_actor', 'follow_grade'),
+              ('first_supervisor', 'second_supervisor', 'code'),
+              )
+    list_display = ['row', 'session', 'date', 'code', 'subject']
+    list_display_links = ['row', 'session', 'date', 'code', 'subject']
+    list_filter = ['follow_grade', ]
+    search_fields = ['session', 'code', 'subject', 'assigner', 'description', 'result', 'first_actor', 'second_actor',
+                     'first_supervisor', 'second_supervisor']
+
+    def get_queryset(self, request):
+        return Enactment.objects.filter(user=request.user)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
+        if request.user.access_level == AccessLevel.USER:
+            self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject', 'description',
+                                    'first_actor', 'second_actor', 'follow_grade', 'first_supervisor',
+                                    'second_supervisor']
+        else:
+            self.readonly_fields = ['row']
+
+        return form
+
+    @atomic
+    def save_model(self, request, obj, form, change):
+        query='''
+                UPDATE tblmosavabat
+                SET natije = ?
+               '''
+        if request.user.access_level==AccessLevel.SECRETARY:
+            query +=", sharh='%s' " % obj.description
+            query +=", peygiri1='%s' " % obj.first_actor
+            query +=", peygiri2='%s' " % obj.second_actor
+            query +=", tarikh=%s " % obj.date
+            query +=", lozoomepeygiri='%s' " % obj.follow_grade
+            query +=", jalaseh='%s' " % obj.session
+            query +=", muzoo='%s' " % obj.subject
+            query +=", gooyandeh='%s' " % obj.assigner
+            query +=", vahed='%s' " % obj.first_supervisor
+            query +=", vahed2='%s' " % obj.second_supervisor
+            query +=", mosavabatcode=%s " % obj.code
+            query +=", TarikhBaznegari = '%s' " % obj.review_date
+        params = (obj.result, obj.row)
+        query+='''
+                WHERE ID = ?
+               '''
+        execute_query(query, params, True)
+        super(EnactmentAdmin, self).save_model(request, obj, form, change)

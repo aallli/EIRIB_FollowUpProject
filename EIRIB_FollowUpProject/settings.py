@@ -28,13 +28,19 @@ DEBUG = True
 # admin info
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
-VERSION = '1.0.0'
-
+VERSION = '0.2.0'
+SITE_HEADER = _('EIRIB Office Automation')
 ALLOWED_HOSTS = []
 
 # Application definition
 
 INSTALLED_APPS = [
+    # third party apps
+    'admin_interface',
+    'jalali_date',
+    'colorfield',
+
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'jalali_date',
-
+    # my apps
     'EIRIB_FollowUp.apps.EiribFollowupConfig',
 ]
 
@@ -149,6 +154,7 @@ AUTH_USER_MODEL = 'EIRIB_FollowUp.User'
 
 AUTHENTICATION_BACKENDS = [
     'EIRIB_FollowUp.backends.EIRIBBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 # django jalali datae defaults
 JALALI_DATE_DEFAULTS = {
