@@ -79,6 +79,21 @@ class Actor(models.Model):
         return '%s, %s' % (self.lname, self.fname if self.fname else '-')
 
 
+class Supervisor(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=2000, blank=False, unique=True)
+
+    class Meta:
+        verbose_name = _('Supervisor')
+        verbose_name_plural = _('Supervisors')
+        ordering = ['name']
+
+    def __str__(self):
+        return _(self.name).__str__()
+
+    def __unicode__(self):
+        return _(self.name).__str__()
+
+
 class User(AbstractUser):
     moavenat = models.CharField(verbose_name=_('Moavenat'), max_length=200, blank=True, null=True)
     access_level = models.CharField(verbose_name=_('Access Level'), choices=AccessLevel.choices,
@@ -115,8 +130,10 @@ class Enactment(models.Model):
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
     assigner = models.ForeignKey(Assigner, verbose_name=_('Task Assigner'), on_delete=models.SET_NULL, null=True)
-    first_supervisor = models.CharField(verbose_name=_('First Supervisor'), max_length=200, blank=True, null=True)
-    second_supervisor = models.CharField(verbose_name=_('Second Supervisor'), max_length=200, blank=True, null=True)
+    first_supervisor = models.ForeignKey(Supervisor, verbose_name=_('First Supervisor'), on_delete=models.SET_NULL,
+                                         blank=True, null=True, related_name='first_supervisor')
+    second_supervisor = models.ForeignKey(Supervisor, verbose_name=_('Second Supervisor'), on_delete=models.SET_NULL,
+                                          blank=True, null=True, related_name='second_supervisor')
     review_date = models.CharField(verbose_name=_('Review Date'), max_length=20, null=True, blank=True)
 
     class Meta:

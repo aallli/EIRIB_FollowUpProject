@@ -1,6 +1,6 @@
 from threading import Timer
 from django.conf import settings
-from .models import Enactment, Session, Assigner, Subject, Actor
+from .models import Enactment, Session, Assigner, Subject, Actor, Supervisor
 
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
@@ -9,6 +9,7 @@ msgid = _('welcome')
 settings.WITHOUT_SESSION_TITLE = _('[Without session]')
 settings.WITHOUT_ASSIGNER_TITLE = _('[Without assigner]')
 settings.WITHOUT_SUBJECT_TITLE = _('[Without subject]')
+settings.WITHOUT_SUPERVISOR_TITLE = _('[Without supervisor]')
 msgid = _('Admin Interface')
 msgid = _('Theme')
 msgid = _('Themes')
@@ -26,7 +27,7 @@ msgid = _(
     '<a href="{}">this form</a>.'
 )
 
-max_data = 5
+max_data = 6
 data_loaded = max_data
 
 
@@ -47,8 +48,10 @@ def get_enactments():
         'session': Session.objects.get(name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh),
         'assigner': Assigner.objects.get(
             name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh),
-        'first_supervisor': r.vahed,
-        'second_supervisor': r.vahed2,
+        'first_supervisor': Supervisor.objects.get(
+            name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed in [None, ''] else r.vahed),
+        'second_supervisor': Supervisor.objects.get(
+            name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed2 in [None, ''] else r.vahed2),
         'review_date': r.TarikhBaznegari}) for r in result])
     data_loaded += 1
 
@@ -107,6 +110,25 @@ def get_actors():
     data_loaded += 1
 
 
+def get_supervisors():
+    global data_loaded
+    Supervisor.objects.all().delete()
+    query = '''
+            SELECT DISTINCT tblmosavabat.vahed AS vahed
+            FROM tblmosavabat;
+
+            UNION
+
+            SELECT DISTINCT tblmosavabat.vahed2 AS vahed
+            FROM tblmosavabat;
+            '''
+    result = execute_query(query)
+    for r in result:
+        Supervisor.objects.get_or_create(
+            name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed in [None, ''] else r.vahed)
+    data_loaded += 1
+
+
 def update_data():
     global data_loaded
     data_loaded = 0
@@ -123,7 +145,10 @@ def update_data():
     actors = Timer(1, get_actors)
     actors.start()
 
-    while(True):
+    supervisors = Timer(1, get_supervisors)
+    supervisors.start()
+
+    while (True):
         if data_loaded == max_data - 1:
             enactments = Timer(1, get_enactments)
             enactments.start()

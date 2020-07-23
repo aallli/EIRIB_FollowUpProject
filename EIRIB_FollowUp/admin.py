@@ -4,7 +4,7 @@ from jalali_date.admin import ModelAdminJalaliMixin
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -34,6 +34,11 @@ class ActortAdmin(BaseModelAdmin):
     model = Actor
     list_display = ['fname', 'lname']
     list_display_links = ['fname', 'lname']
+
+
+@admin.register(Supervisor)
+class SupervisorAdmin(BaseModelAdmin):
+    model = Supervisor
 
 
 @admin.register(User)
@@ -98,6 +103,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                '''
         if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
             query += ", sharh='%s' " % obj.description
+
             if obj.first_actor:
                 query += ", peygiri1='%s' " % obj.first_actor.lname
             else:
@@ -113,8 +119,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             query += ", jalaseh='%s' " % obj.session.name
             query += ", muzoo='%s' " % obj.subject.name
             query += ", gooyandeh='%s' " % obj.assigner.name
-            query += ", vahed='%s' " % obj.first_supervisor
-            query += ", vahed2='%s' " % obj.second_supervisor
+
+            if obj.first_supervisor:
+                query += ", vahed='%s' " % obj.first_supervisor.name
+            else:
+                query += ", vahed='' "
+
+            if obj.second_supervisor:
+                query += ", vahed2='%s' " % obj.second_supervisor.name
+            else:
+                query += ", vahed2='' "
+
             query += ", mosavabatcode=%s " % obj.code
             query += ", TarikhBaznegari = '%s' " % obj.review_date
         params = (obj.result, obj.row)
