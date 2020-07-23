@@ -1,9 +1,6 @@
 from django.contrib import admin
 from django.db.transaction import atomic
 from EIRIB_FollowUpProject.utils import execute_query
-from django.contrib.auth import password_validation
-from django import forms
-from django.utils.translation import ugettext_lazy as _
 
 
 class AdminSite(admin.AdminSite):

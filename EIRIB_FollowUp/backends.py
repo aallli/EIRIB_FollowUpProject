@@ -1,8 +1,8 @@
-from .models import User, Enactment, Title, AccessLevel
+from .models import User, Title, AccessLevel
+from .utils import execute_query, update_data
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.backends import ModelBackend
-from EIRIB_FollowUpProject.utils import execute_query
 
 
 class EIRIBBackend(ModelBackend):
@@ -13,12 +13,13 @@ class EIRIBBackend(ModelBackend):
             return
 
         if user.check_password(password) and self.user_can_authenticate(user):
-            self.get_enactments(user)
+            if user.access_level == AccessLevel.SECRETARY:
+                update_data()
             return user
 
     def get_user_by_username(self, user_name):
         try:
-            result = execute_query('SELECT * FROM tblUser WHERE (((tblUser.LName)=?));', (user_name))
+            result = execute_query('SELECT * FROM tblUser WHERE tblUser.LName=?;', (user_name))
             if len(result) == 0:
                 raise User.DoesNotExist
 
@@ -34,9 +35,8 @@ class EIRIBBackend(ModelBackend):
                 if t[1].label == result.envan:
                     title = t[1]
                     break
-            access_level = None
-            if result.AccessLevelID==4:
-                access_level= AccessLevel.SECRETARY
+            if result.AccessLevelID == 4:
+                access_level = AccessLevel.SECRETARY
             else:
                 access_level = AccessLevel.USER
 
@@ -54,8 +54,10 @@ class EIRIBBackend(ModelBackend):
                                            access_level=access_level, _title=title, is_staff=True)
                 user.set_password(result.Password)
                 for p in Permission.objects.all():
-                    if p.name in ['Can view Enactment', 'Can change Enactment', 'Can delete Enactment',
-                                  'Can add Enactment']:
+                    if p.name in [
+                        'Can view Session',
+                        'Can view Enactment', 'Can change Enactment', 'Can delete Enactment', 'Can add Enactment',
+                    ]:
                         user.user_permissions.add(p)
                 user.save()
         except User.DoesNotExist:
@@ -65,22 +67,22 @@ class EIRIBBackend(ModelBackend):
 
         return user
 
-    def get_enactments(self, user):
-        Enactment.objects.filter(user=user).delete()
-        command = 'SELECT * from %s' % user.query_name
-        result = execute_query(command)
-        for r in result:
-            Enactment.objects.create(row=r.ID,
-                                     description=r.sharh,
-                                     subject=r.muzoo,
-                                     first_actor=r.peygiri1,
-                                     second_actor=r.peygiri2,
-                                     date=r.tarikh,
-                                     follow_grade=r.lozoomepeygiri,
-                                     result=r.natije,
-                                     session=r.jalaseh,
-                                     assigner=r.gooyandeh,
-                                     first_supervisor=r.vahed,
-                                     second_supervisor=r.vahed2,
-                                     review_date=r.TarikhBaznegari,
-                                     user=user)
+
+class ModelBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        if username is None:
+            username = kwargs.get(UserModel.USERNAME_FIELD)
+        if username is None or password is None:
+            return
+        try:
+            user = UserModel._default_manager.get_by_natural_key(username)
+        except UserModel.DoesNotExist:
+            # Run the default password hasher once to reduce the timing
+            # difference between an existing and a nonexistent user (#20760).
+            UserModel().set_password(password)
+        else:
+            if user.check_password(password) and self.user_can_authenticate(user):
+                if user.is_superuser:
+                    update_data()
+                return user

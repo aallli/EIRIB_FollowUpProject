@@ -16,7 +16,6 @@ Including another URLconf
 from django.urls import path
 from django.conf import settings
 from django.contrib import admin
-from EIRIB_FollowUp import views
 from django.shortcuts import redirect
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns

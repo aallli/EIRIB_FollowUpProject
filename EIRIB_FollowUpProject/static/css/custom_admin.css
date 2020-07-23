@@ -29,7 +29,6 @@
     width: 120px;
 }
 
-
 .login #branding {
     width: 100%;
 }
@@ -109,4 +108,14 @@
 
 .form-row.field-description div div {
     padding-right: 80px;
+}
+
+.loading-message {
+    width: auto;
+    margin-right: 280px;
+}
+
+:lang(fa) .loading-message {
+    margin-left: 280px;
+    margin-right: 0;
 }

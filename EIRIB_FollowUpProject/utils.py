@@ -1,8 +1,10 @@
 import pyodbc
-from jalali_date import datetime2jalali
-from EIRIB_FollowUpProject import settings
 
+from jalali_date import datetime2jalali
+
+from EIRIB_FollowUpProject import settings
 from django.utils.translation import ugettext_lazy as _
+
 
 def to_jalali(date, no_time=False):
     if no_time:
@@ -42,7 +44,7 @@ def execute_query(query, params=None, update=None):
 
     if update:
         conn.commit()
-        result = _("Successful")
+        result = _("Successful update.")
     else:
         result = cur.fetchall()
 

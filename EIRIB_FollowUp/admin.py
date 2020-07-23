@@ -1,11 +1,10 @@
 from django.contrib import admin
 from django.db.transaction import atomic
 from jalali_date.admin import ModelAdminJalaliMixin
-
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -13,6 +12,11 @@ class BaseModelAdmin(admin.ModelAdmin):
 
     class Media:
         js = ('js/custom_admin.js',)
+
+
+@admin.register(Session)
+class SessionAdmin(BaseModelAdmin):
+    model = Session
 
 
 @admin.register(User)
@@ -49,11 +53,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                      'first_supervisor', 'second_supervisor']
 
     def get_queryset(self, request):
-        return Enactment.objects.filter(user=request.user)
+        if request.user.is_superuser:
+            return Enactment.objects.all()
+
+        command = 'SELECT * from %s' % request.user.query_name
+        result = execute_query(command)
+        valid_rows = [r.ID for r in result]
+        return Enactment.objects.filter(row__in=valid_rows)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
-        if request.user.access_level == AccessLevel.USER:
+        if not request.user.is_superuser and request.user.access_level == AccessLevel.USER:
             self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
                                     'description',
                                     'first_actor', 'second_actor', 'follow_grade', 'first_supervisor',

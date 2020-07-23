@@ -26,10 +26,12 @@ SECRET_KEY = 'irt=69_xpf6#pzm&c4s%ogrt*t!i5oy-=i*70yw0@agjjbr8mx'
 DEBUG = True
 
 # admin info
+VERSION = '0.3.0'
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
-VERSION = '0.2.0'
 SITE_HEADER = _('EIRIB Office Automation')
+WITHOUT_SESSION_TITLE = '[Without session]'
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -88,8 +90,12 @@ WSGI_APPLICATION = 'EIRIB_FollowUpProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'eirib',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': os.environ.get('DATABASES_HOST', default='127.0.0.1'),
+        'PORT': os.environ.get('DATABASES_PORT', default='5432'),
+        'NAME': os.environ.get('DATABASES_NAME', default='eirib_followup'),
+        'USER': os.environ.get('DATABASES_USER', default='postgres'),
+        'PASSWORD': os.environ.get('DATABASES_PASSWORD', default='123'),
     },
     'access': {
         'NAME': os.environ.get('DATABASES_NAME', default=os.path.join(BASE_DIR, 'db\db.mdb')),
@@ -154,7 +160,7 @@ AUTH_USER_MODEL = 'EIRIB_FollowUp.User'
 
 AUTHENTICATION_BACKENDS = [
     'EIRIB_FollowUp.backends.EIRIBBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    'EIRIB_FollowUp.backends.ModelBackend',
 ]
 # django jalali datae defaults
 JALALI_DATE_DEFAULTS = {

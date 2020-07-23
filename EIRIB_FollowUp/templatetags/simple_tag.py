@@ -1,6 +1,6 @@
 from django import template
+from EIRIB_FollowUp import utils
 from EIRIB_FollowUpProject import settings
-
 
 register = template.Library()
 
@@ -18,3 +18,8 @@ def admin_tel():
 @register.simple_tag()
 def admin_email():
     return settings.ADMIN_EMAIL
+
+
+@register.simple_tag()
+def data_loading():
+    return utils.data_loading()
