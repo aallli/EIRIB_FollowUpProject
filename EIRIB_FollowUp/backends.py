@@ -13,8 +13,6 @@ class EIRIBBackend(ModelBackend):
             return
 
         if user.check_password(password) and self.user_can_authenticate(user):
-            if user.access_level == AccessLevel.SECRETARY:
-                update_data()
             return user
 
     def get_user_by_username(self, user_name):
@@ -60,9 +58,14 @@ class EIRIBBackend(ModelBackend):
                         'Can view Subject',
                         'Can view Actor',
                         'Can view Supervisor',
-                        'Can view Enactment', 'Can change Enactment',# 'Can delete Enactment', 'Can add Enactment',
-                    ]:
+                        'Can view Enactment', 'Can change Enactment',
+                        # 'Can delete Enactment', 'Can add Enactment',
+                    ] and user.access_level == AccessLevel.SECRETARY:
                         user.user_permissions.add(p)
+
+                    if p.name in ['Can view Enactment', 'Can change Enactment',]:
+                        user.user_permissions.add(p)
+
                 user.save()
         except User.DoesNotExist:
             raise User.DoesNotExist
