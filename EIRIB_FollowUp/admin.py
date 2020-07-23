@@ -4,7 +4,7 @@ from jalali_date.admin import ModelAdminJalaliMixin
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -17,6 +17,11 @@ class BaseModelAdmin(admin.ModelAdmin):
 @admin.register(Session)
 class SessionAdmin(BaseModelAdmin):
     model = Session
+
+
+@admin.register(Assigner)
+class AssignerAdmin(BaseModelAdmin):
+    model = Assigner
 
 
 @admin.register(User)
@@ -79,7 +84,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                 UPDATE tblmosavabat
                 SET natije = ?
                '''
-        if request.user.access_level == AccessLevel.SECRETARY:
+        if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
             query += ", sharh='%s' " % obj.description
             query += ", peygiri1='%s' " % obj.first_actor
             query += ", peygiri2='%s' " % obj.second_actor

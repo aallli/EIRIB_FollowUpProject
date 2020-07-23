@@ -56,7 +56,8 @@ class EIRIBBackend(ModelBackend):
                 for p in Permission.objects.all():
                     if p.name in [
                         'Can view Session',
-                        'Can view Enactment', 'Can change Enactment', 'Can delete Enactment', 'Can add Enactment',
+                        'Can view Assigner',
+                        'Can view Enactment', 'Can change Enactment',# 'Can delete Enactment', 'Can add Enactment',
                     ]:
                         user.user_permissions.add(p)
                 user.save()

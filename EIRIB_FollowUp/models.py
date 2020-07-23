@@ -32,6 +32,21 @@ class Session(models.Model):
         return _(self.name).__str__()
 
 
+class Assigner(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=2000, blank=False, unique=True)
+
+    class Meta:
+        verbose_name = _('Task Assigner')
+        verbose_name_plural = _('Task Assigners')
+        ordering = ['name']
+
+    def __str__(self):
+        return _(self.name).__str__()
+
+    def __unicode__(self):
+        return _(self.name).__str__()
+
+
 class User(AbstractUser):
     moavenat = models.CharField(verbose_name=_('Moavenat'), max_length=200, blank=True, null=True)
     access_level = models.CharField(verbose_name=_('Access Level'), choices=AccessLevel.choices,
@@ -65,7 +80,7 @@ class Enactment(models.Model):
     follow_grade = models.CharField(verbose_name=_('Follow Grade'), max_length=100, blank=True, null=True)
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
-    assigner = models.CharField(verbose_name=_('Task Assigner'), max_length=200, blank=True, null=True)
+    assigner = models.ForeignKey(Assigner, verbose_name=_('Task Assigner'), on_delete=models.SET_NULL, null=True)
     first_supervisor = models.CharField(verbose_name=_('First Supervisor'), max_length=200, blank=True, null=True)
     second_supervisor = models.CharField(verbose_name=_('Second Supervisor'), max_length=200, blank=True, null=True)
     review_date = models.CharField(verbose_name=_('Review Date'), max_length=20, null=True, blank=True)

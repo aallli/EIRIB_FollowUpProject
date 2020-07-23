@@ -1,11 +1,13 @@
 from threading import Timer
 from django.conf import settings
-from .models import Enactment, Session
+from .models import Enactment, Session, Assigner
+
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 
 msgid = _('welcome')
-msgid = _('[Without session]')
+settings.WITHOUT_SESSION_TITLE = _('[Without session]')
+settings.WITHOUT_ASSIGNER_TITLE = _('[Without assigner]')
 msgid = _('Admin Interface')
 msgid = _('Theme')
 msgid = _('Themes')
@@ -23,7 +25,7 @@ msgid = _(
     '<a href="{}">this form</a>.'
 )
 
-max_data = 2
+max_data = 3
 data_loaded = max_data
 
 
@@ -42,7 +44,8 @@ def get_enactments():
         'follow_grade': r.lozoomepeygiri,
         'result': r.natije,
         'session': Session.objects.get(name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh),
-        'assigner': r.gooyandeh,
+        'assigner': Assigner.objects.get(
+            name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh),
         'first_supervisor': r.vahed,
         'second_supervisor': r.vahed2,
         'review_date': r.TarikhBaznegari}) for r in result])
@@ -62,12 +65,29 @@ def get_sessions():
     data_loaded += 1
 
 
+def get_assigners():
+    global data_loaded
+    Assigner.objects.all().delete()
+    query = '''
+            SELECT DISTINCT tblmosavabat.gooyandeh
+            FROM tblmosavabat
+           '''
+    result = execute_query(query)
+    for r in result:
+        Assigner.objects.get_or_create(
+            name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh)
+    data_loaded += 1
+
+
 def update_data():
     global data_loaded
     data_loaded = 0
 
     sessions = Timer(1, get_sessions)
     sessions.start()
+
+    assigners = Timer(1, get_assigners)
+    assigners.start()
 
     enactments = Timer(1, get_enactments)
     enactments.start()
