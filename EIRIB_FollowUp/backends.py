@@ -58,6 +58,7 @@ class EIRIBBackend(ModelBackend):
                         'Can view Session',
                         'Can view Assigner',
                         'Can view Subject',
+                        'Can view Actor',
                         'Can view Enactment', 'Can change Enactment',# 'Can delete Enactment', 'Can add Enactment',
                     ]:
                         user.user_permissions.add(p)

@@ -1,6 +1,6 @@
 from threading import Timer
 from django.conf import settings
-from .models import Enactment, Session, Assigner, Subject
+from .models import Enactment, Session, Assigner, Subject, Actor
 
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
@@ -26,7 +26,7 @@ msgid = _(
     '<a href="{}">this form</a>.'
 )
 
-max_data = 4
+max_data = 5
 data_loaded = max_data
 
 
@@ -39,8 +39,8 @@ def get_enactments():
         'row': r.ID,
         'description': r.sharh,
         'subject': Subject.objects.get(name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo),
-        'first_actor': r.peygiri1,
-        'second_actor': r.peygiri2,
+        'first_actor': Actor.objects.filter(lname=r.peygiri1).first(),
+        'second_actor': Actor.objects.filter(lname=r.peygiri2).first(),
         'date': r.tarikh,
         'follow_grade': r.lozoomepeygiri,
         'result': r.natije,
@@ -94,6 +94,19 @@ def get_subjects():
     data_loaded += 1
 
 
+def get_actors():
+    global data_loaded
+    Actor.objects.all().delete()
+    query = '''
+            SELECT tblUser.FName, tblUser.LName
+            FROM tblUser
+           '''
+    result = execute_query(query)
+    for r in result:
+        Actor.objects.get_or_create(fname=r.FName, lname=r.LName)
+    data_loaded += 1
+
+
 def update_data():
     global data_loaded
     data_loaded = 0
@@ -107,8 +120,14 @@ def update_data():
     subjects = Timer(1, get_subjects)
     subjects.start()
 
-    enactments = Timer(1, get_enactments)
-    enactments.start()
+    actors = Timer(1, get_actors)
+    actors.start()
+
+    while(True):
+        if data_loaded == max_data - 1:
+            enactments = Timer(1, get_enactments)
+            enactments.start()
+            break
 
 
 def data_loading():

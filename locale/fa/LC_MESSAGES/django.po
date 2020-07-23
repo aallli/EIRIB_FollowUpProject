@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-23 18:10+0430\n"
+"POT-Creation-Date: 2020-07-23 18:44+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,8 +33,6 @@ msgid "Fa"
 msgstr "فارسی"
 
 #: .\EIRIB_FollowUpProject\urls.py:25
-#, fuzzy
-#| msgid "Welcome to EIRIB Follow-up System administration"
 msgid "Welcome to EIRIB Office Automation administration"
 msgstr "به اتوماسیون اداری معاونت فضای مجازی خوش آمدید."
 
@@ -42,29 +40,27 @@ msgstr "به اتوماسیون اداری معاونت فضای مجازی خو
 msgid "Successful update."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:35
+#: .\EIRIB_FollowUp\admin.py:40
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:38
+#: .\EIRIB_FollowUp\admin.py:43
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:40
+#: .\EIRIB_FollowUp\admin.py:45
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:42
+#: .\EIRIB_FollowUp\admin.py:47
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:44
+#: .\EIRIB_FollowUp\admin.py:49
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
 #: .\EIRIB_FollowUp\apps.py:7
-#, fuzzy
-#| msgid "EIRIB_FollowUp"
 msgid "EIRIB Follow-Up"
 msgstr "سامانه پیگیری معاونت"
 
@@ -89,117 +85,123 @@ msgstr "سرکار خانم"
 msgid "Name"
 msgstr "نام"
 
-#: .\EIRIB_FollowUp\models.py:24 .\EIRIB_FollowUp\models.py:97
-#, fuzzy
-#| msgid "Permissions"
+#: .\EIRIB_FollowUp\models.py:24 .\EIRIB_FollowUp\models.py:115
 msgid "Session"
 msgstr "جلسه"
 
 #: .\EIRIB_FollowUp\models.py:25
-#, fuzzy
-#| msgid "Permissions"
 msgid "Sessions"
 msgstr "جلسه"
 
-#: .\EIRIB_FollowUp\models.py:39 .\EIRIB_FollowUp\models.py:98
+#: .\EIRIB_FollowUp\models.py:39 .\EIRIB_FollowUp\models.py:116
 msgid "Task Assigner"
 msgstr "گوینده"
 
 #: .\EIRIB_FollowUp\models.py:40
-#, fuzzy
-#| msgid "Task Assigner"
 msgid "Task Assigners"
 msgstr "گویندگان"
 
-#: .\EIRIB_FollowUp\models.py:54 .\EIRIB_FollowUp\models.py:91
+#: .\EIRIB_FollowUp\models.py:54 .\EIRIB_FollowUp\models.py:107
 msgid "Subject"
 msgstr "موضوع"
 
 #: .\EIRIB_FollowUp\models.py:55
-#, fuzzy
-#| msgid "Subject"
 msgid "Subjects"
 msgstr "موضوعات"
 
 #: .\EIRIB_FollowUp\models.py:66
+msgid "First Name"
+msgstr "نام"
+
+#: .\EIRIB_FollowUp\models.py:67
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+#: .\EIRIB_FollowUp\models.py:70
+msgid "Actor"
+msgstr "اقدام کننده"
+
+#: .\EIRIB_FollowUp\models.py:71
+msgid "Actors"
+msgstr "اقدام کنندگان"
+
+#: .\EIRIB_FollowUp\models.py:82
 msgid "Moavenat"
 msgstr "واحد اشتغال"
 
-#: .\EIRIB_FollowUp\models.py:67
+#: .\EIRIB_FollowUp\models.py:83
 msgid "Access Level"
 msgstr "سطح دسترسی"
 
-#: .\EIRIB_FollowUp\models.py:69
+#: .\EIRIB_FollowUp\models.py:85
 msgid "Title"
 msgstr "عنوان"
 
-#: .\EIRIB_FollowUp\models.py:71
+#: .\EIRIB_FollowUp\models.py:87
 msgid "Query Name"
 msgstr "نام کوئری"
 
-#: .\EIRIB_FollowUp\models.py:76
+#: .\EIRIB_FollowUp\models.py:92
 msgid "last login"
 msgstr "آخرین ورود"
 
-#: .\EIRIB_FollowUp\models.py:81
+#: .\EIRIB_FollowUp\models.py:97
 msgid "date joined"
 msgstr "تاریخ عضویت"
 
-#: .\EIRIB_FollowUp\models.py:88
+#: .\EIRIB_FollowUp\models.py:104
 msgid "Row"
 msgstr "ردیف"
 
-#: .\EIRIB_FollowUp\models.py:89
+#: .\EIRIB_FollowUp\models.py:105
 msgid "Code"
 msgstr "کد"
 
-#: .\EIRIB_FollowUp\models.py:90
+#: .\EIRIB_FollowUp\models.py:106
 msgid "Description"
 msgstr "شرح"
 
-#: .\EIRIB_FollowUp\models.py:92
+#: .\EIRIB_FollowUp\models.py:108
 msgid "First Actor"
 msgstr "اقدام کننده 1"
 
-#: .\EIRIB_FollowUp\models.py:93
+#: .\EIRIB_FollowUp\models.py:110
 msgid "Second Actor"
 msgstr "اقدام کننده 2"
 
-#: .\EIRIB_FollowUp\models.py:94
+#: .\EIRIB_FollowUp\models.py:112
 msgid "Assignment Date"
 msgstr "تاریخ"
 
-#: .\EIRIB_FollowUp\models.py:95
+#: .\EIRIB_FollowUp\models.py:113
 msgid "Follow Grade"
 msgstr "لزوم پیگیری"
 
-#: .\EIRIB_FollowUp\models.py:96
+#: .\EIRIB_FollowUp\models.py:114
 msgid "Result"
 msgstr "نتیجه"
 
-#: .\EIRIB_FollowUp\models.py:99
+#: .\EIRIB_FollowUp\models.py:117
 msgid "First Supervisor"
 msgstr "واحد پیگیری 1"
 
-#: .\EIRIB_FollowUp\models.py:100
+#: .\EIRIB_FollowUp\models.py:118
 msgid "Second Supervisor"
 msgstr "واحد پیگیری 2"
 
-#: .\EIRIB_FollowUp\models.py:101
+#: .\EIRIB_FollowUp\models.py:119
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\models.py:104
+#: .\EIRIB_FollowUp\models.py:122
 msgid "Enactment"
 msgstr "مصوبه"
 
-#: .\EIRIB_FollowUp\models.py:105
+#: .\EIRIB_FollowUp\models.py:123
 msgid "Enactments"
 msgstr "مصوبات"
 
 #: .\EIRIB_FollowUp\utils.py:8
-#, fuzzy
-#| msgid "Welcome,"
 msgid "welcome"
 msgstr "خوش آمدید"
 
@@ -208,14 +210,10 @@ msgid "[Without session]"
 msgstr "[فاقد جلسه]"
 
 #: .\EIRIB_FollowUp\utils.py:10
-#, fuzzy
-#| msgid "[Without session]"
 msgid "[Without assigner]"
 msgstr "[فاقد گوینده]"
 
 #: .\EIRIB_FollowUp\utils.py:11
-#, fuzzy
-#| msgid "[Without session]"
 msgid "[Without subject]"
 msgstr "[فاقد موضوع]"
 
