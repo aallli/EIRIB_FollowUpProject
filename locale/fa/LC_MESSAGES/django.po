@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-23 17:02+0430\n"
+"POT-Creation-Date: 2020-07-23 18:10+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,12 +22,12 @@ msgstr ""
 msgid "EIRIB Office Automation"
 msgstr "اتوماسیون اداری معاونت فضای مجازی"
 
-#: .\EIRIB_FollowUpProject\settings.py:139 .\static\admin\base_site.html:38
+#: .\EIRIB_FollowUpProject\settings.py:140 .\static\admin\base_site.html:38
 #: .\static\base_site.html:39 .\templates\admin\base_site.html:38
 msgid "En"
 msgstr "انگلیسی"
 
-#: .\EIRIB_FollowUpProject\settings.py:140 .\static\admin\base_site.html:44
+#: .\EIRIB_FollowUpProject\settings.py:141 .\static\admin\base_site.html:44
 #: .\static\base_site.html:45 .\templates\admin\base_site.html:44
 msgid "Fa"
 msgstr "فارسی"
@@ -42,23 +42,23 @@ msgstr "به اتوماسیون اداری معاونت فضای مجازی خو
 msgid "Successful update."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:30
+#: .\EIRIB_FollowUp\admin.py:35
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:33
+#: .\EIRIB_FollowUp\admin.py:38
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:35
+#: .\EIRIB_FollowUp\admin.py:40
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:37
+#: .\EIRIB_FollowUp\admin.py:42
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:39
+#: .\EIRIB_FollowUp\admin.py:44
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
@@ -85,10 +85,11 @@ msgid "Mrs"
 msgstr "سرکار خانم"
 
 #: .\EIRIB_FollowUp\models.py:21 .\EIRIB_FollowUp\models.py:36
+#: .\EIRIB_FollowUp\models.py:51
 msgid "Name"
 msgstr "نام"
 
-#: .\EIRIB_FollowUp\models.py:24 .\EIRIB_FollowUp\models.py:82
+#: .\EIRIB_FollowUp\models.py:24 .\EIRIB_FollowUp\models.py:97
 #, fuzzy
 #| msgid "Permissions"
 msgid "Session"
@@ -100,7 +101,7 @@ msgstr "جلسه"
 msgid "Sessions"
 msgstr "جلسه"
 
-#: .\EIRIB_FollowUp\models.py:39 .\EIRIB_FollowUp\models.py:83
+#: .\EIRIB_FollowUp\models.py:39 .\EIRIB_FollowUp\models.py:98
 msgid "Task Assigner"
 msgstr "گوینده"
 
@@ -110,83 +111,89 @@ msgstr "گوینده"
 msgid "Task Assigners"
 msgstr "گویندگان"
 
-#: .\EIRIB_FollowUp\models.py:51
-msgid "Moavenat"
-msgstr "واحد اشتغال"
-
-#: .\EIRIB_FollowUp\models.py:52
-msgid "Access Level"
-msgstr "سطح دسترسی"
-
-#: .\EIRIB_FollowUp\models.py:54
-msgid "Title"
-msgstr "عنوان"
-
-#: .\EIRIB_FollowUp\models.py:56
-msgid "Query Name"
-msgstr "نام کوئری"
-
-#: .\EIRIB_FollowUp\models.py:61
-msgid "last login"
-msgstr "آخرین ورود"
-
-#: .\EIRIB_FollowUp\models.py:66
-msgid "date joined"
-msgstr "تاریخ عضویت"
-
-#: .\EIRIB_FollowUp\models.py:73
-msgid "Row"
-msgstr "ردیف"
-
-#: .\EIRIB_FollowUp\models.py:74
-msgid "Code"
-msgstr "کد"
-
-#: .\EIRIB_FollowUp\models.py:75
-msgid "Description"
-msgstr "شرح"
-
-#: .\EIRIB_FollowUp\models.py:76
+#: .\EIRIB_FollowUp\models.py:54 .\EIRIB_FollowUp\models.py:91
 msgid "Subject"
 msgstr "موضوع"
 
-#: .\EIRIB_FollowUp\models.py:77
+#: .\EIRIB_FollowUp\models.py:55
+#, fuzzy
+#| msgid "Subject"
+msgid "Subjects"
+msgstr "موضوعات"
+
+#: .\EIRIB_FollowUp\models.py:66
+msgid "Moavenat"
+msgstr "واحد اشتغال"
+
+#: .\EIRIB_FollowUp\models.py:67
+msgid "Access Level"
+msgstr "سطح دسترسی"
+
+#: .\EIRIB_FollowUp\models.py:69
+msgid "Title"
+msgstr "عنوان"
+
+#: .\EIRIB_FollowUp\models.py:71
+msgid "Query Name"
+msgstr "نام کوئری"
+
+#: .\EIRIB_FollowUp\models.py:76
+msgid "last login"
+msgstr "آخرین ورود"
+
+#: .\EIRIB_FollowUp\models.py:81
+msgid "date joined"
+msgstr "تاریخ عضویت"
+
+#: .\EIRIB_FollowUp\models.py:88
+msgid "Row"
+msgstr "ردیف"
+
+#: .\EIRIB_FollowUp\models.py:89
+msgid "Code"
+msgstr "کد"
+
+#: .\EIRIB_FollowUp\models.py:90
+msgid "Description"
+msgstr "شرح"
+
+#: .\EIRIB_FollowUp\models.py:92
 msgid "First Actor"
 msgstr "اقدام کننده 1"
 
-#: .\EIRIB_FollowUp\models.py:78
+#: .\EIRIB_FollowUp\models.py:93
 msgid "Second Actor"
 msgstr "اقدام کننده 2"
 
-#: .\EIRIB_FollowUp\models.py:79
+#: .\EIRIB_FollowUp\models.py:94
 msgid "Assignment Date"
 msgstr "تاریخ"
 
-#: .\EIRIB_FollowUp\models.py:80
+#: .\EIRIB_FollowUp\models.py:95
 msgid "Follow Grade"
 msgstr "لزوم پیگیری"
 
-#: .\EIRIB_FollowUp\models.py:81
+#: .\EIRIB_FollowUp\models.py:96
 msgid "Result"
 msgstr "نتیجه"
 
-#: .\EIRIB_FollowUp\models.py:84
+#: .\EIRIB_FollowUp\models.py:99
 msgid "First Supervisor"
 msgstr "واحد پیگیری 1"
 
-#: .\EIRIB_FollowUp\models.py:85
+#: .\EIRIB_FollowUp\models.py:100
 msgid "Second Supervisor"
 msgstr "واحد پیگیری 2"
 
-#: .\EIRIB_FollowUp\models.py:86
+#: .\EIRIB_FollowUp\models.py:101
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\models.py:89
+#: .\EIRIB_FollowUp\models.py:104
 msgid "Enactment"
 msgstr "مصوبه"
 
-#: .\EIRIB_FollowUp\models.py:90
+#: .\EIRIB_FollowUp\models.py:105
 msgid "Enactments"
 msgstr "مصوبات"
 
@@ -207,28 +214,34 @@ msgid "[Without assigner]"
 msgstr "[فاقد گوینده]"
 
 #: .\EIRIB_FollowUp\utils.py:11
+#, fuzzy
+#| msgid "[Without session]"
+msgid "[Without subject]"
+msgstr "[فاقد موضوع]"
+
+#: .\EIRIB_FollowUp\utils.py:12
 msgid "Admin Interface"
 msgstr "رابط کاربری"
 
-#: .\EIRIB_FollowUp\utils.py:12
+#: .\EIRIB_FollowUp\utils.py:13
 msgid "Theme"
 msgstr "شمایل گرافیکی"
 
-#: .\EIRIB_FollowUp\utils.py:13
+#: .\EIRIB_FollowUp\utils.py:14
 msgid "Themes"
 msgstr "شمایل گرافیکی"
 
-#: .\EIRIB_FollowUp\utils.py:14
+#: .\EIRIB_FollowUp\utils.py:15
 msgid "Email address"
 msgstr "پست الکترونیک"
 
-#: .\EIRIB_FollowUp\utils.py:15
+#: .\EIRIB_FollowUp\utils.py:16
 msgid "Hold down “Control”, or “Command” on a Mac, to select more than one."
 msgstr ""
 "کلید 'Control' در کامیپوترهای معمولی و یا 'Command' بر روی کامپیوترهای مک را "
 "فشار داده تا بتوانید بیش از یک مورد انتخاب کنید."
 
-#: .\EIRIB_FollowUp\utils.py:16
+#: .\EIRIB_FollowUp\utils.py:17
 msgid ""
 "First, enter a username and password. Then, you’ll be able to edit more user "
 "options."
@@ -236,11 +249,11 @@ msgstr ""
 "توجه: هنگام ایجاد کاربر جدید، ابتدا نام کاربری و کلمه عبور تعریف کرده و عمل "
 "ذخیره را انجام داده و سپس سایر مشخصات را تکمیل نمایید."
 
-#: .\EIRIB_FollowUp\utils.py:17
+#: .\EIRIB_FollowUp\utils.py:18
 msgid "The two password fields didn’t match."
 msgstr "تکرار کلمه عبور صحیح نیست."
 
-#: .\EIRIB_FollowUp\utils.py:19
+#: .\EIRIB_FollowUp\utils.py:20
 msgid ""
 "Please enter your old password, for security’s sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
@@ -248,7 +261,7 @@ msgstr ""
 "لطفا ابتدا کلمه عبور قبلی خود را وارد کرده، سپس کلمه عبور جدید را دو بار در "
 "محلهای مربوط تکرار کنید."
 
-#: .\EIRIB_FollowUp\utils.py:23
+#: .\EIRIB_FollowUp\utils.py:24
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using <a href=\"{}\">this form</a>."

@@ -57,6 +57,7 @@ class EIRIBBackend(ModelBackend):
                     if p.name in [
                         'Can view Session',
                         'Can view Assigner',
+                        'Can view Subject',
                         'Can view Enactment', 'Can change Enactment',# 'Can delete Enactment', 'Can add Enactment',
                     ]:
                         user.user_permissions.add(p)

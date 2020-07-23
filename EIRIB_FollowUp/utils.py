@@ -1,6 +1,6 @@
 from threading import Timer
 from django.conf import settings
-from .models import Enactment, Session, Assigner
+from .models import Enactment, Session, Assigner, Subject
 
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 msgid = _('welcome')
 settings.WITHOUT_SESSION_TITLE = _('[Without session]')
 settings.WITHOUT_ASSIGNER_TITLE = _('[Without assigner]')
+settings.WITHOUT_SUBJECT_TITLE = _('[Without subject]')
 msgid = _('Admin Interface')
 msgid = _('Theme')
 msgid = _('Themes')
@@ -25,7 +26,7 @@ msgid = _(
     '<a href="{}">this form</a>.'
 )
 
-max_data = 3
+max_data = 4
 data_loaded = max_data
 
 
@@ -37,7 +38,7 @@ def get_enactments():
     Enactment.objects.bulk_create([Enactment(**{
         'row': r.ID,
         'description': r.sharh,
-        'subject': r.muzoo,
+        'subject': Subject.objects.get(name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo),
         'first_actor': r.peygiri1,
         'second_actor': r.peygiri2,
         'date': r.tarikh,
@@ -79,6 +80,20 @@ def get_assigners():
     data_loaded += 1
 
 
+def get_subjects():
+    global data_loaded
+    Subject.objects.all().delete()
+    query = '''
+            SELECT DISTINCT tblmosavabat.muzoo
+            FROM tblmosavabat
+           '''
+    result = execute_query(query)
+    for r in result:
+        Subject.objects.get_or_create(
+            name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo)
+    data_loaded += 1
+
+
 def update_data():
     global data_loaded
     data_loaded = 0
@@ -88,6 +103,9 @@ def update_data():
 
     assigners = Timer(1, get_assigners)
     assigners.start()
+
+    subjects = Timer(1, get_subjects)
+    subjects.start()
 
     enactments = Timer(1, get_enactments)
     enactments.start()

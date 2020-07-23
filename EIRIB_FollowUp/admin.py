@@ -4,7 +4,7 @@ from jalali_date.admin import ModelAdminJalaliMixin
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -22,6 +22,11 @@ class SessionAdmin(BaseModelAdmin):
 @admin.register(Assigner)
 class AssignerAdmin(BaseModelAdmin):
     model = Assigner
+
+
+@admin.register(Subject)
+class SubjectAdmin(BaseModelAdmin):
+    model = Subject
 
 
 @admin.register(User)
@@ -90,9 +95,9 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             query += ", peygiri2='%s' " % obj.second_actor
             query += ", tarikh=%s " % obj.date
             query += ", lozoomepeygiri='%s' " % obj.follow_grade
-            query += ", jalaseh='%s' " % obj.session
-            query += ", muzoo='%s' " % obj.subject
-            query += ", gooyandeh='%s' " % obj.assigner
+            query += ", jalaseh='%s' " % obj.session.name
+            query += ", muzoo='%s' " % obj.subject.name
+            query += ", gooyandeh='%s' " % obj.assigner.name
             query += ", vahed='%s' " % obj.first_supervisor
             query += ", vahed2='%s' " % obj.second_supervisor
             query += ", mosavabatcode=%s " % obj.code
