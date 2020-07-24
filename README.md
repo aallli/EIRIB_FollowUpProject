@@ -12,23 +12,53 @@
 6- Clone source: sudo git clone https://github.com/aallli/EIRIB_FollowUpProject.git
 7- Activate virtualenv: source venv/bin/activate
 8- pip install -r requirements.txt
-9- python manage.py migrate
+9- Install postgresql:
+
+    sudo apt-get install postgresql postgresql-contrib
+    sudo usermod -aG sudo postgres
+
+10- Switch over to the postgres account on your server by typing:
+    
+    sudo -i -u postgres
+
+11- Create database named sadesa: sudo -u postgres createdb
+
+    sudo -u postgres createdb eirib_followup
+
+12- Set postgres password: 
+    
+    sudo -u postgres psql postgres
+    \password postgres
+    \q
+    exit 
+
+13- Caution: Allow remote access to postgres:
+    
+    Add to /etc/postgresql/9.5/main/postgresql.conf : #listen_addresses = '*'
+    Add to /etc/postgresql/9.5/main/pg_hba.conf : host all all 0.0.0.0/0 trust
+    systemctl restart postgresql
+
+14- Set environment variable for database access: 
+
+    export DATABASES_PASSWORD='[Database password]'
+
+15- python manage.py migrate
 
 NOTE: Set environment variable for database access: 
 
     export ALLOWED_HOSTS='[Server IP]'
     
-10- test if gunicorn can serve application: gunicorn --bind 0.0.0.0:8000 EIRIB_FollowUpProject.wsgi
-11- sudo groupadd --system www-data
-12- sudo useradd --system --gid www-data --shell /bin/bash --home-dir /home/[user]/followup/EIRIB_FollowUpProject followup
-13- sudo usermod -aG sudo followup
-14- sudo chown -R qbesharat:www-data /home/[user]/followup/EIRIB_FollowUpProject
-15- sudo chmod -R g+w /home/[user]/followup/EIRIB_FollowUpProject
-16- sudo chmod 777 /home/[user]/followup/EIRIB_FollowUpProject/media/
+16- test if gunicorn can serve application: gunicorn --bind 0.0.0.0:8000 EIRIB_FollowUpProject.wsgi
+17- sudo groupadd --system www-data
+18- sudo useradd --system --gid www-data --shell /bin/bash --home-dir /home/[user]/followup/EIRIB_FollowUpProject followup
+19- sudo usermod -aG sudo followup
+20- sudo chown -R qbesharat:www-data /home/[user]/followup/EIRIB_FollowUpProject
+21- sudo chmod -R g+w /home/[user]/followup/EIRIB_FollowUpProject
+22- sudo chmod 777 /home/[user]/followup/EIRIB_FollowUpProject/media/
 
 Configure Gunicorn:
-17- sudo nano /etc/systemd/system/gunicorn-followup.service
-18- add:
+23- sudo nano /etc/systemd/system/gunicorn-followup.service
+24- add:
     
     [Unit]
     Description=gunicorn daemon
@@ -44,8 +74,8 @@ Configure Gunicorn:
     [Install]
     WantedBy=multi-user.target
         
-24- sudo nano /etc/gunicorn-followup.env
-24- Add followings:
+25- sudo nano /etc/gunicorn-followup.env
+26- Add followings:
     
     DEBUG=0
     DEPLOY=1
@@ -54,23 +84,23 @@ Configure Gunicorn:
     ADMIN_EMAIL='[admin email]'
     LIST_PER_PAGE=[list per page in admin pages]
     
-25- sudo systemctl start gunicorn-followup
-26- sudo systemctl enable gunicorn-followup
-27- Check if 'EIRIB_FollowUpProject.sock' file exists: ls /home/[user]/followup/EIRIB_FollowUpProject
-28- sudo nano /etc/nginx/conf.d/proxy_params
-29- Add followings:
+27- sudo systemctl start gunicorn-followup
+28- sudo systemctl enable gunicorn-followup
+29- Check if 'EIRIB_FollowUpProject.sock' file exists: ls /home/[user]/followup/EIRIB_FollowUpProject
+30- sudo nano /etc/nginx/conf.d/proxy_params
+31- Add followings:
 
     proxy_set_header Host $http_host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
 
-29- If gunicorn.service file is changed, run:
+32- If gunicorn.service file is changed, run:
 
     sudo systemctl daemon-reload
     sudo systemctl restart gunicorn-qbesharat
 
-30- Install gettext:
+33- Install gettext:
 
     deactivate
     sudo apt-get update
@@ -78,36 +108,36 @@ Configure Gunicorn:
     sudo apt-get install
     sudo apt-get install gettext
 
-31- Compile messages for i18N:
+34- Compile messages for i18N:
     
     source env/bin/activate
     django-admin compilemessages -f (if translation is needed)
 
-32- Collect static files: (Create static and uploads directory if needed)
+35- Collect static files: (Create static and uploads directory if needed)
  
     python manage.py collectstatic
 
 Configure Nginx:
-33- create keys and keep them in /root/certs/qbesharat/:
+36- create keys and keep them in /root/certs/qbesharat/:
     
     openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /root/certs/followup/followup.crt -keyout /root/certs/followup/followup.key
 
-34- Restrict the key’s permissions so that only root can access it:
+37- Restrict the key’s permissions so that only root can access it:
     
     chmod 400 /root/certs/followup/followup.key
 
 
-36- Run nginx:
+38- Run nginx:
 
     sudo systemctl daemon-reload
     sudo systemctl start nginx.service
     sudo systemctl enable nginx.service
     
-37- Configure nginx:
+39- Configure nginx:
 
     sudo nano /etc/nginx/conf.d/followup.conf
 
-38- Add:
+40- Add:
     
     server {
         listen       80;
@@ -167,16 +197,16 @@ Configure Nginx:
         }
     }
 
-39- Test your Nginx configuration for syntax errors by typing: 
+41- Test your Nginx configuration for syntax errors by typing: 
 
     sudo /usr/sbin/nginx -t
 
-40- Restart nginx:
+42- Restart nginx:
 
     sudo systemctl restart nginx.service
     sudo systemctl status nginx.service
 
-41- Get more admin themes:
+43- Get more admin themes:
     
     python manage.py loaddata admin_interface_theme_django.json
     python manage.py loaddata admin_interface_theme_bootstrap.json
