@@ -4,14 +4,12 @@ from jalali_date.admin import ModelAdminJalaliMixin
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor
+from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor, \
+    Attachment
 
 
 class BaseModelAdmin(admin.ModelAdmin):
     save_on_top = True
-
-    class Media:
-        js = ('js/custom_admin.js',)
 
 
 @admin.register(Session)
@@ -41,6 +39,21 @@ class SupervisorAdmin(BaseModelAdmin):
     model = Supervisor
 
 
+class AttachmentInline(admin.TabularInline):
+    model = Attachment
+
+
+@admin.register(Attachment)
+class AttachmentAdmin(BaseModelAdmin):
+    model = Attachment
+    fields = ['description', 'file', 'enactment']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "enactment" and request.user.access_level == AccessLevel.USER:
+            kwargs["queryset"] = Enactment.objects.filter(row__in=request.user.query)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 @admin.register(User)
 class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
     fieldsets = (
@@ -48,7 +61,7 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
             'fields': (('username', 'first_name', 'last_name', '_title'),
                        ('access_level', 'is_active'),)}),
         (_('Address Info'), {
-            'fields': (('moavenat', 'email', 'query_name'))}),
+            'fields': (('moavenat', 'email', ('query_name', 'query')))}),
         (_('Important dates'), {
             'fields': (('last_login_jalali', 'date_joined_jalali'),)}),
         (_('Permissions'), {
@@ -70,18 +83,16 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               )
     list_display = ['row', 'session', 'date', 'code', 'subject']
     list_display_links = ['row', 'session', 'date', 'code', 'subject']
-    list_filter = ['follow_grade', ]
+    list_filter = ['follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
     search_fields = ['session', 'code', 'subject', 'assigner', 'description', 'result', 'first_actor', 'second_actor',
                      'first_supervisor', 'second_supervisor']
+    inlines = [AttachmentInline, ]
 
     def get_queryset(self, request):
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
             return Enactment.objects.all()
 
-        command = 'SELECT * from %s' % request.user.query_name
-        result = execute_query(command)
-        valid_rows = [r.ID for r in result]
-        return Enactment.objects.filter(row__in=valid_rows)
+        return Enactment.objects.filter(row__in=request.user.query)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
@@ -101,6 +112,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                 UPDATE tblmosavabat
                 SET natije = ?
                '''
+
         if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
             query += ", sharh='%s' " % obj.description
 
@@ -132,9 +144,29 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
             query += ", mosavabatcode=%s " % obj.code
             query += ", TarikhBaznegari = '%s' " % obj.review_date
+
         params = (obj.result, obj.row)
         query += '''
                 WHERE ID = ?
                '''
         execute_query(query, params, True)
         super(EnactmentAdmin, self).save_model(request, obj, form, change)
+
+    @atomic
+    def save_formset(self, request, form, formset, change):
+        super(EnactmentAdmin, self).save_formset(request, form, formset, change)
+        if formset.prefix == 'attachment_set':
+            obj = form.instance
+            query = '''
+                UPDATE tblmosavabat
+                SET attachments = ?
+               '''
+
+            attachments = ' '.join(
+                '%s%s' % (request.META['HTTP_ORIGIN'], attachment.file.url) for attachment in obj.attachment_set.all())
+
+            params = (attachments, obj.row)
+            query += '''
+                    WHERE ID = ?
+                   '''
+            execute_query(query, params, True)

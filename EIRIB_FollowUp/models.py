@@ -1,7 +1,10 @@
-import locale
+import locale, os
 from django.db import models
+from django.conf import settings
+from django.dispatch import receiver
 from EIRIB_FollowUpProject.utils import to_jalali
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext_lazy as _
 
 locale.setlocale(locale.LC_ALL, '')
@@ -101,6 +104,7 @@ class User(AbstractUser):
     _title = models.CharField(verbose_name=_('Title'), choices=Title.choices,
                               default=Title.MR, max_length=100, null=False)
     query_name = models.CharField(verbose_name=_('Query Name'), max_length=200, blank=False, unique=True)
+    query = ArrayField(models.IntegerField(verbose_name=_('Code'), default=[], blank=False), size=100000, )
 
     def last_login_jalali(self):
         return to_jalali(self.last_login)
@@ -146,3 +150,69 @@ class Enactment(models.Model):
 
     def __unicode__(self):
         return '%s: %s' % (self.session, self.row)
+
+
+class Attachment(models.Model):
+    def directory_path(instance, filename):
+        return '{0}/{1}/{2}'.format(settings.MEDIA_ROOT, instance.enactment.pk, filename)
+
+    description = models.CharField(verbose_name=_('Description'), max_length=2000, blank=True, null=True)
+    file = models.FileField(verbose_name=_('File'), upload_to=directory_path, blank=False)
+    enactment = models.ForeignKey(Enactment, verbose_name=_('Enactment'), on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachments')
+        ordering = ['description']
+
+    def __str__(self):
+        return self.filename()
+
+    def __unicode__(self):
+        return self.filename()
+
+    def filename(self):
+        parts = self.file.name.split('/')
+        return parts[len(parts) - 1]
+
+
+@receiver(models.signals.post_delete, sender=Attachment)
+def auto_delete_attachment_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `Attachment` object is deleted.
+    """
+    if instance.file.name:
+        try:
+            if os.path.isfile(instance.file.path):
+                os.remove(instance.file.path)
+        except Exception as e:
+            print('Delete error: %s' % e.args[0])
+
+
+@receiver(models.signals.pre_save, sender=Attachment)
+def auto_delete_attachment_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `Attachment` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Attachment.objects.get(pk=instance.pk).file
+    except Attachment.DoesNotExist:
+        return False
+
+    if not old_file.name:
+        return False
+
+    new_file = instance.file
+    try:
+        if not old_file == new_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+    except Exception as e:
+        print('Delete error: %s' % e.args[0])
+        return False

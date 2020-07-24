@@ -13,6 +13,11 @@ class EIRIBBackend(ModelBackend):
             return
 
         if user.check_password(password) and self.user_can_authenticate(user):
+            if user.access_level == AccessLevel.USER:
+                command = 'SELECT * from %s' % user.query_name
+                result = execute_query(command)
+                user.query = [r.ID for r in result]
+                user.save()
             return user
 
     def get_user_by_username(self, user_name):
@@ -48,7 +53,7 @@ class EIRIBBackend(ModelBackend):
                 user.save()
             else:
                 user = User.objects.create(username=user_name, first_name=result.FName, last_name=result.LName,
-                                           moavenat=result.Moavenat, query_name=result.openningformP,
+                                           moavenat=result.Moavenat, query=[], query_name=result.openningformP,
                                            access_level=access_level, _title=title, is_staff=True)
                 user.set_password(result.Password)
                 for p in Permission.objects.all():
@@ -58,12 +63,23 @@ class EIRIBBackend(ModelBackend):
                         'Can view Subject',
                         'Can view Actor',
                         'Can view Supervisor',
+                        'Can view Attachment',
+                        'Can add Attachment',
+                        'Can change Attachment',
+                        'Can delete Attachment',
                         'Can view Enactment', 'Can change Enactment',
                         # 'Can delete Enactment', 'Can add Enactment',
                     ] and user.access_level == AccessLevel.SECRETARY:
                         user.user_permissions.add(p)
 
-                    if p.name in ['Can view Enactment', 'Can change Enactment',]:
+                    if p.name in [
+                        'Can view Enactment',
+                        'Can change Enactment',
+                        'Can view Attachment',
+                        'Can add Attachment',
+                        'Can change Attachment',
+                        'Can delete Attachment',
+                    ]:
                         user.user_permissions.add(p)
 
                 user.save()
