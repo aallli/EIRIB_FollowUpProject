@@ -4,10 +4,9 @@
 2- apt-get install python3 && apt-get install python3-pip && apt-get install libpq-dev
 3- Install nginx:
 
-    sudo apt-get update
     sudo apt-get install nginx
 
-4- pip3 install virtualenv
+4- sudo pip3 install virtualenv
 5- Create virtual environment: virtualenv venv
 6- Clone source: sudo git clone https://github.com/aallli/EIRIB_FollowUpProject.git
 7- Activate virtualenv: source venv/bin/activate
