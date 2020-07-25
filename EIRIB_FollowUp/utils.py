@@ -1,7 +1,6 @@
 from threading import Timer
 from django.conf import settings
 from .models import Enactment, Session, Assigner, Subject, Actor, Supervisor
-
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 
@@ -28,11 +27,17 @@ msgid = _(
 )
 
 max_data = 6
-data_loaded = max_data
+data_loaded = pow(2, max_data) - 1
 
 
 def get_enactments():
-    global data_loaded
+    global data_loaded, max_data
+
+    if data_loaded != pow(2, max_data - 1) - 1:
+        enactments = Timer(1, get_enactments)
+        enactments.start()
+        return
+
     Enactment.objects.all().delete()
     command = 'SELECT * from tblmosavabat'
     result = execute_query(command)
@@ -53,7 +58,7 @@ def get_enactments():
         'second_supervisor': Supervisor.objects.get(
             name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed2 in [None, ''] else r.vahed2),
         'review_date': r.TarikhBaznegari}) for r in result])
-    data_loaded += 1
+    data_loaded ^= 32
 
 
 def get_sessions():
@@ -66,7 +71,7 @@ def get_sessions():
     result = execute_query(query)
     for r in result:
         Session.objects.get_or_create(name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh)
-    data_loaded += 1
+    data_loaded ^= 1
 
 
 def get_assigners():
@@ -80,7 +85,7 @@ def get_assigners():
     for r in result:
         Assigner.objects.get_or_create(
             name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh)
-    data_loaded += 1
+    data_loaded ^= 2
 
 
 def get_subjects():
@@ -94,7 +99,7 @@ def get_subjects():
     for r in result:
         Subject.objects.get_or_create(
             name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo)
-    data_loaded += 1
+    data_loaded ^= 4
 
 
 def get_actors():
@@ -107,7 +112,7 @@ def get_actors():
     result = execute_query(query)
     for r in result:
         Actor.objects.get_or_create(fname=r.FName, lname=r.LName)
-    data_loaded += 1
+    data_loaded ^= 8
 
 
 def get_supervisors():
@@ -126,7 +131,7 @@ def get_supervisors():
     for r in result:
         Supervisor.objects.get_or_create(
             name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed in [None, ''] else r.vahed)
-    data_loaded += 1
+    data_loaded ^= 16
 
 
 def update_data():
@@ -148,13 +153,10 @@ def update_data():
     supervisors = Timer(1, get_supervisors)
     supervisors.start()
 
-    while (True):
-        if data_loaded == max_data - 1:
-            enactments = Timer(1, get_enactments)
-            enactments.start()
-            break
+    enactments = Timer(1, get_enactments)
+    enactments.start()
 
 
 def data_loading():
     global data_loaded, max_data
-    return data_loaded != max_data
+    return data_loaded != pow(2, max_data) - 1

@@ -119,6 +119,10 @@ class User(AbstractUser):
     def title(self):
         return Title(self._title).label
 
+    @property
+    def is_secretary(self):
+        return self.access_level == AccessLevel.SECRETARY
+
 
 class Enactment(models.Model):
     row = models.IntegerField(verbose_name=_('Row'), default=1, blank=False, unique=True)

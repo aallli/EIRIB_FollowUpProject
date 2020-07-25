@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-25 10:44+0430\n"
+"POT-Creation-Date: 2020-07-25 22:19+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,12 +23,12 @@ msgid "EIRIB Administration System"
 msgstr "سامانه مدیریت معاونت فضای مجازی"
 
 #: .\EIRIB_FollowUpProject\settings.py:141 .\static\admin\base_site.html:38
-#: .\static\base_site.html:39 .\templates\admin\base_site.html:38
+#: .\static\base_site.html:39 .\templates\admin\base_site.html:37
 msgid "En"
 msgstr "انگلیسی"
 
 #: .\EIRIB_FollowUpProject\settings.py:142 .\static\admin\base_site.html:44
-#: .\static\base_site.html:45 .\templates\admin\base_site.html:44
+#: .\static\base_site.html:45 .\templates\admin\base_site.html:43
 msgid "Fa"
 msgstr "فارسی"
 
@@ -40,23 +40,23 @@ msgstr "خوش آمدید..."
 msgid "Successful update."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:60
+#: .\EIRIB_FollowUp\admin.py:71
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:63
+#: .\EIRIB_FollowUp\admin.py:74
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:65
+#: .\EIRIB_FollowUp\admin.py:76
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:67
+#: .\EIRIB_FollowUp\admin.py:78
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:69
+#: .\EIRIB_FollowUp\admin.py:80
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
@@ -312,31 +312,47 @@ msgstr "پست الکترونیک"
 msgid "Go back"
 msgstr "بازگشت"
 
-#: .\static\admin\base_site.html:30 .\templates\admin\base_site.html:30
+#: .\static\admin\base_site.html:30 .\templates\admin\base_site.html:29
 msgid "Version"
 msgstr "ویرایش"
 
 #: .\static\admin\base_site.html:52 .\static\base_site.html:53
-#: .\templates\admin\base_site.html:52
+#: .\templates\admin\base_site.html:51
 msgid "Documentation"
 msgstr "مستندات"
 
 #: .\static\admin\base_site.html:56 .\static\base_site.html:57
-#: .\templates\admin\base_site.html:56
+#: .\templates\admin\base_site.html:55
 msgid "Change password"
 msgstr "تغییر کلمه عبور"
 
 #: .\static\admin\base_site.html:58 .\static\base_site.html:59
-#: .\templates\admin\base_site.html:58
+#: .\templates\admin\base_site.html:57
 msgid "Log out"
 msgstr "خروج"
 
 #: .\static\admin\base_site.html:63 .\static\admin\base_site.html:69
 #: .\static\base_site.html:64 .\static\base_site.html:70
-#: .\templates\admin\base_site.html:63 .\templates\admin\base_site.html:69
+#: .\templates\admin\base_site.html:62 .\templates\admin\base_site.html:68
 msgid "Welcome,"
 msgstr "خوش آمدید"
 
 #: .\templates\admin\change_list.html:8
 msgid "Data not loaded yet, please wait..."
 msgstr "اطلاعات در حال به روز رسانی هستند. لطفا شکیبا باشید..."
+
+#: .\templates\admin\index.html:18
+msgid "Administration"
+msgstr "مدیریت سیستم"
+
+#: .\templates\admin\index.html:21
+msgid "Update data"
+msgstr "همسان سازی داده ها"
+
+#: .\templates\admin\index.html:23
+msgid "Updating"
+msgstr "در حال به روز رسانی"
+
+#: .\templates\admin\index.html:25
+msgid "Start"
+msgstr "آغاز"

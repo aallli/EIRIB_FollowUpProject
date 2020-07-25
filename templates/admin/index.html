@@ -1,0 +1,32 @@
+{% extends "admin/index.html" %}
+
+{% load i18n static simple_tag %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% if user.is_superuser or user.is_secretary %}
+            {% data_loading as data_loading %}
+            <div class="module">
+                <table>
+                    <caption>
+                        <a href="javascript: void(0);" class="section"
+                           title="{% trans 'Administration' %}">{% trans 'Administration' %}</a>
+                    </caption>
+                    <tr>
+                        <th scope="row"><a href="javascript: void(0);">{% trans 'Update data' %}</a></th>
+                        {% if data_loading %}
+                            <td scope="row"><img src="{% static 'img/loading-gears-animation.gif' %}" class="startedlink" />{% trans 'Updating' %}</td>
+                        {% else %}
+                            <td scope="row"><a href="/admin/start_sync/" class="startlink">{% trans 'Start' %}</a></td>
+                        {% endif %}
+                    </tr>
+                </table>
+            </div>
+        {% endif %}{{ block.super }}
+    </div>
+{% endblock %}

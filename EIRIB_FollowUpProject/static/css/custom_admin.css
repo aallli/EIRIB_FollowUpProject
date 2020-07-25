@@ -53,14 +53,24 @@
     font-size: 12px;
 }
 
-.stoplink, .inlinestoplink {
-    padding-right: 16px;
-    background: url('/static/admin/img/icon-no.svg') 0 1px no-repeat;
+.startlink, .inlinestartlink {
+    padding-right: 16px !important;
+    background: url('/static/admin/img/icon-yes.svg') 0 1px no-repeat;
+    background-position: right;
 }
 
-:lang(fa) .stoplink, .inlinestoplink {
-    padding-left: 16px;
-    padding-right: auto;
+.startedlink {
+    width: 30px;
+    padding-right: 10px;
+}
+
+:lang(fa) .startedlink {
+    padding-left: 10px;
+}
+
+:lang(fa) .startlink, .inlinestartlink {
+    padding-left: 16px !important;
+    padding-right: auto !important;
 }
 
 .admin-interface.login #header #branding h1 img.logo + span {

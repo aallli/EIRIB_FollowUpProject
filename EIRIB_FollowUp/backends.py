@@ -1,6 +1,6 @@
 from threading import Timer
+from .utils import execute_query
 from .models import User, Title, AccessLevel
-from .utils import execute_query, update_data
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.backends import ModelBackend
@@ -14,7 +14,7 @@ class EIRIBBackend(ModelBackend):
             return
 
         if user.check_password(password) and self.user_can_authenticate(user):
-            if user.access_level == AccessLevel.USER:
+            if not user.is_secretary:
                 user_query = Timer(1, self.get_user_query(user))
                 user_query.start()
             return user
@@ -68,7 +68,7 @@ class EIRIBBackend(ModelBackend):
                         'Can delete Attachment',
                         'Can view Enactment', 'Can change Enactment',
                         # 'Can delete Enactment', 'Can add Enactment',
-                    ] and user.access_level == AccessLevel.SECRETARY:
+                    ] and user.is_secretary:
                         user.user_permissions.add(p)
 
                     if p.name in [
@@ -111,6 +111,4 @@ class ModelBackend(ModelBackend):
             UserModel().set_password(password)
         else:
             if user.check_password(password) and self.user_can_authenticate(user):
-                if user.is_superuser:
-                    update_data()
                 return user

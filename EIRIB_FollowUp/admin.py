@@ -60,7 +60,7 @@ class AttachmentAdmin(BaseModelAdmin):
                      'enactment__second_supervisor__name', ]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "enactment" and not request.user.is_superuser and request.user.access_level == AccessLevel.USER:
+        if db_field.name == "enactment" and not (request.user.is_superuser or request.user.is_secretary):
             kwargs["queryset"] = Enactment.objects.filter(row__in=request.user.query)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -101,14 +101,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     inlines = [AttachmentInline, ]
 
     def get_queryset(self, request):
-        if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
+        if request.user.is_superuser or request.user.is_secretary:
             return Enactment.objects.all()
 
         return Enactment.objects.filter(row__in=request.user.query)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
-        if not request.user.is_superuser and request.user.access_level == AccessLevel.USER:
+        if not (request.user.is_superuser or request.user.is_secretary):
             self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
                                     'description',
                                     'first_actor', 'second_actor', 'follow_grade', 'first_supervisor',
@@ -125,7 +125,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                 SET natije = ?
                '''
 
-        if request.user.is_superuser or request.user.access_level == AccessLevel.SECRETARY:
+        if request.user.is_superuser or request.user.is_secretary:
             query += ", sharh='%s' " % obj.description
 
             if obj.first_actor:
