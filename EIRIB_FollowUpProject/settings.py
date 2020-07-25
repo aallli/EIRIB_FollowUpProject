@@ -26,7 +26,7 @@ SECRET_KEY = 'irt=69_xpf6#pzm&c4s%ogrt*t!i5oy-=i*70yw0@agjjbr8mx'
 DEBUG = True
 
 # admin info
-VERSION = '0.8.5'
+VERSION = '0.8.7'
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
 SITE_HEADER = _('EIRIB Administration System')
@@ -101,9 +101,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('DATABASES_PASSWORD', default='123'),
     },
     'access': {
-        'NAME': os.environ.get('DATABASES_NAME', default=os.path.join(BASE_DIR, 'db\db.mdb')),
-        'USER': os.environ.get('DATABASES_USER', default='Administrator, System'),
-        'PASSWORD': os.environ.get('DATABASES_PASSWORD', default='123456'),
+        'NAME': os.environ.get('ACCESS_DATABASES_NAME', default=os.path.join(BASE_DIR, 'db\db.mdb')),
+        'USER': os.environ.get('ACCESS_DATABASES_USER', default='Administrator, System'),
+        'PASSWORD': os.environ.get('ACCESS_DATABASES_PASSWORD', default='123456'),
     }
 }
 

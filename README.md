@@ -11,6 +11,11 @@
 6- Clone source: sudo git clone https://github.com/aallli/EIRIB_FollowUpProject.git
 7- Activate virtualenv: source venv/bin/activate
 8- pip install -r requirements.txt
+
+NOTE: If pyodbc installation failed, install unixodbc-dev:
+
+    sudo apt-get install unixodbc-dev
+    
 9- Install postgresql:
 
     sudo apt-get install postgresql postgresql-contrib
@@ -29,7 +34,7 @@
     sudo -u postgres psql postgres
     \password postgres
     \q
-    exit 
+    exit    E|r|bF0ll0wup
 
 13- Caution: Allow remote access to postgres:
     
