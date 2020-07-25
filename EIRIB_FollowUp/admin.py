@@ -15,16 +15,19 @@ class BaseModelAdmin(admin.ModelAdmin):
 @admin.register(Session)
 class SessionAdmin(BaseModelAdmin):
     model = Session
+    search_fields = ['name', ]
 
 
 @admin.register(Assigner)
 class AssignerAdmin(BaseModelAdmin):
     model = Assigner
+    search_fields = ['name', ]
 
 
 @admin.register(Subject)
 class SubjectAdmin(BaseModelAdmin):
     model = Subject
+    search_fields = ['name', ]
 
 
 @admin.register(Actor)
@@ -32,11 +35,13 @@ class ActortAdmin(BaseModelAdmin):
     model = Actor
     list_display = ['fname', 'lname']
     list_display_links = ['fname', 'lname']
+    search_fields = ['fname', 'lname', ]
 
 
 @admin.register(Supervisor)
 class SupervisorAdmin(BaseModelAdmin):
     model = Supervisor
+    search_fields = ['name', ]
 
 
 class AttachmentInline(admin.TabularInline):
@@ -47,9 +52,15 @@ class AttachmentInline(admin.TabularInline):
 class AttachmentAdmin(BaseModelAdmin):
     model = Attachment
     fields = ['description', 'file', 'enactment']
+    search_fields = ['description', 'file',
+                     'enactment__session__name', 'enactment__code', 'enactment__subject__name',
+                     'enactment__assigner__name', 'enactment__description', 'enactment__result',
+                     'enactment__first_actor__fname', 'enactment__first_actor__lname', 'enactment__second_actor__fname',
+                     'enactment__second_actor__lname', 'enactment__first_supervisor__name',
+                     'enactment__second_supervisor__name', ]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "enactment" and request.user.access_level == AccessLevel.USER:
+        if db_field.name == "enactment" and not request.user.is_superuser and request.user.access_level == AccessLevel.USER:
             kwargs["queryset"] = Enactment.objects.filter(row__in=request.user.query)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -84,8 +95,9 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     list_display = ['row', 'session', 'date', 'code', 'subject']
     list_display_links = ['row', 'session', 'date', 'code', 'subject']
     list_filter = ['follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
-    search_fields = ['session', 'code', 'subject', 'assigner', 'description', 'result', 'first_actor', 'second_actor',
-                     'first_supervisor', 'second_supervisor']
+    search_fields = ['session__name', 'code', 'subject__name', 'assigner__name', 'description', 'result',
+                     'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
+                     'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
 
     def get_queryset(self, request):

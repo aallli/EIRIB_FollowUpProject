@@ -175,11 +175,11 @@ msgstr "شرح"
 
 #: .\EIRIB_FollowUp\models.py:128
 msgid "First Actor"
-msgstr "اقدام کننده 1"
+msgstr "پیگیری کننده اول"
 
 #: .\EIRIB_FollowUp\models.py:130
 msgid "Second Actor"
-msgstr "اقدام کننده 2"
+msgstr "پیگیری کننده دوم"
 
 #: .\EIRIB_FollowUp\models.py:132
 msgid "Assignment Date"
@@ -195,11 +195,11 @@ msgstr "نتیجه"
 
 #: .\EIRIB_FollowUp\models.py:137
 msgid "First Supervisor"
-msgstr "واحد پیگیری 1"
+msgstr "واحد پیگیری کننده اول"
 
 #: .\EIRIB_FollowUp\models.py:139
 msgid "Second Supervisor"
-msgstr "واحد پیگیری 2"
+msgstr "واحد پیگیری کننده دوم"
 
 #: .\EIRIB_FollowUp\models.py:141
 msgid "Review Date"
