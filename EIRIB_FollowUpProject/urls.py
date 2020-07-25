@@ -22,7 +22,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import ugettext_lazy as _
 
 admin.site.site_header = settings.SITE_HEADER
-admin.site.site_title = _('Welcome to EIRIB Office Automation administration')
+admin.site.site_title = _('Welcome to EIRIB administration system')
 
 
 urlpatterns = [
