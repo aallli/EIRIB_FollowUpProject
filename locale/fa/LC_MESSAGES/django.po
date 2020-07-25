@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-25 10:21+0430\n"
+"POT-Creation-Date: 2020-07-25 10:44+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,19 +118,23 @@ msgid "Last Name"
 msgstr "نام خانوادگی"
 
 #: .\EIRIB_FollowUp\models.py:73
-msgid "Actor"
-msgstr "اقدام کننده"
+msgid "Supervisor"
+msgstr "مسوول پیگیری"
 
 #: .\EIRIB_FollowUp\models.py:74
-msgid "Actors"
-msgstr "اقدام کنندگان"
+msgid "Supervisors"
+msgstr "مسوولین پیگیری"
 
 #: .\EIRIB_FollowUp\models.py:89
-msgid "Supervisor"
+#, fuzzy
+#| msgid "Supervisor"
+msgid "Supervisor Unit"
 msgstr "واحد پیگیری"
 
 #: .\EIRIB_FollowUp\models.py:90
-msgid "Supervisors"
+#, fuzzy
+#| msgid "Supervisors"
+msgid "Supervisor Units"
 msgstr "واحدهای پیگیری"
 
 #: .\EIRIB_FollowUp\models.py:101

@@ -70,8 +70,8 @@ class Actor(models.Model):
     lname = models.CharField(verbose_name=_('Last Name'), max_length=2000, blank=False)
 
     class Meta:
-        verbose_name = _('Actor')
-        verbose_name_plural = _('Actors')
+        verbose_name = _('Supervisor')
+        verbose_name_plural = _('Supervisors')
         ordering = ['lname', 'fname']
         unique_together = ['lname', 'fname']
 
@@ -86,8 +86,8 @@ class Supervisor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=2000, blank=False, unique=True)
 
     class Meta:
-        verbose_name = _('Supervisor')
-        verbose_name_plural = _('Supervisors')
+        verbose_name = _('Supervisor Unit')
+        verbose_name_plural = _('Supervisor Units')
         ordering = ['name']
 
     def __str__(self):
