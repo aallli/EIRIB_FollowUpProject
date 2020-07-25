@@ -1,3 +1,4 @@
+from threading import Timer
 from .models import User, Title, AccessLevel
 from .utils import execute_query, update_data
 from django.contrib.auth import get_user_model
@@ -14,10 +15,8 @@ class EIRIBBackend(ModelBackend):
 
         if user.check_password(password) and self.user_can_authenticate(user):
             if user.access_level == AccessLevel.USER:
-                command = 'SELECT * from %s' % user.query_name
-                result = execute_query(command)
-                user.query = [r.ID for r in result]
-                user.save()
+                user_query = Timer(1, self.get_user_query(user))
+                user_query.start()
             return user
 
     def get_user_by_username(self, user_name):
@@ -89,6 +88,12 @@ class EIRIBBackend(ModelBackend):
             return None
 
         return user
+
+    def get_user_query(self, user):
+        command = 'SELECT * from %s' % user.query_name
+        result = execute_query(command)
+        user.query = [r.ID for r in result]
+        user.save()
 
 
 class ModelBackend(ModelBackend):
