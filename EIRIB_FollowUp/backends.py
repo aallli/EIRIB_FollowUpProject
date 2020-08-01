@@ -37,6 +37,7 @@ class EIRIBBackend(ModelBackend):
                 if t[1].label == result.envan:
                     title = t[1]
                     break
+            title = title or Title.MR
             if result.AccessLevelID == 4:
                 access_level = AccessLevel.SECRETARY
             else:
@@ -84,8 +85,6 @@ class EIRIBBackend(ModelBackend):
                 user.save()
         except User.DoesNotExist:
             raise User.DoesNotExist
-        except Exception:
-            return None
 
         return user
 

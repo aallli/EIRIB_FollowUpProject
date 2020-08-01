@@ -167,7 +167,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     @atomic
     def save_formset(self, request, form, formset, change):
         super(EnactmentAdmin, self).save_formset(request, form, formset, change)
-        if formset.prefix == 'attachment_set':
+        if formset.prefix == 'attachment_set' and change:
             obj = form.instance
             query = '''
                 UPDATE tblmosavabat
