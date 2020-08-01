@@ -26,7 +26,7 @@ SECRET_KEY = 'irt=69_xpf6#pzm&c4s%ogrt*t!i5oy-=i*70yw0@agjjbr8mx'
 DEBUG = True
 
 # admin info
-VERSION = '0.8.16'
+VERSION = '0.8.17'
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
 SITE_HEADER = _('EIRIB Administration System')
@@ -35,7 +35,7 @@ WITHOUT_ASSIGNER_TITLE = None
 WITHOUT_SUBJECT_TITLE = None
 WITHOUT_SUPERVISOR_TITLE = None
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", default="localhost").split(" ")
 
 # Application definition
 
