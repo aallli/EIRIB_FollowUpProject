@@ -120,6 +120,10 @@
     padding-right: 80px;
 }
 
+.errornote.loading-message.index {
+    width: 100%;
+}
+
 .loading-message {
     width: auto;
     margin-right: 280px;
