@@ -147,7 +147,7 @@ class Enactment(models.Model):
     class Meta:
         verbose_name = _('Enactment')
         verbose_name_plural = _('Enactments')
-        ordering = ['date', 'description']
+        ordering = ['review_date', 'row']
 
     def __str__(self):
         return '%s: %s' % (self.session, self.row)
@@ -156,12 +156,12 @@ class Enactment(models.Model):
         return '%s: %s' % (self.session, self.row)
 
     def description_short(self):
-        return '%s...' % self.description[:75] if self.description else ''
+        return '%s...' % self.description[:50] if self.description else ''
 
     description_short.short_description = _('Description')
 
     def result_short(self):
-        return '%s...' % self.result[:75] if self.result else ''
+        return '%s...' % self.result[:50] if self.result else ''
 
     result_short.short_description = _('Result')
 

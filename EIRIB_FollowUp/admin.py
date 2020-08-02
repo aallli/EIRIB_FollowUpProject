@@ -92,8 +92,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'second_actor', 'follow_grade'),
               ('first_supervisor', 'second_supervisor', 'code'),
               )
-    list_display = ['row', 'session', 'date', 'subject', 'description_short', 'result_short']
-    list_display_links = ['row', 'session', 'date', 'subject', 'description_short', 'result_short']
+    list_display = ['row', 'session', 'date', 'review_date', 'subject', 'description_short', 'result_short']
+    list_display_links = ['row', 'session', 'date', 'review_date', 'subject', 'description_short', 'result_short']
     list_filter = ['follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',

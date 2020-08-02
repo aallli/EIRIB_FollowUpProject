@@ -231,19 +231,19 @@ msgstr "خوش آمدید"
 
 #: .\EIRIB_FollowUp\utils.py:9
 msgid "[Without session]"
-msgstr "[فاقد جلسه]"
+msgstr "-"
 
 #: .\EIRIB_FollowUp\utils.py:10
 msgid "[Without assigner]"
-msgstr "[فاقد گوینده]"
+msgstr "-"
 
 #: .\EIRIB_FollowUp\utils.py:11
 msgid "[Without subject]"
-msgstr "[فاقد موضوع]"
+msgstr "-"
 
 #: .\EIRIB_FollowUp\utils.py:12
 msgid "[Without supervisor]"
-msgstr "[فاقد واحد پیگیری]"
+msgstr "-"
 
 #: .\EIRIB_FollowUp\utils.py:13
 msgid "Admin Interface"
