@@ -92,14 +92,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'second_actor', 'follow_grade'),
               ('first_supervisor', 'second_supervisor', 'code'),
               )
-    list_display = ['row', 'session', 'date', 'review_date', 'subject', 'description_short', 'result_short']
-    list_display_links = ['row', 'session', 'date', 'review_date', 'subject', 'description_short', 'result_short']
-    list_filter = ['follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
+    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short', 'result_short']
+    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short', 'result_short']
+    list_filter = ['review_date', 'follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
-    readonly_fields = ['description_short', 'result_short']
+    readonly_fields = ['description_short', 'result_short', 'date_jalali', 'review_date_jalali', ]
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.is_secretary:
@@ -123,40 +123,40 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def save_model(self, request, obj, form, change):
         query = '''
                 UPDATE tblmosavabat
-                SET natije = ?
+                SET tblmosavabat.natije = ?
                '''
 
         if request.user.is_superuser or request.user.is_secretary:
-            query += ", sharh='%s' " % obj.description
+            query += ", tblmosavabat.sharh='%s' " % obj.description
 
             if obj.first_actor:
-                query += ", peygiri1='%s' " % obj.first_actor.lname
+                query += ", tblmosavabat.peygiri1='%s' " % obj.first_actor.lname
             else:
-                query += ", peygiri1='' "
+                query += ", tblmosavabat.peygiri1='' "
 
             if obj.second_actor:
-                query += ", peygiri2='%s' " % obj.second_actor.lname
+                query += ", tblmosavabat.peygiri2='%s' " % obj.second_actor.lname
             else:
-                query += ", peygiri2='' "
+                query += ", tblmosavabat.peygiri2='' "
 
-            query += ", tarikh=%s " % obj.date
-            query += ", lozoomepeygiri='%s' " % obj.follow_grade
-            query += ", jalaseh='%s' " % obj.session.name
-            query += ", muzoo='%s' " % obj.subject.name
-            query += ", gooyandeh='%s' " % obj.assigner.name
+            query += ", tblmosavabat.[date]='%s' " % obj.date
+            query += ", tblmosavabat.lozoomepeygiri='%s' " % obj.follow_grade
+            query += ", tblmosavabat.jalaseh='%s' " % obj.session.name
+            query += ", tblmosavabat.muzoo='%s' " % obj.subject.name
+            query += ", tblmosavabat.gooyandeh='%s' " % obj.assigner.name
 
             if obj.first_supervisor:
-                query += ", vahed='%s' " % obj.first_supervisor.name
+                query += ", tblmosavabat.vahed='%s' " % obj.first_supervisor.name
             else:
-                query += ", vahed='' "
+                query += ", tblmosavabat.vahed='' "
 
             if obj.second_supervisor:
-                query += ", vahed2='%s' " % obj.second_supervisor.name
+                query += ", tblmosavabat.vahed2='%s' " % obj.second_supervisor.name
             else:
-                query += ", vahed2='' "
+                query += ", tblmosavabat.vahed2='' "
 
-            query += ", mosavabatcode=%s " % obj.code
-            query += ", TarikhBaznegari = '%s' " % obj.review_date
+            query += ", tblmosavabat.mosavabatcode=%s " % obj.code
+            query += ", tblmosavabat.review_date='%s' " % obj.review_date
 
         params = (obj.result, obj.row)
         query += '''
@@ -172,7 +172,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             obj = form.instance
             query = '''
                 UPDATE tblmosavabat
-                SET attachments = ?
+                SET tblmosavabat.[attachments] = ?
                '''
 
             attachments = ' '.join(

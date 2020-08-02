@@ -1,6 +1,7 @@
 import locale, os
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.dispatch import receiver
 from EIRIB_FollowUpProject.utils import to_jalali
 from django.contrib.auth.models import AbstractUser
@@ -8,6 +9,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext_lazy as _
 
 locale.setlocale(locale.LC_ALL, '')
+
+
+def set_now():
+    return timezone.now()
 
 
 class AccessLevel(models.TextChoices):
@@ -133,7 +138,7 @@ class Enactment(models.Model):
                                     null=True, related_name='first_actor')
     second_actor = models.ForeignKey(Actor, verbose_name=_('Second Actor'), on_delete=models.SET_NULL, blank=True,
                                      null=True, related_name='second_actor')
-    date = models.CharField(verbose_name=_('Assignment Date'), max_length=20, blank=True, null=True)
+    date = models.DateField(verbose_name=_('Assignment Date'), blank=False, default=set_now)
     follow_grade = models.CharField(verbose_name=_('Follow Grade'), max_length=100, blank=True, null=True)
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
@@ -142,12 +147,12 @@ class Enactment(models.Model):
                                          blank=True, null=True, related_name='first_supervisor')
     second_supervisor = models.ForeignKey(Supervisor, verbose_name=_('Second Supervisor'), on_delete=models.SET_NULL,
                                           blank=True, null=True, related_name='second_supervisor')
-    review_date = models.CharField(verbose_name=_('Review Date'), max_length=20, null=True, blank=True)
+    review_date = models.DateField(verbose_name=_('Review Date'), blank=False, default=set_now)
 
     class Meta:
         verbose_name = _('Enactment')
         verbose_name_plural = _('Enactments')
-        ordering = ['review_date', 'row']
+        ordering = ['-review_date', 'row']
 
     def __str__(self):
         return '%s: %s' % (self.session, self.row)
@@ -164,6 +169,16 @@ class Enactment(models.Model):
         return '%s...' % self.result[:50] if self.result else ''
 
     result_short.short_description = _('Result')
+
+    def date_jalali(self):
+        return to_jalali(self.date, True)
+
+    date_jalali.short_description = _('Assignment Date')
+
+    def review_date_jalali(self):
+        return to_jalali(self.review_date, True)
+
+    review_date_jalali.short_description = _('Review Date')
 
 
 class Attachment(models.Model):

@@ -27,7 +27,7 @@ msgid = _(
 )
 
 tries = 0
-max_try = 1
+max_try = 50
 max_data = 6
 data_loaded = pow(2, max_data) - 1
 
@@ -67,7 +67,7 @@ def get_enactments():
             'second_supervisor': Supervisor.objects.get(
                 name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed2 in [None, ''] else r.vahed2),
             'review_date': r.review_date}) for r in result])
-    except:
+    except Exception as e:
         tries = -1
         return
     finally:
