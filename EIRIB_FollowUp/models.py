@@ -155,6 +155,16 @@ class Enactment(models.Model):
     def __unicode__(self):
         return '%s: %s' % (self.session, self.row)
 
+    def description_short(self):
+        return '%s...' % self.description[:75] if self.description else ''
+
+    description_short.short_description = _('Description')
+
+    def result_short(self):
+        return '%s...' % self.result[:75] if self.result else ''
+
+    result_short.short_description = _('Result')
+
 
 class Attachment(models.Model):
     def directory_path(instance, filename):
