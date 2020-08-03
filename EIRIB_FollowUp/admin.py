@@ -79,8 +79,10 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
             'fields': (('is_staff', 'is_superuser'), 'groups', 'user_permissions'), }),
         (_('Sensitive Info'), {'fields': ('password',)}),
     )
+    list_display = ['username', 'first_name', 'last_name', 'access_level', 'moavenat', 'last_login_jalali']
+    list_display_links = ['username', 'first_name', 'last_name', 'access_level', 'moavenat', 'last_login_jalali']
     list_filter = ('moavenat', 'access_level', 'is_active', 'is_superuser', 'groups', 'query_name')
-    readonly_fields = ['last_login_jalali', 'date_joined_jalali']
+    readonly_fields = ['query', 'last_login_jalali', 'date_joined_jalali']
 
     @atomic
     def save_model(self, request, obj, form, change):
@@ -99,6 +101,12 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
                   1 if obj.access_level == AccessLevel.USER else 4, str(obj.title()), obj.user_id)
         execute_query(query, params, True)
         super(UserAdmin, self).save_model(request, obj, form, change)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)
+        if request.user.is_secretary:
+            self.readonly_fields += ['is_staff', 'is_superuser', 'groups', 'user_permissions']
+        return form
 
 
 @admin.register(Enactment)
