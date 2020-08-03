@@ -13,13 +13,6 @@ def to_jalali(date, no_time=False):
         return datetime2jalali(date).strftime('%H:%M:%S %Y/%m/%d')
 
 
-def to_jalali(date, no_time=False):
-    if no_time:
-        return datetime2jalali(date).strftime('%Y/%m/%d')
-    else:
-        return datetime2jalali(date).strftime('%H:%M:%S %Y/%m/%d')
-
-
 def mdb_connect(db_file, user='admin', password='', old_driver=False):
     driver_ver = '*.mdb'
     if not old_driver:

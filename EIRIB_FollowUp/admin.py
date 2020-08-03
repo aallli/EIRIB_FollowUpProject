@@ -1,11 +1,44 @@
+import datetime
 from django.contrib import admin
+from django.utils import timezone
+from jalali_date import datetime2jalali
 from django.db.transaction import atomic
+from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
-from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
+from EIRIB_FollowUpProject.utils import execute_query, to_jalali
 from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor, \
     Attachment
+
+
+class JalaliDateFilter(SimpleListFilter):
+    title = _('Review Date')
+    parameter_name = 'review_date'
+
+    def lookups(self, request, model_admin):
+        return [('today', _('Today')), ('this_week', _('This week')), ('10days', _('Last 10 days')),
+                ('this_month', _('This month')), ('30days', _('Last 30 days'))]
+
+    def queryset(self, request, queryset):
+        startdate = timezone.now()
+        enddate = None
+        if self.value() == 'today':
+            enddate = startdate
+
+        if self.value() == 'this_week':
+            enddate = startdate - datetime.timedelta(days=(startdate.weekday() + 2) % 7)
+
+        if self.value() == '10days':
+            enddate = startdate - datetime.timedelta(days=9)
+
+        if self.value() == 'this_month':
+            enddate = startdate - datetime.timedelta(days=datetime2jalali(startdate).day - 1)
+
+        if self.value() == '30days':
+            enddate = startdate - datetime.timedelta(days=29)
+
+        return queryset.filter(review_date__range=[enddate, startdate]) if enddate else queryset
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -118,16 +151,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'second_actor', 'follow_grade'),
               ('first_supervisor', 'second_supervisor', 'code'),
               )
-    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+    list_display = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                     'result_short']
-    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+    list_display_links = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                           'result_short']
-    list_filter = ['review_date', 'follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
+    list_filter = [JalaliDateFilter, 'follow_grade', 'session', 'subject', 'assigner', 'first_actor',
+                   'first_supervisor']
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
-    readonly_fields = ['description_short', 'result_short', 'date_jalali', 'review_date_jalali', ]
+    readonly_fields = ['description_short', 'result_short', 'review_date_jalali', ]
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.is_secretary:
