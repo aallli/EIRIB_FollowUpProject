@@ -104,7 +104,7 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)
-        if request.user.is_secretary:
+        if request.user.is_secretary and not request.user.is_superuser:
             self.readonly_fields += ['is_staff', 'is_superuser', 'groups', 'user_permissions']
         return form
 
