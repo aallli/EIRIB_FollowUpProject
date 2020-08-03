@@ -103,13 +103,14 @@ class Supervisor(models.Model):
 
 
 class User(AbstractUser):
+    user_id = models.IntegerField(verbose_name=_('User ID'), blank=True, null=True)
     moavenat = models.CharField(verbose_name=_('Moavenat'), max_length=200, blank=True, null=True)
     access_level = models.CharField(verbose_name=_('Access Level'), choices=AccessLevel.choices,
                                     default=AccessLevel.USER, max_length=20, null=False)
     _title = models.CharField(verbose_name=_('Title'), choices=Title.choices,
                               default=Title.MR, max_length=100, null=False)
-    query_name = models.CharField(verbose_name=_('Query Name'), max_length=200, blank=False, unique=True)
-    query = ArrayField(models.IntegerField(verbose_name=_('Code'), default=[], blank=False), size=100000, )
+    query_name = models.CharField(verbose_name=_('Query Name'), max_length=200, blank=False)
+    query = ArrayField(models.IntegerField(verbose_name=_('Code'), default=0, blank=False), size=100000, )
 
     def last_login_jalali(self):
         return to_jalali(self.last_login)

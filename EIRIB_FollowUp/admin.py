@@ -82,6 +82,24 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
     list_filter = ('moavenat', 'access_level', 'is_active', 'is_superuser', 'groups', 'query_name')
     readonly_fields = ['last_login_jalali', 'date_joined_jalali']
 
+    @atomic
+    def save_model(self, request, obj, form, change):
+        query = '''
+                UPDATE tblUser
+                SET tblUser.FName = ?
+                , tblUser.LName = ?
+                , tblUser.Moavenat = ?
+                , tblUser.openningformP = ?
+                , tblUser.AccessLevelID = ?
+                , tblUser.envan = ?
+                WHERE UserID = ?
+               '''
+
+        params = (obj.first_name, obj.last_name, obj.moavenat, obj.query_name,
+                  1 if obj.access_level == AccessLevel.USER else 4, str(obj.title()), obj.user_id)
+        execute_query(query, params, True)
+        super(UserAdmin, self).save_model(request, obj, form, change)
+
 
 @admin.register(Enactment)
 class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
@@ -92,8 +110,10 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'second_actor', 'follow_grade'),
               ('first_supervisor', 'second_supervisor', 'code'),
               )
-    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short', 'result_short']
-    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short', 'result_short']
+    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+                    'result_short']
+    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+                          'result_short']
     list_filter = ['review_date', 'follow_grade', 'session', 'subject', 'assigner', 'first_actor', 'first_supervisor']
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',

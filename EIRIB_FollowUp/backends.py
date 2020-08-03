@@ -18,6 +18,8 @@ class EIRIBBackend(ModelBackend):
                 user_query = Timer(1, self.get_user_query(user))
                 user_query.start()
             return user
+        else:
+            user.delete()
 
     def get_user_by_username(self, user_name):
         try:
@@ -50,40 +52,15 @@ class EIRIBBackend(ModelBackend):
                 user.query_name = result.openningformP
                 user.access_level = access_level
                 user._title = title
-                user.save()
             else:
-                user = User.objects.create(username=user_name, first_name=result.FName, last_name=result.LName,
-                                           moavenat=result.Moavenat, query=[], query_name=result.openningformP,
-                                           access_level=access_level, _title=title, is_staff=True)
-                user.set_password(result.Password)
-                for p in Permission.objects.all():
-                    if p.name in [
-                        'Can view Session',
-                        'Can view Assigner',
-                        'Can view Subject',
-                        'Can view Actor',
-                        'Can view Supervisor',
-                        'Can view Task Assigner',
-                        'Can view Attachment',
-                        'Can add Attachment',
-                        'Can change Attachment',
-                        'Can delete Attachment',
-                        'Can view Enactment', 'Can change Enactment',
-                        # 'Can delete Enactment', 'Can add Enactment',
-                    ] and user.is_secretary:
-                        user.user_permissions.add(p)
+                user = User.objects.create(user_id=result.UserID, username=user_name, first_name=result.FName,
+                                           last_name=result.LName, moavenat=result.Moavenat,
+                                           query_name=result.openningformP, access_level=access_level, _title=title,
+                                           is_staff=True)
 
-                    if p.name in [
-                        'Can view Enactment',
-                        'Can change Enactment',
-                        'Can view Attachment',
-                        'Can add Attachment',
-                        'Can change Attachment',
-                        'Can delete Attachment',
-                    ]:
-                        user.user_permissions.add(p)
-
-                user.save()
+            self.set_permissions(user)
+            user.set_password(result.Password)
+            user.save()
         except User.DoesNotExist:
             raise User.DoesNotExist
 
@@ -94,6 +71,30 @@ class EIRIBBackend(ModelBackend):
         result = execute_query(command)
         user.query = [r.ID for r in result]
         user.save()
+
+    def set_permissions(self, user):
+        for p in Permission.objects.all():
+            if p.codename in [
+                'view_enactment',
+                'change_enactment',
+
+                'view_attachment',
+                'add_attachment',
+                'change_attachment',
+                'delete_attachment',
+            ]:
+                user.user_permissions.add(p)
+            elif p.codename in [
+                'view_session',
+                'view_assigner',
+                'view_subject',
+                'view_actor',
+                'view_supervisor',
+            ]:
+                if user.is_secretary:
+                    user.user_permissions.add(p)
+                else:
+                    user.user_permissions.remove(p)
 
 
 class ModelBackend(ModelBackend):

@@ -133,3 +133,7 @@
     margin-left: 280px;
     margin-right: 0;
 }
+
+:lang(fa) .admin-interface .paginator .this-page + a:not(.showall) {
+    margin-left: auto;
+}
