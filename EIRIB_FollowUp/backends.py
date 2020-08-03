@@ -63,6 +63,7 @@ class EIRIBBackend(ModelBackend):
                         'Can view Subject',
                         'Can view Actor',
                         'Can view Supervisor',
+                        'Can view Task Assigner',
                         'Can view Attachment',
                         'Can add Attachment',
                         'Can change Attachment',
