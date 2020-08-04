@@ -90,6 +90,10 @@ class EIRIBBackend(ModelBackend):
                 'view_subject',
                 'view_actor',
                 'view_supervisor',
+                'add_user',
+                'change_user',
+                'delete_user',
+                'view_user',
             ]:
                 if user.is_secretary:
                     user.user_permissions.add(p)

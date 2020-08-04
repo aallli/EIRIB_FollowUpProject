@@ -5,9 +5,9 @@ from jalali_date import datetime2jalali
 from django.db.transaction import atomic
 from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
+from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
-from EIRIB_FollowUpProject.utils import execute_query, to_jalali
 from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor, \
     Attachment
 
@@ -119,21 +119,39 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
 
     @atomic
     def save_model(self, request, obj, form, change):
-        query = '''
-                UPDATE tblUser
-                SET tblUser.FName = ?
-                , tblUser.LName = ?
-                , tblUser.Moavenat = ?
-                , tblUser.openningformP = ?
-                , tblUser.AccessLevelID = ?
-                , tblUser.envan = ?
-                WHERE UserID = ?
-               '''
+        if obj.pk:
+            query = '''
+                    UPDATE tblUser
+                    SET tblUser.FName = ?
+                    , tblUser.LName = ?
+                    , tblUser.Moavenat = ?
+                    , tblUser.openningformP = ?
+                    , tblUser.AccessLevelID = ?
+                    , tblUser.envan = ?
+                    WHERE UserID = ?
+                   '''
+            params = (obj.first_name, obj.last_name, obj.moavenat, obj.query_name,
+                      1 if obj.access_level == AccessLevel.USER else 4, str(obj.title()), obj.user_id)
+        else:
+            query = '''
+                    INSERT INTO tblUser (LName, Password, openningformP, P)
+                    VALUES(?, ?, ?, ?)
+                    '''
+            obj.last_name = obj.username
+            obj.query_name = obj.username
+            params = (obj.last_name, obj._password, obj.query_name, 'p')
 
-        params = (obj.first_name, obj.last_name, obj.moavenat, obj.query_name,
-                  1 if obj.access_level == AccessLevel.USER else 4, str(obj.title()), obj.user_id)
-        execute_query(query, params, True)
+        obj.user_id = execute_query(query, params, insert=True)
         super(UserAdmin, self).save_model(request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        query = '''
+                DELETE FROM tblUser
+                WHERE tblUser.UserID = ?
+                '''
+        params = (obj.user_id)
+        execute_query(query, params, True)
+        super(UserAdmin, self).delete_model(request, obj)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)

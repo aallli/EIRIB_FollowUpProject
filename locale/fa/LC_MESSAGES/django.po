@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-03 14:49+0430\n"
+"POT-Creation-Date: 2020-08-04 12:26+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,52 +36,56 @@ msgstr "فارسی"
 msgid "Welcome to EIRIB administration system"
 msgstr "خوش آمدید..."
 
-#: .\EIRIB_FollowUpProject\utils.py:47
+#: .\EIRIB_FollowUpProject\utils.py:40
+msgid "Update failed."
+msgstr "به روز رسانی ناموفق!"
+
+#: .\EIRIB_FollowUpProject\utils.py:40
 msgid "Successful update."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:15 .\EIRIB_FollowUp\models.py:151
+#: .\EIRIB_FollowUp\admin.py:16 .\EIRIB_FollowUp\models.py:151
 #: .\EIRIB_FollowUp\models.py:182
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\admin.py:19
+#: .\EIRIB_FollowUp\admin.py:20
 msgid "Today"
 msgstr "امروز"
 
-#: .\EIRIB_FollowUp\admin.py:19
+#: .\EIRIB_FollowUp\admin.py:20
 msgid "This week"
 msgstr "هفته جاری"
 
-#: .\EIRIB_FollowUp\admin.py:19
+#: .\EIRIB_FollowUp\admin.py:20
 msgid "Last 10 days"
 msgstr "ده روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:20
+#: .\EIRIB_FollowUp\admin.py:21
 msgid "This month"
 msgstr "ماه جاری"
 
-#: .\EIRIB_FollowUp\admin.py:20
+#: .\EIRIB_FollowUp\admin.py:21
 msgid "Last 30 days"
 msgstr "30 روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:97
+#: .\EIRIB_FollowUp\admin.py:104
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:100
+#: .\EIRIB_FollowUp\admin.py:107
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:102
+#: .\EIRIB_FollowUp\admin.py:109
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:104
+#: .\EIRIB_FollowUp\admin.py:111
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:106
+#: .\EIRIB_FollowUp\admin.py:113
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 

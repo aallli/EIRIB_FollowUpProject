@@ -1,16 +1,16 @@
 import pyodbc
-
 from jalali_date import datetime2jalali
-
 from EIRIB_FollowUpProject import settings
 from django.utils.translation import ugettext_lazy as _
 
 
 def to_jalali(date, no_time=False):
-    if no_time:
-        return datetime2jalali(date).strftime('%Y/%m/%d')
-    else:
-        return datetime2jalali(date).strftime('%H:%M:%S %Y/%m/%d')
+    if date:
+        if no_time:
+            return datetime2jalali(date).strftime('%Y/%m/%d')
+        else:
+            return datetime2jalali(date).strftime('%H:%M:%S %Y/%m/%d')
+    return ''
 
 
 def mdb_connect(db_file, user='admin', password='', old_driver=False):
@@ -28,7 +28,7 @@ def mdb_connect(db_file, user='admin', password='', old_driver=False):
 conn = mdb_connect(settings.DATABASES['access']['NAME'])
 
 
-def execute_query(query, params=None, update=None):
+def execute_query(query, params=None, update=None, insert=None):
     cur = conn.cursor()
     if params:
         cur.execute(query, params)
@@ -37,7 +37,11 @@ def execute_query(query, params=None, update=None):
 
     if update:
         conn.commit()
-        result = _("Successful update.")
+        result = _("Update failed.") if cur.rowcount == -1 else _("Successful update.")
+    elif insert:
+        conn.commit()
+        cur.execute('SELECT @@IDENTITY;')
+        result = cur.fetchone()[0]
     else:
         result = cur.fetchall()
 
