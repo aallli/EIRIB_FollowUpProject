@@ -41,6 +41,30 @@ class JalaliDateFilter(SimpleListFilter):
         return queryset.filter(review_date__range=[enddate, startdate]) if enddate else queryset
 
 
+class ActorFilter(SimpleListFilter):
+    title = _('Supervisor')
+    parameter_name = 'actor'
+
+    def lookups(self, request, model_admin):
+        return [(actor.pk, actor) for actor in Actor.objects.all()]
+
+    def queryset(self, request, queryset):
+        return queryset.filter(first_actor__pk=self.value()) | queryset.filter(
+            second_actor__pk=self.value()) if self.value() else queryset
+
+
+class SupervisorFilter(SimpleListFilter):
+    title = _('Supervisor Unit')
+    parameter_name = 'supervisor'
+
+    def lookups(self, request, model_admin):
+        return [(supervisor.pk, supervisor.name) for supervisor in Supervisor.objects.all()]
+
+    def queryset(self, request, queryset):
+        return queryset.filter(first_supervisor__pk=self.value()) | queryset.filter(
+            second_supervisor__pk=self.value()) if self.value() else queryset
+
+
 class BaseModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
@@ -175,8 +199,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                     'result_short']
     list_display_links = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                           'result_short']
-    list_filter = [JalaliDateFilter, 'follow_grade', 'session', 'subject', 'assigner', 'first_actor',
-                   'first_supervisor']
+    list_filter = [JalaliDateFilter, 'follow_grade', 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
@@ -234,7 +257,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                     WHERE ID = ?
                    '''
             params.append(obj.row)
-            execute_query(query, params,update=True)
+            execute_query(query, params, update=True)
         else:
             query = '''
                     INSERT INTO tblmosavabat (sharh, peygiri1, peygiri2, tarikh, lozoomepeygiri, natije, jalaseh,
