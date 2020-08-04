@@ -5,9 +5,9 @@ from jalali_date import datetime2jalali
 from django.db.transaction import atomic
 from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
-from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
+from EIRIB_FollowUpProject.utils import execute_query, to_jalali
 from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigner, Subject, Actor, Supervisor, \
     Attachment
 
@@ -117,6 +117,12 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
     list_filter = ('moavenat', 'access_level', 'is_active', 'is_superuser', 'groups', 'query_name')
     readonly_fields = ['query', 'last_login_jalali', 'date_joined_jalali']
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)
+        if request.user.is_secretary and not request.user.is_superuser:
+            self.readonly_fields += ['is_staff', 'is_superuser', 'groups', 'user_permissions']
+        return form
+
     @atomic
     def save_model(self, request, obj, form, change):
         if obj.pk:
@@ -132,6 +138,7 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
                    '''
             params = (obj.first_name, obj.last_name, obj.moavenat, obj.query_name,
                       1 if obj.access_level == AccessLevel.USER else 4, str(obj.title()), obj.user_id)
+            execute_query(query, params, update=True)
         else:
             query = '''
                     INSERT INTO tblUser (LName, Password, openningformP, P)
@@ -140,24 +147,19 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
             obj.last_name = obj.username
             obj.query_name = obj.username
             params = (obj.last_name, obj._password, obj.query_name, 'p')
+            obj.user_id = execute_query(query, params, insert=True)
 
-        obj.user_id = execute_query(query, params, insert=True)
         super(UserAdmin, self).save_model(request, obj, form, change)
 
+    @atomic
     def delete_model(self, request, obj):
         query = '''
                 DELETE FROM tblUser
                 WHERE tblUser.UserID = ?
                 '''
         params = (obj.user_id)
-        execute_query(query, params, True)
+        execute_query(query, params, delete=True)
         super(UserAdmin, self).delete_model(request, obj)
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)
-        if request.user.is_secretary and not request.user.is_superuser:
-            self.readonly_fields += ['is_staff', 'is_superuser', 'groups', 'user_permissions']
-        return form
 
 
 @admin.register(Enactment)
@@ -201,49 +203,72 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
     @atomic
     def save_model(self, request, obj, form, change):
-        query = '''
-                UPDATE tblmosavabat
-                SET tblmosavabat.natije = ?
-               '''
+        if obj.pk:
+            query = '''
+                    UPDATE tblmosavabat
+                    SET tblmosavabat.natije = ?
+                   '''
+            params = [obj.result]
 
-        if request.user.is_superuser or request.user.is_secretary:
-            query += ", tblmosavabat.sharh='%s' " % obj.description
+            if request.user.is_superuser or request.user.is_secretary:
+                query += ", tblmosavabat.sharh=?, tblmosavabat.peygiri1=?, tblmosavabat.peygiri2=?" \
+                         ", tblmosavabat.tarikh=?, tblmosavabat.lozoomepeygiri=?, tblmosavabat.jalaseh=?" \
+                         ", tblmosavabat.muzoo=?, tblmosavabat.gooyandeh=?, tblmosavabat.vahed=?, tblmosavabat.vahed2=?" \
+                         ", tblmosavabat.mosavabatcode=?, tblmosavabat.TarikhBaznegari=?, tblmosavabat.[date]=?" \
+                         ", tblmosavabat.review_date=?"
+                params.extend((obj.description,
+                               obj.first_actor.lname if obj.first_actor else '-',
+                               obj.second_actor.lname if obj.second_actor else '-',
+                               int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
+                               obj.follow_grade if obj.follow_grade else 0,
+                               obj.session.name,
+                               obj.subject.name,
+                               obj.assigner.name,
+                               obj.first_supervisor.name if obj.first_supervisor else '-',
+                               obj.second_supervisor.name if obj.second_supervisor else '-',
+                               obj.code,
+                               to_jalali(obj.review_date, True),
+                               obj.date,
+                               obj.review_date))
+            query += '''
+                    WHERE ID = ?
+                   '''
+            params.append(obj.row)
+            execute_query(query, params,update=True)
+        else:
+            query = '''
+                    INSERT INTO tblmosavabat (sharh, peygiri1, peygiri2, tarikh, lozoomepeygiri, natije, jalaseh,
+                    muzoo, gooyandeh, vahed, vahed2, mosavabatcode, TarikhBaznegari, [date], review_date)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    '''
+            params = (obj.description,
+                      obj.first_actor.lname if obj.first_actor else '-',
+                      obj.second_actor.lname if obj.second_actor else '-',
+                      int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
+                      obj.follow_grade if obj.follow_grade else 0,
+                      obj.result,
+                      obj.session.name,
+                      obj.subject.name,
+                      obj.assigner.name,
+                      obj.first_supervisor.name if obj.first_supervisor else '-',
+                      obj.second_supervisor.name if obj.second_supervisor else '-',
+                      obj.code,
+                      to_jalali(obj.review_date, True),
+                      obj.date,
+                      obj.review_date)
+            obj.row = execute_query(query, params, insert=True)
 
-            if obj.first_actor:
-                query += ", tblmosavabat.peygiri1='%s' " % obj.first_actor.lname
-            else:
-                query += ", tblmosavabat.peygiri1='' "
-
-            if obj.second_actor:
-                query += ", tblmosavabat.peygiri2='%s' " % obj.second_actor.lname
-            else:
-                query += ", tblmosavabat.peygiri2='' "
-
-            query += ", tblmosavabat.[date]='%s' " % obj.date
-            query += ", tblmosavabat.lozoomepeygiri='%s' " % obj.follow_grade
-            query += ", tblmosavabat.jalaseh='%s' " % obj.session.name
-            query += ", tblmosavabat.muzoo='%s' " % obj.subject.name
-            query += ", tblmosavabat.gooyandeh='%s' " % obj.assigner.name
-
-            if obj.first_supervisor:
-                query += ", tblmosavabat.vahed='%s' " % obj.first_supervisor.name
-            else:
-                query += ", tblmosavabat.vahed='' "
-
-            if obj.second_supervisor:
-                query += ", tblmosavabat.vahed2='%s' " % obj.second_supervisor.name
-            else:
-                query += ", tblmosavabat.vahed2='' "
-
-            query += ", tblmosavabat.mosavabatcode=%s " % obj.code
-            query += ", tblmosavabat.review_date='%s' " % obj.review_date
-
-        params = (obj.result, obj.row)
-        query += '''
-                WHERE ID = ?
-               '''
-        execute_query(query, params, True)
         super(EnactmentAdmin, self).save_model(request, obj, form, change)
+
+    @atomic
+    def delete_model(self, request, obj):
+        query = '''
+                DELETE FROM tblmosavabat
+                WHERE tblmosavabat.ID = ?
+                '''
+        params = (obj.row)
+        execute_query(query, params, delete=True)
+        super(EnactmentAdmin, self).delete_model(request, obj)
 
     @atomic
     def save_formset(self, request, form, formset, change):
@@ -262,4 +287,4 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             query += '''
                     WHERE ID = ?
                    '''
-            execute_query(query, params, True)
+            execute_query(query, params, update=True)

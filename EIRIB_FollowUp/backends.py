@@ -75,8 +75,10 @@ class EIRIBBackend(ModelBackend):
     def set_permissions(self, user):
         for p in Permission.objects.all():
             if p.codename in [
-                'view_enactment',
+                'add_enactment',
                 'change_enactment',
+                'delete_enactment',
+                'view_enactment',
 
                 'view_attachment',
                 'add_attachment',

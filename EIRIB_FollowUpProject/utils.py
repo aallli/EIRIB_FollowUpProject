@@ -28,7 +28,7 @@ def mdb_connect(db_file, user='admin', password='', old_driver=False):
 conn = mdb_connect(settings.DATABASES['access']['NAME'])
 
 
-def execute_query(query, params=None, update=None, insert=None):
+def execute_query(query, params=None, update=None, insert=None, delete=None):
     cur = conn.cursor()
     if params:
         cur.execute(query, params)
@@ -42,6 +42,9 @@ def execute_query(query, params=None, update=None, insert=None):
         conn.commit()
         cur.execute('SELECT @@IDENTITY;')
         result = cur.fetchone()[0]
+    elif delete:
+        conn.commit()
+        result = _("Delete failed.") if cur.rowcount == -1 else _("Successful delete.")
     else:
         result = cur.fetchall()
 
