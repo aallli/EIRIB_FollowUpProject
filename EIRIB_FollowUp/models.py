@@ -175,11 +175,13 @@ class Enactment(models.Model):
         return to_jalali(self.date, True)
 
     date_jalali.short_description = _('Assignment Date')
+    date_jalali.admin_order_field  = 'date'
 
     def review_date_jalali(self):
         return to_jalali(self.review_date, True)
 
     review_date_jalali.short_description = _('Review Date')
+    review_date_jalali.admin_order_field  = 'review_date'
 
 
 class Attachment(models.Model):
