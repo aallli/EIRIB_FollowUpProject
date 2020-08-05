@@ -4,6 +4,14 @@ from EIRIB_FollowUpProject import settings
 from django.utils.translation import ugettext_lazy as _
 
 
+def get_admin_url(self):
+    """the url to the Django admin interface for the model instance"""
+    from django.urls import reverse
+
+    info = (self._meta.app_label, self._meta.model_name)
+    return reverse('admin:%s_%s_change' % info, args=(self.pk,))
+
+
 def to_jalali(date, no_time=False):
     if date:
         if no_time:

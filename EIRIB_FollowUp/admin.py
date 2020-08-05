@@ -4,8 +4,10 @@ from django.utils import timezone
 from .forms import EnactmentAdminForm
 from jalali_date import datetime2jalali
 from django.db.transaction import atomic
+from django.http import HttpResponseRedirect
 from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
+from EIRIB_FollowUpProject.utils import get_admin_url
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 from EIRIB_FollowUpProject.utils import execute_query, to_jalali
@@ -316,3 +318,38 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                     WHERE ID = ?
                    '''
             execute_query(query, params, update=True)
+
+    def get_urls(self):
+        urls = super(EnactmentAdmin, self).get_urls()
+        from django.urls import path
+        urls.append(path('<int:pk>/first$', self.first, name="first"))
+        urls.append(path('<int:pk>/previous$', self.previous, name="previous"))
+        urls.append(path('<int:pk>/next$', self.next, name="next"))
+        urls.append(path('<int:pk>/last$', self.last, name="last"))
+        return urls
+
+    def first(self, request, pk=None):
+        queryset = self.get_queryset(request)
+        return HttpResponseRedirect(get_admin_url(queryset.first()))
+
+    def previous(self, request, pk=None):
+        queryset = self.get_queryset(request)
+        index = list(queryset.values_list('pk', flat=True)).index(pk)
+        if index == 0:
+            obj = queryset[index]
+        else:
+            obj = queryset[index - 1]
+        return HttpResponseRedirect(get_admin_url(obj))
+
+    def next(self, request, pk=None):
+        queryset = self.get_queryset(request)
+        index = list(queryset.values_list('pk', flat=True)).index(pk)
+        if index == queryset.count() - 1:
+            obj = queryset[index]
+        else:
+            obj = queryset[index + 1]
+        return HttpResponseRedirect(get_admin_url(obj))
+
+    def last(self, request, pk=None):
+        queryset = self.get_queryset(request)
+        return HttpResponseRedirect(get_admin_url(queryset.last()))

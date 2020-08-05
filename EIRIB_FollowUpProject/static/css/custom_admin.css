@@ -137,3 +137,18 @@
 :lang(fa) .admin-interface .paginator .this-page + a:not(.showall) {
     margin-left: auto;
 }
+
+.record-nav img {
+    width: 28px;
+    border: solid #4c70a6 2px;
+    padding: 3px;
+}
+
+.center {
+    margin: -32px auto auto;
+    width: fit-content;
+}
+
+:lang(fa) .center {
+    margin-top: auto;
+}
