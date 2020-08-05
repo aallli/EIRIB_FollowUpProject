@@ -1,6 +1,7 @@
 import datetime
 from django.contrib import admin
 from django.utils import timezone
+from .forms import EnactmentAdminForm
 from jalali_date import datetime2jalali
 from django.db.transaction import atomic
 from django.contrib.admin import SimpleListFilter
@@ -205,6 +206,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
     readonly_fields = ['description_short', 'result_short', 'review_date_jalali']
+    form = EnactmentAdminForm
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.is_secretary:
@@ -216,13 +218,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
         if not (request.user.is_superuser or request.user.is_secretary):
             self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
-                                    'description',
-                                    'first_actor', 'second_actor', 'follow_grade', 'first_supervisor',
+                                    'description', 'first_actor', 'second_actor', 'follow_grade',
+                                    'first_supervisor',
                                     'second_supervisor']
+        elif obj:
+            self.readonly_fields = ['row', 'date', 'review_date']
         else:
             self.readonly_fields = ['row']
-            if obj and obj.pk:
-                self.readonly_fields.extend(('date', 'review_date'))
+
         return form
 
     @atomic
