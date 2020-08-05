@@ -204,7 +204,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
-    readonly_fields = ['description_short', 'result_short', 'review_date_jalali', ]
+    readonly_fields = ['description_short', 'result_short', 'review_date_jalali']
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.is_secretary:
@@ -221,12 +221,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                                     'second_supervisor']
         else:
             self.readonly_fields = ['row']
-
+            if obj and obj.pk:
+                self.readonly_fields.extend(('date', 'review_date'))
         return form
 
     @atomic
     def save_model(self, request, obj, form, change):
         if obj.pk:
+            obj.review_date = timezone.now()
             query = '''
                     UPDATE tblmosavabat
                     SET tblmosavabat.natije = ?
