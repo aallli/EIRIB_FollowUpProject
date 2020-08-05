@@ -6,36 +6,36 @@
     <div class="center">
         {% if  opts.model_name == 'enactment' %}
             {% if LANGUAGE_CODE == 'fa' %}
-                <a href="{% url 'admin:first' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:first' %}" class="record-nav">
                     <img src="{% static 'img/button-last.png' %}" title="{% trans '<< First' %}"
                          alt="{% trans '<< First' %}">
                 </a>
-                <a href="{% url 'admin:previous' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:previous' %}?pk={{ original.pk }}" class="record-nav">
                     <img src="{% static 'img/button-next.png' %}" title="{% trans '< Previous' %}"
                          alt="{% trans '< Previous' %}">
                 </a>
-                <a href="{% url 'admin:next' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:next' %}?pk={{ original.pk }}" class="record-nav">
                     <img src="{% static 'img/button-previous.png' %}" title="{% trans 'Next >' %}"
                          alt="{% trans 'Next >' %}">
                 </a>
-                <a href="{% url 'admin:last' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:last' %}" class="record-nav">
                     <img src="{% static 'img/button-first.png' %}" title="{% trans 'Last >>' %}"
                          alt="{% trans 'Last >>' %}">
                 </a>
             {% else %}
-                <a href="{% url 'admin:first' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:first' %}" class="record-nav">
                     <img src="{% static 'img/button-first.png' %}" title="{% trans '<< First' %}"
                          alt="{% trans '<< First' %}">
                 </a>
-                <a href="{% url 'admin:previous' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:previous' %}?pk={{ original.pk }}" class="record-nav">
                     <img src="{% static 'img/button-previous.png' %}" title="{% trans '< Previous' %}"
                          alt="{% trans '< Previous' %}">
                 </a>
-                <a href="{% url 'admin:next' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:next' %}?pk={{ original.pk }}" class="record-nav">
                     <img src="{% static 'img/button-next.png' %}" title="{% trans 'Next >' %}"
                          alt="{% trans 'Next >' %}">
                 </a>
-                <a href="{% url 'admin:last' original.pk %}" class="record-nav">
+                <a href="{% url 'admin:last' %}" class="record-nav">
                     <img src="{% static 'img/button-last.png' %}" title="{% trans 'Last >>' %}"
                          alt="{% trans 'Last >>' %}">
                 </a>

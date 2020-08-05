@@ -322,17 +322,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def get_urls(self):
         urls = super(EnactmentAdmin, self).get_urls()
         from django.urls import path
-        urls.append(path('<int:pk>/first$', self.first, name="first"))
-        urls.append(path('<int:pk>/previous$', self.previous, name="previous"))
-        urls.append(path('<int:pk>/next$', self.next, name="next"))
-        urls.append(path('<int:pk>/last$', self.last, name="last"))
-        return urls
+        return [path('first/', self.first, name="first"),
+                path('previous/', self.previous, name="previous"),
+                path('next/', self.next, name="next"),
+                path('last/', self.last, name="last")] + urls
 
-    def first(self, request, pk=None):
+    def first(self, request):
         queryset = self.get_queryset(request)
         return HttpResponseRedirect(get_admin_url(queryset.first()))
 
-    def previous(self, request, pk=None):
+    def previous(self, request):
+        pk = int(request.GET['pk'])
         queryset = self.get_queryset(request)
         index = list(queryset.values_list('pk', flat=True)).index(pk)
         if index == 0:
@@ -341,7 +341,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             obj = queryset[index - 1]
         return HttpResponseRedirect(get_admin_url(obj))
 
-    def next(self, request, pk=None):
+    def next(self, request):
+        pk = int(request.GET['pk'])
         queryset = self.get_queryset(request)
         index = list(queryset.values_list('pk', flat=True)).index(pk)
         if index == queryset.count() - 1:
@@ -350,6 +351,6 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             obj = queryset[index + 1]
         return HttpResponseRedirect(get_admin_url(obj))
 
-    def last(self, request, pk=None):
+    def last(self, request):
         queryset = self.get_queryset(request)
         return HttpResponseRedirect(get_admin_url(queryset.last()))
