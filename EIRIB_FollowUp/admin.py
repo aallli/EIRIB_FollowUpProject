@@ -94,9 +94,9 @@ class SubjectAdmin(BaseModelAdmin):
 @admin.register(Actor)
 class ActortAdmin(BaseModelAdmin):
     model = Actor
-    list_display = ['fname', 'lname']
-    list_display_links = ['fname', 'lname']
-    search_fields = ['fname', 'lname', ]
+    list_display = ['fname', 'lname', 'supervisor']
+    list_display_links = ['fname', 'lname', 'supervisor']
+    search_fields = ['fname', 'lname', 'supervisor']
 
 
 @admin.register(Supervisor)
@@ -194,10 +194,10 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
 class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     model = Enactment
     fields = (('row', 'session', 'date', 'review_date'),
-              ('assigner', 'subject'),
+              ('assigner', 'subject', 'code'),
               'description', 'result',
-              ('first_actor', 'second_actor'),
-              ('first_supervisor', 'second_supervisor', 'code'),
+              ('first_actor', 'first_supervisor'),
+              ('second_actor', 'second_supervisor'),
               )
     list_display = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                     'result_short']
@@ -208,7 +208,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
-    readonly_fields = ['description_short', 'result_short', 'review_date_jalali']
+    readonly_fields = ['description_short', 'result_short', 'review_date_jalali', 'first_supervisor', 'second_supervisor',]
     form = EnactmentAdminForm
 
     def get_queryset(self, request):
@@ -223,12 +223,11 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
         if not (request.user.is_superuser or request.user.is_secretary):
             self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
                                     'description', 'first_actor', 'second_actor', 'follow_grade',
-                                    'first_supervisor',
-                                    'second_supervisor']
+                                    'first_supervisor', 'second_supervisor']
         elif obj:
-            self.readonly_fields = ['row', 'date', 'review_date']
+            self.readonly_fields = ['row', 'date', 'review_date', 'first_supervisor', 'second_supervisor']
         else:
-            self.readonly_fields = ['row']
+            self.readonly_fields = ['row', 'first_supervisor', 'second_supervisor']
 
         return form
 
@@ -255,8 +254,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                                obj.session.name,
                                obj.subject.name,
                                obj.assigner.name,
-                               obj.first_supervisor.name if obj.first_supervisor else '-',
-                               obj.second_supervisor.name if obj.second_supervisor else '-',
+                               obj.first_actor.supervisor.name if obj.first_actor.supervisor else '-',
+                               obj.second_actor.supervisor.name if obj.second_actor.supervisor else '-',
                                obj.code,
                                to_jalali(obj.review_date, True),
                                obj.date,
@@ -281,8 +280,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                       obj.session.name,
                       obj.subject.name,
                       obj.assigner.name,
-                      obj.first_supervisor.name if obj.first_supervisor else '-',
-                      obj.second_supervisor.name if obj.second_supervisor else '-',
+                      obj.first_actor.supervisor.name if obj.first_actor.supervisor else '-',
+                      obj.second_actor.supervisor.name if obj.second_actor.supervisor else '-',
                       obj.code,
                       to_jalali(obj.review_date, True),
                       obj.date,

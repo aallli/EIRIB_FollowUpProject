@@ -73,6 +73,7 @@ class Subject(models.Model):
 class Actor(models.Model):
     fname = models.CharField(verbose_name=_('First Name'), max_length=2000, blank=True, null=True)
     lname = models.CharField(verbose_name=_('Last Name'), max_length=2000, blank=False)
+    supervisor = models.ForeignKey('Supervisor', verbose_name=_('Supervisor Unit'), on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = _('Supervisor')
@@ -144,10 +145,6 @@ class Enactment(models.Model):
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
     assigner = models.ForeignKey(Assigner, verbose_name=_('Task Assigner'), on_delete=models.SET_NULL, null=True)
-    first_supervisor = models.ForeignKey(Supervisor, verbose_name=_('First Supervisor'), on_delete=models.SET_NULL,
-                                         blank=True, null=True, related_name='first_supervisor')
-    second_supervisor = models.ForeignKey(Supervisor, verbose_name=_('Second Supervisor'), on_delete=models.SET_NULL,
-                                          blank=True, null=True, related_name='second_supervisor')
     review_date = models.DateField(verbose_name=_('Review Date'), blank=False, default=set_now)
 
     class Meta:
@@ -182,6 +179,18 @@ class Enactment(models.Model):
 
     review_date_jalali.short_description = _('Review Date')
     review_date_jalali.admin_order_field = 'review_date'
+
+    def first_supervisor(self):
+        return self.first_actor.supervisor
+
+    first_supervisor.short_description = _('First Supervisor')
+
+    def second_supervisor(self):
+        return self.second_actor.supervisor
+
+    second_supervisor.short_description = _('Second Supervisor')
+
+
 
 
 class Attachment(models.Model):

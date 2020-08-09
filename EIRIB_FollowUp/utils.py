@@ -1,8 +1,10 @@
 from threading import Timer
 from django.conf import settings
-from .models import Enactment, Session, Assigner, Subject, Actor, Supervisor
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from EIRIB_FollowUpProject.utils import execute_query
 from django.utils.translation import ugettext_lazy as _
+from .models import Enactment, Session, Assigner, Subject, Actor, Supervisor
 
 msgid = _('welcome')
 settings.WITHOUT_SESSION_TITLE = _('[Without session]')
@@ -55,19 +57,16 @@ def get_enactments():
             'subject': Subject.objects.get(name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo),
             'first_actor': Actor.objects.filter(lname=r.peygiri1).first(),
             'second_actor': Actor.objects.filter(lname=r.peygiri2).first(),
-            'date': r.date,
+            'date': r.date or timezone.now(),
             'follow_grade': r.lozoomepeygiri,
             'result': r.natije,
             'session': Session.objects.get(
                 name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh),
             'assigner': Assigner.objects.get(
                 name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh),
-            'first_supervisor': Supervisor.objects.get(
-                name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed in [None, ''] else r.vahed),
-            'second_supervisor': Supervisor.objects.get(
-                name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed2 in [None, ''] else r.vahed2),
-            'review_date': r.review_date}) for r in result])
+            'review_date': r.review_date or timezone.now()}) for r in result])
     except Exception as e:
+        print(e)
         tries = -1
         return
     finally:
@@ -84,7 +83,8 @@ def get_sessions():
                '''
         result = execute_query(query)
         for r in result:
-            Session.objects.get_or_create(name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh)
+            Session.objects.get_or_create(
+                name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, '', ' '] else r.jalaseh)
     finally:
         data_loaded ^= 1
 
@@ -100,7 +100,7 @@ def get_assigners():
         result = execute_query(query)
         for r in result:
             Assigner.objects.get_or_create(
-                name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh)
+                name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, '', ' '] else r.gooyandeh)
     finally:
         data_loaded ^= 2
 
@@ -117,7 +117,7 @@ def get_subjects():
         result = execute_query(query)
         for r in result:
             Subject.objects.get_or_create(
-                name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo)
+                name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, '', ' '] else r.muzoo)
     finally:
         data_loaded ^= 4
 
@@ -127,12 +127,17 @@ def get_actors():
     try:
         Actor.objects.all().delete()
         query = '''
-                SELECT tblUser.FName, tblUser.LName
+                SELECT tblUser.FName, tblUser.LName, tblUser.Moavenat
                 FROM tblUser
                '''
         result = execute_query(query)
         for r in result:
-            Actor.objects.get_or_create(fname=r.FName, lname=r.LName)
+            try:
+                supervisor = None
+                supervisor = get_object_or_404(Supervisor, name=r.Moavenat)
+            except:
+                pass
+            Actor.objects.get_or_create(fname=r.FName, lname=r.LName, supervisor=supervisor)
     finally:
         data_loaded ^= 8
 
@@ -142,20 +147,17 @@ def get_supervisors():
     try:
         Supervisor.objects.all().delete()
         query = '''
-                SELECT DISTINCT tblmosavabat.vahed AS vahed
-                FROM tblmosavabat;
-
-                UNION
-
-                SELECT DISTINCT tblmosavabat.vahed2 AS vahed
-                FROM tblmosavabat;
-                '''
+                SELECT tblUser.Moavenat
+                FROM tblUser
+               '''
         result = execute_query(query)
         for r in result:
             Supervisor.objects.get_or_create(
-                name=settings.WITHOUT_SUPERVISOR_TITLE if r.vahed in [None, ''] else r.vahed)
+                name=settings.WITHOUT_SUPERVISOR_TITLE if r.Moavenat in [None, '', ' '] else r.Moavenat)
     finally:
         data_loaded ^= 16
+        actors = Timer(1, get_actors)
+        actors.start()
 
 
 def update_data():
@@ -171,9 +173,6 @@ def update_data():
 
     subjects = Timer(1, get_subjects)
     subjects.start()
-
-    actors = Timer(1, get_actors)
-    actors.start()
 
     supervisors = Timer(1, get_supervisors)
     supervisors.start()
