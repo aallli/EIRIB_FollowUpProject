@@ -195,14 +195,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     fields = (('row', 'session', 'date', 'review_date'),
               ('assigner', 'subject'),
               'description', 'result',
-              ('first_actor', 'second_actor', 'follow_grade'),
+              ('first_actor', 'second_actor'),
               ('first_supervisor', 'second_supervisor', 'code'),
               )
     list_display = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                     'result_short']
     list_display_links = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
                           'result_short']
-    list_filter = [JalaliDateFilter, 'follow_grade', 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
+    list_filter = [JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
@@ -211,10 +211,11 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     form = EnactmentAdminForm
 
     def get_queryset(self, request):
+        queryset = Enactment.objects.filter(follow_grade=1)
         if request.user.is_superuser or request.user.is_secretary:
-            return Enactment.objects.all()
+            return queryset
 
-        return Enactment.objects.filter(row__in=request.user.query)
+        return queryset.filter(row__in=request.user.query)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
