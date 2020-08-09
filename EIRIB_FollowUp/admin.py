@@ -5,6 +5,7 @@ from .forms import EnactmentAdminForm
 from jalali_date import datetime2jalali
 from django.db.transaction import atomic
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
 from EIRIB_FollowUpProject.utils import get_admin_url
@@ -243,15 +244,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
             if request.user.is_superuser or request.user.is_secretary:
                 query += ", tblmosavabat.sharh=?, tblmosavabat.peygiri1=?, tblmosavabat.peygiri2=?" \
-                         ", tblmosavabat.tarikh=?, tblmosavabat.lozoomepeygiri=?, tblmosavabat.jalaseh=?" \
-                         ", tblmosavabat.muzoo=?, tblmosavabat.gooyandeh=?, tblmosavabat.vahed=?, tblmosavabat.vahed2=?" \
+                         ", tblmosavabat.tarikh=?, tblmosavabat.jalaseh=?, tblmosavabat.muzoo=?" \
+                         ", tblmosavabat.gooyandeh=?, tblmosavabat.vahed=?, tblmosavabat.vahed2=?" \
                          ", tblmosavabat.mosavabatcode=?, tblmosavabat.TarikhBaznegari=?, tblmosavabat.[date]=?" \
                          ", tblmosavabat.review_date=?"
                 params.extend((obj.description,
                                obj.first_actor.lname if obj.first_actor else '-',
                                obj.second_actor.lname if obj.second_actor else '-',
                                int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
-                               obj.follow_grade if obj.follow_grade else 0,
                                obj.session.name,
                                obj.subject.name,
                                obj.assigner.name,
@@ -276,7 +276,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                       obj.first_actor.lname if obj.first_actor else '-',
                       obj.second_actor.lname if obj.second_actor else '-',
                       int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
-                      obj.follow_grade if obj.follow_grade else 0,
+                      1,
                       obj.result,
                       obj.session.name,
                       obj.subject.name,
@@ -326,7 +326,9 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
         return [path('first/', self.first, name="first"),
                 path('previous/', self.previous, name="previous"),
                 path('next/', self.next, name="next"),
-                path('last/', self.last, name="last")] + urls
+                path('last/', self.last, name="last"),
+                path('close/', self.close, name="close"),
+                ] + urls
 
     def first(self, request):
         queryset = self.get_queryset(request)
@@ -355,3 +357,20 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def last(self, request):
         queryset = self.get_queryset(request)
         return HttpResponseRedirect(get_admin_url(queryset.last()))
+
+    @atomic
+    def close(self, request):
+        result = self.next(request)
+        pk = int(request.GET['pk'])
+        enactment = get_object_or_404(Enactment, pk=pk)
+        enactment.follow_grade = 0
+        enactment.save()
+
+        query = '''
+                UPDATE tblmosavabat
+                SET tblmosavabat.lozoomepeygiri = ?
+                WHERE ID = ?
+               '''
+        params = [enactment.follow_grade, enactment.row]
+        execute_query(query, params, update=True)
+        return result

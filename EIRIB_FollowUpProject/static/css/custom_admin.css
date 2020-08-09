@@ -152,3 +152,7 @@
 :lang(fa) .center {
     margin-top: auto;
 }
+
+.admin-interface .submit-row .close-enactment {
+    margin: 0 5px;
+}

@@ -3,8 +3,16 @@
 
 {% block submit-row %}
     {{ block.super }}
-    <div class="center">
-        {% if  opts.model_name == 'enactment' %}
+    {% if  opts.model_name == 'enactment' %}
+        {% if user.is_superuser or user.is_secretary %}
+            <div class="">
+                <p class="deletelink-box">
+                    <input type="button" value="{% trans 'Close enactment' %}" class="close-enactment"
+                           onclick='javascript: location.href="{% url 'admin:close' %}?pk={{ original.pk }}"'>
+                </p>
+            </div>
+        {% endif %}
+        <div class="center">
             {% if LANGUAGE_CODE == 'fa' %}
                 <a href="{% url 'admin:first' %}" class="record-nav">
                     <img src="{% static 'img/button-last.png' %}" title="{% trans '<< First' %}"
@@ -40,6 +48,6 @@
                          alt="{% trans 'Last >>' %}">
                 </a>
             {% endif %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}

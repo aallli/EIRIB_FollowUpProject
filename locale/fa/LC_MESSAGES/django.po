@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-05 16:27+0430\n"
+"POT-Creation-Date: 2020-08-09 10:24+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "انگلیسی"
 msgid "Fa"
 msgstr "فارسی"
 
-#: .\EIRIB_FollowUpProject\urls.py:27
+#: .\EIRIB_FollowUpProject\urls.py:26
 msgid "Welcome to EIRIB administration system"
 msgstr "خوش آمدید..."
 
@@ -56,58 +56,58 @@ msgstr "به روز رسانی ناموفق!"
 msgid "Successful delete."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:19 .\EIRIB_FollowUp\models.py:151
+#: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:151
 #: .\EIRIB_FollowUp\models.py:183
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\admin.py:23
+#: .\EIRIB_FollowUp\admin.py:24
 msgid "Today"
 msgstr "امروز"
 
-#: .\EIRIB_FollowUp\admin.py:23
+#: .\EIRIB_FollowUp\admin.py:24
 msgid "This week"
 msgstr "هفته جاری"
 
-#: .\EIRIB_FollowUp\admin.py:23
+#: .\EIRIB_FollowUp\admin.py:24
 msgid "Last 10 days"
 msgstr "ده روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:24
+#: .\EIRIB_FollowUp\admin.py:25
 msgid "This month"
 msgstr "ماه جاری"
 
-#: .\EIRIB_FollowUp\admin.py:24
+#: .\EIRIB_FollowUp\admin.py:25
 msgid "Last 30 days"
 msgstr "30 روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:48 .\EIRIB_FollowUp\models.py:78
+#: .\EIRIB_FollowUp\admin.py:49 .\EIRIB_FollowUp\models.py:78
 msgid "Supervisor"
 msgstr "مسوول پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:60 .\EIRIB_FollowUp\models.py:94
+#: .\EIRIB_FollowUp\admin.py:61 .\EIRIB_FollowUp\models.py:94
 #, fuzzy
 #| msgid "Supervisor"
 msgid "Supervisor Unit"
 msgstr "واحد پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:131
+#: .\EIRIB_FollowUp\admin.py:132
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:134
+#: .\EIRIB_FollowUp\admin.py:135
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:136
+#: .\EIRIB_FollowUp\admin.py:137
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:138
+#: .\EIRIB_FollowUp\admin.py:139
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:140
+#: .\EIRIB_FollowUp\admin.py:141
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
@@ -430,26 +430,28 @@ msgstr "تغییر"
 msgid "You don’t have permission to view or edit anything."
 msgstr "شما اجازه رویت یا تغییر هیچ موجودیتی را ندارید."
 
-#: .\templates\admin\submit_line.html:10 .\templates\admin\submit_line.html:11
-#: .\templates\admin\submit_line.html:27 .\templates\admin\submit_line.html:28
+#: .\templates\admin\submit_line.html:10
+#, fuzzy
+#| msgid "Enactment"
+msgid "Close enactment"
+msgstr "انتقال به سیستم عملکرد"
 
+#: .\templates\admin\submit_line.html:16 .\templates\admin\submit_line.html:17
+#: .\templates\admin\submit_line.html:33 .\templates\admin\submit_line.html:34
 msgid "<< First"
 msgstr "<< اولین"
 
-#: .\templates\admin\submit_line.html:14 .\templates\admin\submit_line.html:15
-#: .\templates\admin\submit_line.html:31 .\templates\admin\submit_line.html:32
-
+#: .\templates\admin\submit_line.html:20 .\templates\admin\submit_line.html:21
+#: .\templates\admin\submit_line.html:37 .\templates\admin\submit_line.html:38
 msgid "< Previous"
 msgstr "< قبلی"
 
-#: .\templates\admin\submit_line.html:18 .\templates\admin\submit_line.html:19
-#: .\templates\admin\submit_line.html:35 .\templates\admin\submit_line.html:36
-
+#: .\templates\admin\submit_line.html:24 .\templates\admin\submit_line.html:25
+#: .\templates\admin\submit_line.html:41 .\templates\admin\submit_line.html:42
 msgid "Next >"
 msgstr "بعدی >"
 
-#: .\templates\admin\submit_line.html:22 .\templates\admin\submit_line.html:23
-#: .\templates\admin\submit_line.html:39 .\templates\admin\submit_line.html:40
-
+#: .\templates\admin\submit_line.html:28 .\templates\admin\submit_line.html:29
+#: .\templates\admin\submit_line.html:45 .\templates\admin\submit_line.html:46
 msgid "Last >>"
 msgstr "آخرین >>"
