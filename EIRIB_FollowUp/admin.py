@@ -145,11 +145,10 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
     list_filter = ('moavenat', 'access_level', 'is_active', 'is_superuser', 'groups', 'query_name')
     readonly_fields = ['query', 'last_login_jalali', 'date_joined_jalali']
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(UserAdmin, self).get_form(request, obj=obj, **kwargs)
+    def get_readonly_fields(self, request, obj=None):
         if request.user.is_secretary and not request.user.is_superuser:
-            self.readonly_fields += ['is_staff', 'is_superuser', 'groups', 'user_permissions']
-        return form
+            return self.readonly_fields + ['is_staff', 'is_superuser', 'groups', 'user_permissions']
+        return self.readonly_fields
 
     @atomic
     def save_model(self, request, obj, form, change):
@@ -208,7 +207,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname',
                      'first_supervisor__name', 'second_supervisor__name', ]
     inlines = [AttachmentInline, ]
-    readonly_fields = ['description_short', 'result_short', 'review_date_jalali', 'first_supervisor', 'second_supervisor',]
+    readonly_fields = ['row', 'description_short', 'result_short', 'review_date_jalali', 'first_supervisor',
+                       'second_supervisor']
     form = EnactmentAdminForm
 
     def get_queryset(self, request):
@@ -218,18 +218,14 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
         return queryset.filter(row__in=request.user.query)
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(EnactmentAdmin, self).get_form(request, obj=obj, **kwargs)
+    def get_readonly_fields(self, request, obj=None):
         if not (request.user.is_superuser or request.user.is_secretary):
-            self.readonly_fields = ['row', 'code', 'session', 'date', 'review_date', 'assigner', 'subject',
-                                    'description', 'first_actor', 'second_actor', 'follow_grade',
-                                    'first_supervisor', 'second_supervisor']
+            return self.readonly_fields + ['code', 'session', 'date', 'review_date', 'assigner', 'subject',
+                                           'description', 'first_actor', 'second_actor', 'follow_grade']
         elif obj:
-            self.readonly_fields = ['row', 'date', 'review_date', 'first_supervisor', 'second_supervisor']
-        else:
-            self.readonly_fields = ['row', 'first_supervisor', 'second_supervisor']
+            return self.readonly_fields + ['date', 'review_date']
 
-        return form
+        return self.readonly_fields
 
     @atomic
     def save_model(self, request, obj, form, change):
@@ -254,8 +250,8 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                                obj.session.name,
                                obj.subject.name,
                                obj.assigner.name,
-                               obj.first_actor.supervisor.name if obj.first_actor.supervisor else '-',
-                               obj.second_actor.supervisor.name if obj.second_actor.supervisor else '-',
+                               obj.first_actor.supervisor.name if obj.first_actor and obj.first_actor.supervisor else '-',
+                               obj.second_actor.supervisor.name if obj.second_actor and obj.second_actor.supervisor else '-',
                                obj.code,
                                to_jalali(obj.review_date, True),
                                obj.date,

@@ -1,8 +1,9 @@
 from threading import Timer
 from .utils import execute_query
+from django.contrib.auth.models import Group
 from .models import User, Title, AccessLevel
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.backends import ModelBackend
 
 
@@ -58,7 +59,7 @@ class EIRIBBackend(ModelBackend):
                                            query_name=result.openningformP, access_level=access_level, _title=title,
                                            is_staff=True)
 
-            self.set_permissions(user)
+            self.set_groups(user)
             user.set_password(result.Password)
             user.save()
         except User.DoesNotExist:
@@ -72,35 +73,13 @@ class EIRIBBackend(ModelBackend):
         user.query = [r.ID for r in result]
         user.save()
 
-    def set_permissions(self, user):
-        for p in Permission.objects.all():
-            if p.codename in [
-                'change_enactment',
-                'view_enactment',
-
-                'view_attachment',
-                'add_attachment',
-                'change_attachment',
-                'delete_attachment',
-            ]:
-                user.user_permissions.add(p)
-            elif p.codename in [
-                'view_session',
-                'view_assigner',
-                'view_subject',
-                'view_actor',
-                'view_supervisor',
-                'add_user',
-                'change_user',
-                'delete_user',
-                'view_user',
-                'add_enactment',
-                'delete_enactment',
-            ]:
-                if user.is_secretary:
-                    user.user_permissions.add(p)
-                else:
-                    user.user_permissions.remove(p)
+    def set_groups(self, user):
+        if user.is_secretary:
+            user.groups.add(get_object_or_404(Group, name='Operators'))
+            user.groups.remove(get_object_or_404(Group, name='Users'))
+        else:
+            user.groups.remove(get_object_or_404(Group, name='Operators'))
+            user.groups.add(get_object_or_404(Group, name='Users'))
 
 
 class ModelBackend(ModelBackend):
