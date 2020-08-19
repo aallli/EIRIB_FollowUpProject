@@ -96,7 +96,7 @@ class ActortAdmin(BaseModelAdmin):
     model = Actor
     list_display = ['fname', 'lname', 'supervisor']
     list_display_links = ['fname', 'lname', 'supervisor']
-    search_fields = ['fname', 'lname', 'supervisor']
+    search_fields = ['fname', 'lname', 'supervisor__name']
 
 
 @admin.register(Supervisor)

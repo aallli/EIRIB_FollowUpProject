@@ -191,8 +191,6 @@ class Enactment(models.Model):
     second_supervisor.short_description = _('Second Supervisor')
 
 
-
-
 class Attachment(models.Model):
     def directory_path(instance, filename):
         return '{0}/{1}/{2}'.format(settings.MEDIA_ROOT, instance.enactment.pk, filename)

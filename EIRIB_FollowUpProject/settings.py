@@ -26,7 +26,7 @@ SECRET_KEY = 'irt=69_xpf6#pzm&c4s%ogrt*t!i5oy-=i*70yw0@agjjbr8mx'
 DEBUG = True
 
 # admin info
-VERSION = '0.15.15'
+VERSION = '0.15.16'
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
 SITE_HEADER = _('EIRIB Administration System')
@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': os.environ.get('DATABASES_HOST', default='127.0.0.1'),
         'PORT': os.environ.get('DATABASES_PORT', default='5432'),
-        'NAME': os.environ.get('DATABASES_NAME', default='eirib_followup-temp'),
+        'NAME': os.environ.get('DATABASES_NAME', default='eirib_followup'),
         'USER': os.environ.get('DATABASES_USER', default='postgres'),
         'PASSWORD': os.environ.get('DATABASES_PASSWORD', default='123'),
     },
