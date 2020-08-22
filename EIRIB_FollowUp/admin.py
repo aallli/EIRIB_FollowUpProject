@@ -266,17 +266,18 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                     muzoo, gooyandeh, vahed, vahed2, mosavabatcode, TarikhBaznegari, [date], review_date)
                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     '''
+            obj.follow_grade = 1
             params = (obj.description,
                       obj.first_actor.lname if obj.first_actor else '-',
                       obj.second_actor.lname if obj.second_actor else '-',
                       int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
-                      1,
+                      obj.follow_grade,
                       obj.result,
                       obj.session.name,
                       obj.subject.name,
                       obj.assigner.name,
-                      obj.first_actor.supervisor.name if obj.first_actor.supervisor else '-',
-                      obj.second_actor.supervisor.name if obj.second_actor.supervisor else '-',
+                      obj.first_actor.supervisor.name if obj.first_actor and obj.first_actor.supervisor else '-',
+                      obj.second_actor.supervisor.name if obj.second_actor and obj.second_actor.supervisor else '-',
                       obj.code,
                       to_jalali(obj.review_date, True),
                       obj.date,
