@@ -17,12 +17,13 @@ from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigne
 
 
 class JalaliDateFilter(SimpleListFilter):
-    title = _('Review Date')
-    parameter_name = 'review_date'
+    title = _('Assignment Date')
+    parameter_name = 'date'
 
     def lookups(self, request, model_admin):
         return [('today', _('Today')), ('this_week', _('This week')), ('10days', _('Last 10 days')),
-                ('this_month', _('This month')), ('30days', _('Last 30 days'))]
+                ('this_month', _('This month')), ('30days', _('Last 30 days')), ('90days', _('Last 3 months')),
+                ('180days', _('Last 6 months'))]
 
     def queryset(self, request, queryset):
         startdate = timezone.now()
@@ -41,6 +42,48 @@ class JalaliDateFilter(SimpleListFilter):
 
         if self.value() == '30days':
             enddate = startdate - datetime.timedelta(days=29)
+
+        if self.value() == '90days':
+            enddate = startdate - datetime.timedelta(days=89)
+
+        if self.value() == '180days':
+            enddate = startdate - datetime.timedelta(days=179)
+
+        return queryset.filter(date__range=[enddate, startdate]) if enddate else queryset
+
+
+class ReviewJalaliDateFilter(SimpleListFilter):
+    title = _('Review Date')
+    parameter_name = 'review_date'
+
+    def lookups(self, request, model_admin):
+        return [('today', _('Today')), ('this_week', _('This week')), ('10days', _('Last 10 days')),
+                ('this_month', _('This month')), ('30days', _('Last 30 days')), ('90days', _('Last 3 months')),
+                ('180days', _('Last 6 months'))]
+
+    def queryset(self, request, queryset):
+        startdate = timezone.now()
+        enddate = None
+        if self.value() == 'today':
+            enddate = startdate
+
+        if self.value() == 'this_week':
+            enddate = startdate - datetime.timedelta(days=(startdate.weekday() + 2) % 7)
+
+        if self.value() == '10days':
+            enddate = startdate - datetime.timedelta(days=9)
+
+        if self.value() == 'this_month':
+            enddate = startdate - datetime.timedelta(days=datetime2jalali(startdate).day - 1)
+
+        if self.value() == '30days':
+            enddate = startdate - datetime.timedelta(days=29)
+
+        if self.value() == '90days':
+            enddate = startdate - datetime.timedelta(days=89)
+
+        if self.value() == '180days':
+            enddate = startdate - datetime.timedelta(days=179)
 
         return queryset.filter(review_date__range=[enddate, startdate]) if enddate else queryset
 
@@ -198,15 +241,15 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'first_supervisor'),
               ('second_actor', 'second_supervisor'),
               )
-    list_display = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
+    list_display = ['row', 'session','date_jalali',  'review_date_jalali', 'subject', 'description_short',
                     'result_short']
-    list_display_links = ['row', 'session', 'review_date_jalali', 'subject', 'description_short',
+    list_display_links = ['row', 'session','date_jalali',  'review_date_jalali', 'subject', 'description_short',
                           'result_short']
-    list_filter = [JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
+    list_filter = [ReviewJalaliDateFilter, JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname']
     inlines = [AttachmentInline, ]
-    readonly_fields = ['row', 'description_short', 'result_short', 'review_date_jalali', 'first_supervisor',
+    readonly_fields = ['row', 'description_short', 'result_short', 'date_jalali', 'review_date_jalali', 'first_supervisor',
                        'second_supervisor']
     form = EnactmentAdminForm
 

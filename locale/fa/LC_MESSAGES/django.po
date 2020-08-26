@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:17+0430\n"
+"POT-Creation-Date: 2020-08-26 15:04+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,59 +50,72 @@ msgstr "به روز رسانی ناموفق!"
 msgid "Successful delete."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:148
+#: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:143
+#: .\EIRIB_FollowUp\models.py:174
+msgid "Assignment Date"
+msgstr "تاریخ مصوبه"
+
+#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+msgid "Today"
+msgstr "امروز"
+
+#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+msgid "This week"
+msgstr "هفته جاری"
+
+#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+msgid "Last 10 days"
+msgstr "ده روز گذشته"
+
+#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+msgid "This month"
+msgstr "ماه جاری"
+
+#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+msgid "Last 30 days"
+msgstr "30 روز گذشته"
+
+#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+msgid "Last 3 months"
+msgstr "سه ماه گذشته"
+
+#: .\EIRIB_FollowUp\admin.py:26 .\EIRIB_FollowUp\admin.py:62
+msgid "Last 6 months"
+msgstr "شش ماه گذشته"
+
+#: .\EIRIB_FollowUp\admin.py:56 .\EIRIB_FollowUp\models.py:148
 #: .\EIRIB_FollowUp\models.py:180
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\admin.py:24
-msgid "Today"
-msgstr "امروز"
-
-#: .\EIRIB_FollowUp\admin.py:24
-msgid "This week"
-msgstr "هفته جاری"
-
-#: .\EIRIB_FollowUp\admin.py:24
-msgid "Last 10 days"
-msgstr "ده روز گذشته"
-
-#: .\EIRIB_FollowUp\admin.py:25
-msgid "This month"
-msgstr "ماه جاری"
-
-#: .\EIRIB_FollowUp\admin.py:25
-msgid "Last 30 days"
-msgstr "30 روز گذشته"
-
-#: .\EIRIB_FollowUp\admin.py:49 .\EIRIB_FollowUp\models.py:79
+#: .\EIRIB_FollowUp\admin.py:92 .\EIRIB_FollowUp\models.py:79
 msgid "Supervisor"
 msgstr "مسوول پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:61 .\EIRIB_FollowUp\models.py:76
+#: .\EIRIB_FollowUp\admin.py:104 .\EIRIB_FollowUp\models.py:76
 #: .\EIRIB_FollowUp\models.py:95
 #, fuzzy
 #| msgid "Supervisor"
 msgid "Supervisor Unit"
 msgstr "واحد پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:132
+#: .\EIRIB_FollowUp\admin.py:175
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:135
+#: .\EIRIB_FollowUp\admin.py:178
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:137
+#: .\EIRIB_FollowUp\admin.py:180
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:139
+#: .\EIRIB_FollowUp\admin.py:182
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:141
+#: .\EIRIB_FollowUp\admin.py:184
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
@@ -219,10 +232,6 @@ msgstr "پیگیری کننده اول"
 #: .\EIRIB_FollowUp\models.py:141
 msgid "Second Actor"
 msgstr "پیگیری کننده دوم"
-
-#: .\EIRIB_FollowUp\models.py:143 .\EIRIB_FollowUp\models.py:174
-msgid "Assignment Date"
-msgstr "تاریخ"
 
 #: .\EIRIB_FollowUp\models.py:144
 msgid "Follow Grade"
