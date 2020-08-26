@@ -140,12 +140,12 @@ class Enactment(models.Model):
                                     null=True, related_name='first_actor')
     second_actor = models.ForeignKey(Actor, verbose_name=_('Second Actor'), on_delete=models.SET_NULL, blank=True,
                                      null=True, related_name='second_actor')
-    date = models.DateField(verbose_name=_('Assignment Date'), blank=False, default=set_now)
+    date = models.DateTimeField(verbose_name=_('Assignment Date'), blank=False, default=set_now)
     follow_grade = models.CharField(verbose_name=_('Follow Grade'), max_length=100, blank=True, null=True)
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
     assigner = models.ForeignKey(Assigner, verbose_name=_('Task Assigner'), on_delete=models.SET_NULL, null=True)
-    review_date = models.DateField(verbose_name=_('Review Date'), blank=False, default=set_now)
+    review_date = models.DateTimeField(verbose_name=_('Review Date'), blank=False, default=set_now)
 
     class Meta:
         verbose_name = _('Enactment')
@@ -169,13 +169,13 @@ class Enactment(models.Model):
     result_short.short_description = _('Result')
 
     def date_jalali(self):
-        return to_jalali(self.date, True)
+        return to_jalali(self.date)
 
     date_jalali.short_description = _('Assignment Date')
     date_jalali.admin_order_field = 'date'
 
     def review_date_jalali(self):
-        return to_jalali(self.review_date, True)
+        return to_jalali(self.review_date)
 
     review_date_jalali.short_description = _('Review Date')
     review_date_jalali.admin_order_field = 'review_date'
