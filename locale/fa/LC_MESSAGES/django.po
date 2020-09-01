@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 15:04+0430\n"
+"POT-Creation-Date: 2020-09-01 14:16+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "EIRIB Administration System"
 msgstr "سامانه مدیریت معاونت فضای مجازی"
 
-#: .\EIRIB_FollowUpProject\settings.py:141 .\templates\admin\base_site.html:37
+#: .\EIRIB_FollowUpProject\settings.py:142 .\templates\admin\base_site.html:37
 msgid "En"
 msgstr "انگلیسی"
 
-#: .\EIRIB_FollowUpProject\settings.py:142 .\templates\admin\base_site.html:43
+#: .\EIRIB_FollowUpProject\settings.py:143 .\templates\admin\base_site.html:43
 msgid "Fa"
 msgstr "فارسی"
 
@@ -141,6 +141,8 @@ msgstr "سرکار خانم"
 
 #: .\EIRIB_FollowUp\models.py:29 .\EIRIB_FollowUp\models.py:44
 #: .\EIRIB_FollowUp\models.py:59 .\EIRIB_FollowUp\models.py:92
+#: .\Knowledge_Management\models.py:6 .\Knowledge_Management\models.py:21
+#: .\Knowledge_Management\models.py:38
 msgid "Name"
 msgstr "نام"
 
@@ -339,6 +341,46 @@ msgstr ""
 "کلمات عبور به شکل اولیه در پایگاه اطلاعاتی نگهداری نمی شوند. بنابراین هیچکس "
 "نمی تواند کلمه عبور شما را مشاهده کند.  کلمه عبور خود را می توانید از طریق "
 "<a href=\"{}\">این لینک</a> تغییر دهید."
+
+#: .\Knowledge_Management\apps.py:7
+msgid "Knowledge Management"
+msgstr "مدیریت دانش"
+
+#: .\Knowledge_Management\models.py:9
+msgid "Knowledge Category"
+msgstr "سرفصل دانشی"
+
+#: .\Knowledge_Management\models.py:10
+msgid "Knowledge Categories"
+msgstr "سرفصلهای دانشی"
+
+#: .\Knowledge_Management\models.py:22
+msgid "Category"
+msgstr "سرفصل"
+
+#: .\Knowledge_Management\models.py:25
+msgid "Knowledge Sub-Category"
+msgstr "زیرفصل دانشی"
+
+#: .\Knowledge_Management\models.py:26
+msgid "Knowledge Sub-Categories"
+msgstr "زیرفصلهای دانشی"
+
+#: .\Knowledge_Management\models.py:39
+msgid "Maximum Score"
+msgstr "حداکثر امتیاز"
+
+#: .\Knowledge_Management\models.py:40 .\Knowledge_Management\models.py:41
+msgid "Limit"
+msgstr "سقف تکرار"
+
+#: .\Knowledge_Management\models.py:44
+msgid "Knowledge Activity"
+msgstr "فعالیت دانشی"
+
+#: .\Knowledge_Management\models.py:45
+msgid "Knowledge Activities"
+msgstr "فعالیتهای دانشی"
 
 #: .\templates\404.html:17
 msgid "Oh eyeballs! Not found!."
