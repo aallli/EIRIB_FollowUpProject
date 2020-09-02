@@ -44,11 +44,11 @@ msgstr "به روز رسانی موفق"
 
 #: .\EIRIB_FollowUpProject\utils.py:55
 msgid "Delete failed."
-msgstr "به روز رسانی ناموفق!"
+msgstr "حذف ناموفق!"
 
 #: .\EIRIB_FollowUpProject\utils.py:55
 msgid "Successful delete."
-msgstr "به روز رسانی موفق"
+msgstr "حذف با موفقیت انجام شد."
 
 #: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:143
 #: .\EIRIB_FollowUp\models.py:174

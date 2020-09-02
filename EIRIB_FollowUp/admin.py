@@ -247,7 +247,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                           'result_short']
     list_filter = [ReviewJalaliDateFilter, JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
-                     'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname']
+                     'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname', 'row']
     inlines = [AttachmentInline, ]
     readonly_fields = ['row', 'description_short', 'result_short', 'date_jalali', 'review_date_jalali', 'first_supervisor',
                        'second_supervisor']
