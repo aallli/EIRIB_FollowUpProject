@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 14:16+0430\n"
+"POT-Creation-Date: 2020-09-03 08:03+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,13 @@ msgstr ""
 msgid "EIRIB Administration System"
 msgstr "سامانه مدیریت معاونت فضای مجازی"
 
-#: .\EIRIB_FollowUpProject\settings.py:142 .\templates\admin\base_site.html:37
+#: .\EIRIB_FollowUpProject\settings.py:142 .\static\admin\base_site.html:37
+#: .\templates\admin\base_site.html:37
 msgid "En"
 msgstr "انگلیسی"
 
-#: .\EIRIB_FollowUpProject\settings.py:143 .\templates\admin\base_site.html:43
+#: .\EIRIB_FollowUpProject\settings.py:143 .\static\admin\base_site.html:43
+#: .\templates\admin\base_site.html:43
 msgid "Fa"
 msgstr "فارسی"
 
@@ -123,7 +125,7 @@ msgstr "اطلاعات حساس"
 msgid "EIRIB Follow-Up"
 msgstr "سامانه پیگیری"
 
-#: .\EIRIB_FollowUp\models.py:19
+#: .\EIRIB_FollowUp\models.py:19 .\Knowledge_Management\models.py:57
 msgid "User"
 msgstr "کاربر"
 
@@ -141,8 +143,8 @@ msgstr "سرکار خانم"
 
 #: .\EIRIB_FollowUp\models.py:29 .\EIRIB_FollowUp\models.py:44
 #: .\EIRIB_FollowUp\models.py:59 .\EIRIB_FollowUp\models.py:92
-#: .\Knowledge_Management\models.py:6 .\Knowledge_Management\models.py:21
-#: .\Knowledge_Management\models.py:38
+#: .\Knowledge_Management\models.py:7 .\Knowledge_Management\models.py:22
+#: .\Knowledge_Management\models.py:39
 msgid "Name"
 msgstr "نام"
 
@@ -346,82 +348,98 @@ msgstr ""
 msgid "Knowledge Management"
 msgstr "مدیریت دانش"
 
-#: .\Knowledge_Management\models.py:9
+#: .\Knowledge_Management\models.py:10
 msgid "Knowledge Category"
 msgstr "سرفصل دانشی"
 
-#: .\Knowledge_Management\models.py:10
+#: .\Knowledge_Management\models.py:11
 msgid "Knowledge Categories"
 msgstr "سرفصلهای دانشی"
 
-#: .\Knowledge_Management\models.py:22
+#: .\Knowledge_Management\models.py:23
 msgid "Category"
 msgstr "سرفصل"
 
-#: .\Knowledge_Management\models.py:25
+#: .\Knowledge_Management\models.py:26
 msgid "Knowledge Sub-Category"
 msgstr "زیرفصل دانشی"
 
-#: .\Knowledge_Management\models.py:26
+#: .\Knowledge_Management\models.py:27
 msgid "Knowledge Sub-Categories"
 msgstr "زیرفصلهای دانشی"
 
-#: .\Knowledge_Management\models.py:39
+#: .\Knowledge_Management\models.py:40
 msgid "Maximum Score"
 msgstr "حداکثر امتیاز"
 
-#: .\Knowledge_Management\models.py:40 .\Knowledge_Management\models.py:41
+#: .\Knowledge_Management\models.py:41 .\Knowledge_Management\models.py:42
 msgid "Limit"
 msgstr "سقف تکرار"
 
-#: .\Knowledge_Management\models.py:44
+#: .\Knowledge_Management\models.py:45
 msgid "Knowledge Activity"
 msgstr "فعالیت دانشی"
 
-#: .\Knowledge_Management\models.py:45
+#: .\Knowledge_Management\models.py:46
 msgid "Knowledge Activities"
 msgstr "فعالیتهای دانشی"
 
-#: .\templates\404.html:17
+#: .\Knowledge_Management\models.py:58
+msgid "Chairman"
+msgstr "رییس"
+
+#: .\Knowledge_Management\models.py:61
+#, fuzzy
+#| msgid "Committee Members"
+msgid "Committee Member"
+msgstr "عضو کمیته"
+
+#: .\Knowledge_Management\models.py:62
+msgid "Committee Members"
+msgstr "اعضای کمیته"
+
+#: .\static\404.html:17 .\templates\404.html:17
 msgid "Oh eyeballs! Not found!."
 msgstr "اوف! پیداش نکردم...ببخشید"
 
-#: .\templates\404.html:20
+#: .\static\404.html:20 .\templates\404.html:20
 msgid "Tel"
 msgstr "شماره تلفن"
 
-#: .\templates\404.html:32
+#: .\static\404.html:32 .\templates\404.html:32
 msgid "Email"
 msgstr "پست الکترونیک"
 
-#: .\templates\404.html:35
+#: .\static\404.html:35 .\templates\404.html:35
 msgid "Go back"
 msgstr "بازگشت"
 
-#: .\templates\admin\base_site.html:29
+#: .\static\admin\base_site.html:29 .\templates\admin\base_site.html:29
 msgid "Version"
 msgstr "ویرایش"
 
-#: .\templates\admin\base_site.html:51
+#: .\static\admin\base_site.html:51 .\templates\admin\base_site.html:51
 msgid "Documentation"
 msgstr "مستندات"
 
-#: .\templates\admin\base_site.html:55
+#: .\static\admin\base_site.html:55 .\templates\admin\base_site.html:55
 msgid "Change password"
 msgstr "تغییر کلمه عبور"
 
-#: .\templates\admin\base_site.html:57
+#: .\static\admin\base_site.html:57 .\templates\admin\base_site.html:57
 msgid "Log out"
 msgstr "خروج"
 
+#: .\static\admin\base_site.html:62 .\static\admin\base_site.html:68
 #: .\templates\admin\base_site.html:62 .\templates\admin\base_site.html:68
 msgid "Welcome,"
 msgstr "خوش آمدید"
 
-#: .\templates\admin\change_list.html:8
+#: .\static\admin\change_list.html:8 .\templates\admin\change_list.html:8
 msgid "Data not loaded yet, please wait..."
 msgstr "اطلاعات در حال به روز رسانی هستند. لطفا شکیبا باشید..."
 
+#: .\static\admin\change_list.html:10 .\static\admin\index.html:15
 #: .\templates\admin\change_list.html:10 .\templates\admin\index.html:15
 msgid ""
 "Data syncronization failed. Try later and contact administrator if failing "
@@ -430,61 +448,65 @@ msgstr ""
 "خطا در همسان سازی! لطفا مجدد تلاش کرده و در صورت تکرار با راهبر سامانه تماس "
 "بگیرید."
 
-#: .\templates\admin\index.html:21
+#: .\static\admin\index.html:21 .\templates\admin\index.html:21
 msgid "Administration"
 msgstr "مدیریت سیستم"
 
-#: .\templates\admin\index.html:24
+#: .\static\admin\index.html:24 .\templates\admin\index.html:24
 msgid "Update data"
 msgstr "همسان سازی داده ها"
 
-#: .\templates\admin\index.html:27
+#: .\static\admin\index.html:27 .\templates\admin\index.html:27
 msgid "Updating"
 msgstr "در حال به روز رسانی"
 
-#: .\templates\admin\index.html:29
+#: .\static\admin\index.html:29 .\templates\admin\index.html:29
 msgid "Start"
 msgstr "آغاز"
 
-#: .\templates\admin\index.html:42
+#: .\static\admin\index.html:42 .\templates\admin\index.html:42
 #, python-format
 msgid "Models in the %(name)s application"
 msgstr "موجودیتهای اپلیکیشن %(name)s"
 
-#: .\templates\admin\index.html:53
+#: .\static\admin\index.html:53 .\templates\admin\index.html:53
 msgid "Add"
 msgstr "اضافه"
 
-#: .\templates\admin\index.html:60
+#: .\static\admin\index.html:60 .\templates\admin\index.html:60
 msgid "View"
 msgstr "مشاهده"
 
-#: .\templates\admin\index.html:62
+#: .\static\admin\index.html:62 .\templates\admin\index.html:62
 msgid "Change"
 msgstr "تغییر"
 
-#: .\templates\admin\index.html:74
+#: .\static\admin\index.html:74 .\templates\admin\index.html:74
 msgid "You don’t have permission to view or edit anything."
 msgstr "شما اجازه رویت یا تغییر هیچ موجودیتی را ندارید."
 
-#: .\templates\admin\submit_line.html:10
+#: .\static\admin\submit_line.html:10 .\templates\admin\submit_line.html:10
 #, fuzzy
 #| msgid "Enactment"
 msgid "Close enactment"
 msgstr "انتقال به سیستم عملکرد"
 
+#: .\static\admin\submit_line.html:17 .\static\admin\submit_line.html:32
 #: .\templates\admin\submit_line.html:17 .\templates\admin\submit_line.html:32
 msgid "Last"
 msgstr "آخرین"
 
+#: .\static\admin\submit_line.html:19 .\static\admin\submit_line.html:30
 #: .\templates\admin\submit_line.html:19 .\templates\admin\submit_line.html:30
 msgid "Next"
 msgstr "بعدی"
 
+#: .\static\admin\submit_line.html:21 .\static\admin\submit_line.html:28
 #: .\templates\admin\submit_line.html:21 .\templates\admin\submit_line.html:28
 msgid "Previous"
 msgstr "قبلی"
 
+#: .\static\admin\submit_line.html:23 .\static\admin\submit_line.html:26
 #: .\templates\admin\submit_line.html:23 .\templates\admin\submit_line.html:26
 msgid "First"
 msgstr "اولین"

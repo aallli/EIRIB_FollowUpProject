@@ -30,3 +30,12 @@ class CategoryAdmin(BaseModelAdmin):
 class ActivityAdmin(BaseModelAdmin):
     model = models.Activity
     search_fields = ['name', ]
+
+
+@admin.register(models.CommitteeMember)
+class CommitteeMemberAdmin(BaseModelAdmin):
+    model = models.CommitteeMember
+    list_display = ['user', 'chairman']
+    list_display_links = ['user', 'chairman']
+    search_fields = ['user__first_name', 'user__last_name', 'user__username']
+

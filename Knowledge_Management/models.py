@@ -1,4 +1,5 @@
 from django.db import models
+from EIRIB_FollowUp.models import User
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -50,3 +51,26 @@ class Activity(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class CommitteeMember(models.Model):
+    user = models.OneToOneField(User, verbose_name=_('User'), on_delete=models.CASCADE, unique=True)
+    chairman = models.BooleanField(verbose_name=_('Chairman'), default=False)
+
+    class Meta:
+        verbose_name = _('Committee Member')
+        verbose_name_plural = _('Committee Members')
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+    def __unicode__(self):
+        return self.user.get_full_name()
+
+    def save(self, *args, **kwargs):
+        if self.chairman:
+            for cm in CommitteeMember.objects.all():
+                if cm.pk != self.pk:
+                    cm.chairman = False
+                    cm.save()
+        return super(CommitteeMember, self).save(*args, **kwargs)
