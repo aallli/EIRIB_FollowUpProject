@@ -10,6 +10,10 @@ class SubCategoryInline(admin.TabularInline):
     model = models.SubCategory
 
 
+class ActivityIndicatorInline(admin.TabularInline):
+    model = models.ActivityIndicator
+
+
 @admin.register(models.SubCategory)
 class SubCategoryAdmin(BaseModelAdmin):
     model = models.SubCategory
@@ -30,6 +34,7 @@ class CategoryAdmin(BaseModelAdmin):
 class ActivityAdmin(BaseModelAdmin):
     model = models.Activity
     search_fields = ['name', ]
+    inlines = [ActivityIndicatorInline]
 
 
 @admin.register(models.CommitteeMember)
@@ -39,3 +44,8 @@ class CommitteeMemberAdmin(BaseModelAdmin):
     list_display_links = ['user', 'chairman']
     search_fields = ['user__first_name', 'user__last_name', 'user__username']
 
+
+@admin.register(models.Indicator)
+class IndicatorAdmin(BaseModelAdmin):
+    model = models.Indicator
+    search_fields = ['name', ]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-03 08:03+0430\n"
+"POT-Creation-Date: 2020-09-03 08:09+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -144,7 +144,7 @@ msgstr "سرکار خانم"
 #: .\EIRIB_FollowUp\models.py:29 .\EIRIB_FollowUp\models.py:44
 #: .\EIRIB_FollowUp\models.py:59 .\EIRIB_FollowUp\models.py:92
 #: .\Knowledge_Management\models.py:7 .\Knowledge_Management\models.py:22
-#: .\Knowledge_Management\models.py:39
+#: .\Knowledge_Management\models.py:39 .\Knowledge_Management\models.py:80
 msgid "Name"
 msgstr "نام"
 
@@ -397,6 +397,28 @@ msgstr "عضو کمیته"
 #: .\Knowledge_Management\models.py:62
 msgid "Committee Members"
 msgstr "اعضای کمیته"
+
+#: .\Knowledge_Management\models.py:83 .\Knowledge_Management\models.py:96
+msgid "Indicator"
+msgstr "شاخص ارزیابی"
+
+#: .\Knowledge_Management\models.py:84
+msgid "Indicators"
+msgstr "شاخصهای ارزیابی"
+
+#: .\Knowledge_Management\models.py:95
+#, fuzzy
+#| msgid "Knowledge Activity"
+msgid "Activity"
+msgstr "فعالیت دانشی"
+
+#: .\Knowledge_Management\models.py:99
+msgid "Activity Indicator"
+msgstr "شاخص ارزیابی فعالیت"
+
+#: .\Knowledge_Management\models.py:100
+msgid "Activity Indicators"
+msgstr "شاخصهای ارزیابی فعالیت"
 
 #: .\static\404.html:17 .\templates\404.html:17
 msgid "Oh eyeballs! Not found!."
