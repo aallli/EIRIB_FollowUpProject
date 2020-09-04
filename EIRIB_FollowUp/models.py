@@ -1,18 +1,13 @@
 import locale, os
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 from django.dispatch import receiver
-from EIRIB_FollowUpProject.utils import to_jalali
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext_lazy as _
+from EIRIB_FollowUpProject.utils import to_jalali, set_now
 
 locale.setlocale(locale.LC_ALL, '')
-
-
-def set_now():
-    return timezone.now()
 
 
 class AccessLevel(models.TextChoices):
@@ -73,7 +68,8 @@ class Subject(models.Model):
 class Actor(models.Model):
     fname = models.CharField(verbose_name=_('First Name'), max_length=2000, blank=True, null=True)
     lname = models.CharField(verbose_name=_('Last Name'), max_length=2000, blank=False)
-    supervisor = models.ForeignKey('Supervisor', verbose_name=_('Supervisor Unit'), on_delete=models.SET_NULL, null=True)
+    supervisor = models.ForeignKey('Supervisor', verbose_name=_('Supervisor Unit'), on_delete=models.SET_NULL,
+                                   null=True)
 
     class Meta:
         verbose_name = _('Supervisor')

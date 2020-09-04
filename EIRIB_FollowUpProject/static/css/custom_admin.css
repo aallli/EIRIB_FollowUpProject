@@ -112,6 +112,11 @@
 .fieldBox.field-box.field-follow_grade,
 .fieldBox.field-box.field-first_supervisor,
 .fieldBox.field-box.field-second_supervisor,
+.fieldBox.field-box.field-max_score,
+.fieldBox.field-box.field-score,
+.fieldBox.field-box.field-user,
+.fieldBox.field-box.field-status,
+.fieldBox.field-box.field-activity,
 .fieldBox.field-box.field-row {
     white-space: nowrap;
 }
@@ -163,4 +168,8 @@
 
 :lang(fa) .admin-interface .submit-row div.close-enactment {
     float: right;
+}
+
+.form-row.has_original.dynamic-activityassessment_set td.original p {
+    display: none;
 }

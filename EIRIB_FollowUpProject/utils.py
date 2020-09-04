@@ -1,4 +1,5 @@
 import pyodbc
+from django.utils import timezone
 from jalali_date import datetime2jalali
 from EIRIB_FollowUpProject import settings
 from django.utils.translation import ugettext_lazy as _
@@ -83,3 +84,7 @@ def switch_lang_code(path, language):
 
     # Return the full new path
     return '/'.join(parts)
+
+
+def set_now():
+    return timezone.now()
