@@ -2,13 +2,10 @@ from . import models
 from django.contrib import admin
 from django.contrib import messages
 from jalali_date.admin import ModelAdminJalaliMixin
+from EIRIB_FollowUpProject.admin import BaseModelAdmin
 from .forms import get_activity_assessment_inline_form
 from django.utils.translation import ugettext_lazy as _
 from EIRIB_FollowUpProject.utils import JalaliDateFilter
-
-
-class BaseModelAdmin(admin.ModelAdmin):
-    save_on_top = True
 
 
 class SubCategoryInline(admin.TabularInline):

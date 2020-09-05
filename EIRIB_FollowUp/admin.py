@@ -4,11 +4,10 @@ from django.utils import timezone
 from .forms import EnactmentAdminForm
 from jalali_date import datetime2jalali
 from django.db.transaction import atomic
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.admin import SimpleListFilter
 from jalali_date.admin import ModelAdminJalaliMixin
-from EIRIB_FollowUpProject.utils import get_admin_url
+from EIRIB_FollowUpProject.admin import BaseModelAdmin
 from django.utils.translation import ugettext_lazy as _
 from EIRIB_FollowUpProject.utils import JalaliDateFilter
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
@@ -75,10 +74,6 @@ class SupervisorFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         return queryset.filter(first_actor__supervisor__pk=self.value()) | queryset.filter(
             second_actor__supervisor__pk=self.value()) if self.value() else queryset
-
-
-class BaseModelAdmin(admin.ModelAdmin):
-    save_on_top = True
 
 
 @admin.register(Session)
@@ -206,15 +201,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
               ('first_actor', 'first_supervisor'),
               ('second_actor', 'second_supervisor'),
               )
-    list_display = ['row', 'session','date_jalali',  'review_date_jalali', 'subject', 'description_short',
+    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
                     'result_short']
-    list_display_links = ['row', 'session','date_jalali',  'review_date_jalali', 'subject', 'description_short',
+    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
                           'result_short']
-    list_filter = [ReviewJalaliDateFilter, JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter, SupervisorFilter]
+    list_filter = [ReviewJalaliDateFilter, JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter,
+                   SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname', 'row']
     inlines = [AttachmentInline, ]
-    readonly_fields = ['row', 'description_short', 'result_short', 'date_jalali', 'review_date_jalali', 'first_supervisor',
+    readonly_fields = ['row', 'description_short', 'result_short', 'date_jalali', 'review_date_jalali',
+                       'first_supervisor',
                        'second_supervisor']
     form = EnactmentAdminForm
 
@@ -326,40 +323,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def get_urls(self):
         urls = super(EnactmentAdmin, self).get_urls()
         from django.urls import path
-        return [path('first/', self.first, name="first"),
-                path('previous/', self.previous, name="previous"),
-                path('next/', self.next, name="next"),
-                path('last/', self.last, name="last"),
-                path('close/', self.close, name="close"),
-                ] + urls
-
-    def first(self, request):
-        queryset = self.get_queryset(request)
-        return HttpResponseRedirect(get_admin_url(queryset.first()))
-
-    def previous(self, request):
-        pk = int(request.GET['pk'])
-        queryset = self.get_queryset(request)
-        index = list(queryset.values_list('pk', flat=True)).index(pk)
-        if index == 0:
-            obj = queryset[index]
-        else:
-            obj = queryset[index - 1]
-        return HttpResponseRedirect(get_admin_url(obj))
-
-    def next(self, request):
-        pk = int(request.GET['pk'])
-        queryset = self.get_queryset(request)
-        index = list(queryset.values_list('pk', flat=True)).index(pk)
-        if index == queryset.count() - 1:
-            obj = queryset[index]
-        else:
-            obj = queryset[index + 1]
-        return HttpResponseRedirect(get_admin_url(obj))
-
-    def last(self, request):
-        queryset = self.get_queryset(request)
-        return HttpResponseRedirect(get_admin_url(queryset.last()))
+        return [path('close/', self.close, name="close"), ] + urls
 
     @atomic
     def close(self, request):
