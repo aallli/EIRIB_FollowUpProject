@@ -215,8 +215,20 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                        'second_supervisor']
     form = EnactmentAdminForm
 
+    def changelist_view(self, request, extra_context=None):
+        request.session['filtered_enactment_query_set'] = False
+        response = super(EnactmentAdmin, self).changelist_view(request, extra_context)
+        request.session['enactment_query_set'] = list(response.context_data["cl"].queryset.values('pk'))
+        if self.get_preserved_filters(request):
+            request.session['filtered_enactment_query_set'] = True
+        return response
+
     def get_queryset(self, request):
         queryset = Enactment.objects.filter(follow_grade=1)
+
+        if request.session['filtered_enactment_query_set']:
+            queryset = queryset.filter(pk__in=[enactment['pk'] for enactment in request.session['enactment_query_set']])
+
         if request.user.is_superuser or request.user.is_secretary:
             return queryset
 

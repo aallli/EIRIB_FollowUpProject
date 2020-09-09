@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-04 21:40+0430\n"
+"POT-Creation-Date: 2020-09-09 14:41+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,12 +22,12 @@ msgstr ""
 msgid "EIRIB Administration System"
 msgstr "سامانه مدیریت معاونت فضای مجازی"
 
-#: .\EIRIB_FollowUpProject\settings.py:142 .\static\admin\base_site.html:37
+#: .\EIRIB_FollowUpProject\settings.py:141 .\static\admin\base_site.html:37
 #: .\templates\admin\base_site.html:37
 msgid "En"
 msgstr "انگلیسی"
 
-#: .\EIRIB_FollowUpProject\settings.py:143 .\static\admin\base_site.html:43
+#: .\EIRIB_FollowUpProject\settings.py:142 .\static\admin\base_site.html:43
 #: .\templates\admin\base_site.html:43
 msgid "Fa"
 msgstr "فارسی"
@@ -36,88 +36,88 @@ msgstr "فارسی"
 msgid "Welcome to EIRIB administration system"
 msgstr "خوش آمدید..."
 
-#: .\EIRIB_FollowUpProject\utils.py:49
+#: .\EIRIB_FollowUpProject\utils.py:51
 msgid "Update failed."
 msgstr "به روز رسانی ناموفق!"
 
-#: .\EIRIB_FollowUpProject\utils.py:49
+#: .\EIRIB_FollowUpProject\utils.py:51
 msgid "Successful update."
 msgstr "به روز رسانی موفق"
 
-#: .\EIRIB_FollowUpProject\utils.py:56
+#: .\EIRIB_FollowUpProject\utils.py:58
 msgid "Delete failed."
 msgstr "حذف ناموفق!"
 
-#: .\EIRIB_FollowUpProject\utils.py:56
+#: .\EIRIB_FollowUpProject\utils.py:58
 msgid "Successful delete."
 msgstr "حذف با موفقیت انجام شد."
 
-#: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:139
+#: .\EIRIB_FollowUpProject\utils.py:96 .\EIRIB_FollowUp\models.py:139
 #: .\EIRIB_FollowUp\models.py:170
 msgid "Assignment Date"
 msgstr "تاریخ مصوبه"
 
-#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+#: .\EIRIB_FollowUpProject\utils.py:100 .\EIRIB_FollowUp\admin.py:24
 msgid "Today"
 msgstr "امروز"
 
-#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+#: .\EIRIB_FollowUpProject\utils.py:100 .\EIRIB_FollowUp\admin.py:24
 msgid "This week"
 msgstr "هفته جاری"
 
-#: .\EIRIB_FollowUp\admin.py:24 .\EIRIB_FollowUp\admin.py:60
+#: .\EIRIB_FollowUpProject\utils.py:100 .\EIRIB_FollowUp\admin.py:24
 msgid "Last 10 days"
 msgstr "ده روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+#: .\EIRIB_FollowUpProject\utils.py:101 .\EIRIB_FollowUp\admin.py:25
 msgid "This month"
 msgstr "ماه جاری"
 
-#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+#: .\EIRIB_FollowUpProject\utils.py:101 .\EIRIB_FollowUp\admin.py:25
 msgid "Last 30 days"
 msgstr "30 روز گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:25 .\EIRIB_FollowUp\admin.py:61
+#: .\EIRIB_FollowUpProject\utils.py:101 .\EIRIB_FollowUp\admin.py:25
 msgid "Last 3 months"
 msgstr "سه ماه گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:26 .\EIRIB_FollowUp\admin.py:62
+#: .\EIRIB_FollowUpProject\utils.py:102 .\EIRIB_FollowUp\admin.py:26
 msgid "Last 6 months"
 msgstr "شش ماه گذشته"
 
-#: .\EIRIB_FollowUp\admin.py:56 .\EIRIB_FollowUp\models.py:144
+#: .\EIRIB_FollowUp\admin.py:20 .\EIRIB_FollowUp\models.py:144
 #: .\EIRIB_FollowUp\models.py:176
 msgid "Review Date"
 msgstr "تاریخ بازنگری"
 
-#: .\EIRIB_FollowUp\admin.py:92 .\EIRIB_FollowUp\models.py:75
+#: .\EIRIB_FollowUp\admin.py:56 .\EIRIB_FollowUp\models.py:75
 msgid "Supervisor"
 msgstr "مسوول پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:104 .\EIRIB_FollowUp\models.py:71
+#: .\EIRIB_FollowUp\admin.py:68 .\EIRIB_FollowUp\models.py:71
 #: .\EIRIB_FollowUp\models.py:91
 #, fuzzy
 #| msgid "Supervisor"
 msgid "Supervisor Unit"
 msgstr "واحد پیگیری"
 
-#: .\EIRIB_FollowUp\admin.py:175
+#: .\EIRIB_FollowUp\admin.py:135
 msgid "Personal info"
 msgstr "اطلاعات شخصی"
 
-#: .\EIRIB_FollowUp\admin.py:178
+#: .\EIRIB_FollowUp\admin.py:138
 msgid "Address Info"
 msgstr "نشانیهای دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:180
+#: .\EIRIB_FollowUp\admin.py:140
 msgid "Important dates"
 msgstr "تاریخهای مهم"
 
-#: .\EIRIB_FollowUp\admin.py:182
+#: .\EIRIB_FollowUp\admin.py:142
 msgid "Permissions"
 msgstr "سطوح دسترسی"
 
-#: .\EIRIB_FollowUp\admin.py:184
+#: .\EIRIB_FollowUp\admin.py:144
 msgid "Sensitive Info"
 msgstr "اطلاعات حساس"
 
@@ -345,8 +345,8 @@ msgstr ""
 "نمی تواند کلمه عبور شما را مشاهده کند.  کلمه عبور خود را می توانید از طریق "
 "<a href=\"{}\">این لینک</a> تغییر دهید."
 
-#: .\Knowledge_Management\admin.py:86 .\Knowledge_Management\admin.py:106
-#: .\Knowledge_Management\admin.py:164
+#: .\Knowledge_Management\admin.py:84 .\Knowledge_Management\admin.py:104
+#: .\Knowledge_Management\admin.py:163
 msgid "Main info"
 msgstr "اطلاعات اصلی"
 
@@ -435,14 +435,12 @@ msgid "Indicators"
 msgstr "شاخصهای ارزیابی"
 
 #: .\Knowledge_Management\models.py:110 .\Knowledge_Management\models.py:128
-#, fuzzy
-#| msgid "Knowledge Activity"
 msgid "Activity"
-msgstr "فعالیت دانشی"
+msgstr "فعالیت"
 
 #: .\Knowledge_Management\models.py:112
 msgid "Weight"
-msgstr ""
+msgstr "وزن"
 
 #: .\Knowledge_Management\models.py:115
 msgid "Activity Indicator"
@@ -617,22 +615,22 @@ msgid "Close enactment"
 msgstr "انتقال به سیستم عملکرد"
 
 #: .\static\admin\submit_line.html:17 .\static\admin\submit_line.html:32
-#: .\templates\admin\submit_line.html:17 .\templates\admin\submit_line.html:32
+#: .\templates\admin\submit_line.html:19 .\templates\admin\submit_line.html:34
 msgid "Last"
 msgstr "آخرین"
 
 #: .\static\admin\submit_line.html:19 .\static\admin\submit_line.html:30
-#: .\templates\admin\submit_line.html:19 .\templates\admin\submit_line.html:30
+#: .\templates\admin\submit_line.html:21 .\templates\admin\submit_line.html:32
 msgid "Next"
 msgstr "بعدی"
 
 #: .\static\admin\submit_line.html:21 .\static\admin\submit_line.html:28
-#: .\templates\admin\submit_line.html:21 .\templates\admin\submit_line.html:28
+#: .\templates\admin\submit_line.html:23 .\templates\admin\submit_line.html:30
 msgid "Previous"
 msgstr "قبلی"
 
 #: .\static\admin\submit_line.html:23 .\static\admin\submit_line.html:26
-#: .\templates\admin\submit_line.html:23 .\templates\admin\submit_line.html:26
+#: .\templates\admin\submit_line.html:25 .\templates\admin\submit_line.html:28
 msgid "First"
 msgstr "اولین"
 
@@ -649,3 +647,15 @@ msgstr "مشاهده در سایت"
 #: .\templates\admin\custom\edit_inline\tabular.html:90
 msgid "View assessment details"
 msgstr "مشاهده جزییات ارزیابی"
+
+#: .\templates\admin\submit_line.html:41
+msgid "Item"
+msgstr "مورد"
+
+#: .\templates\admin\submit_line.html:41
+msgid "of"
+msgstr "از"
+
+#: .\templates\admin\submit_line.html:42
+msgid "Filtered"
+msgstr "فیلتر شده"

@@ -23,3 +23,10 @@ def admin_email():
 @register.simple_tag()
 def data_loading():
     return utils.data_loading()
+
+
+@register.simple_tag()
+def navigation_counter(request, pk):
+    return {'item': request.session['enactment_query_set'].index({'pk': pk}) + 1,
+            'items': len(request.session['enactment_query_set']),
+            'filtered': request.session['filtered_enactment_query_set']}

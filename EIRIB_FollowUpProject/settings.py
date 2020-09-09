@@ -26,7 +26,7 @@ SECRET_KEY = 'irt=69_xpf6#pzm&c4s%ogrt*t!i5oy-=i*70yw0@agjjbr8mx'
 DEBUG = True
 
 # admin info
-VERSION = '0.18.3'
+VERSION = '0.18.4'
 ADMIN_TEL = os.environ.get('ADMIN_TEL', default='+98 21 2915 5120')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', default='qbesharat@irib.ir')
 SITE_HEADER = _('EIRIB Administration System')
@@ -86,7 +86,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'EIRIB_FollowUpProject.wsgi.application'
 
 # Database
@@ -192,4 +191,3 @@ JALALI_DATE_DEFAULTS = {
 }
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
