@@ -1,6 +1,7 @@
 from django import template
 from EIRIB_FollowUp import utils
 from EIRIB_FollowUpProject import settings
+from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
 
@@ -27,6 +28,11 @@ def data_loading():
 
 @register.simple_tag()
 def navigation_counter(request, pk):
-    return {'item': request.session['enactment_query_set'].index({'pk': pk}) + 1,
-            'items': len(request.session['enactment_query_set']),
-            'filtered': request.session['filtered_enactment_query_set']}
+    if pk:
+        return {'item': request.session['enactment_query_set'].index({'pk': pk}) + 1,
+                'items': len(request.session['enactment_query_set']),
+                'filtered': request.session['filtered_enactment_query_set']}
+    else:
+        return {'item': _('New'),
+                'items': len(request.session['enactment_query_set']),
+                'filtered': request.session['filtered_enactment_query_set']}

@@ -15,12 +15,14 @@ def get_admin_url(self):
     return reverse('admin:%s_%s_change' % info, args=(self.pk,))
 
 
-def to_jalali(date, no_time=False):
+def to_jalali(date, no_time=False, second=False):
     if date:
         if no_time:
             return datetime2jalali(date).strftime('%Y/%m/%d')
-        else:
+        elif second:
             return datetime2jalali(date).strftime('%H:%M:%S %Y/%m/%d')
+        else:
+            return datetime2jalali(date).strftime('%H:%M %Y/%m/%d')
     return ''
 
 
@@ -90,6 +92,13 @@ def switch_lang_code(path, language):
 
 def set_now():
     return timezone.now()
+
+
+def format_date(date, second=False):
+    if second:
+        return date.strftime('%Y/%m/%d %H:%M:%S')
+    else:
+        return date.strftime('%Y/%m/%d %H:%M')
 
 
 class JalaliDateFilter(SimpleListFilter):

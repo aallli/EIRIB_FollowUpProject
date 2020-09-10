@@ -1,11 +1,12 @@
 import locale, os
 from django.db import models
 from django.conf import settings
+from django.utils import translation
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext_lazy as _
-from EIRIB_FollowUpProject.utils import to_jalali, set_now
+from EIRIB_FollowUpProject.utils import to_jalali, set_now, format_date
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -136,17 +137,17 @@ class Enactment(models.Model):
                                     null=True, related_name='first_actor')
     second_actor = models.ForeignKey(Actor, verbose_name=_('Second Actor'), on_delete=models.SET_NULL, blank=True,
                                      null=True, related_name='second_actor')
-    date = models.DateTimeField(verbose_name=_('Assignment Date'), blank=False, default=set_now)
+    _date = models.DateTimeField(verbose_name=_('Assignment Date'), blank=False, default=set_now)
     follow_grade = models.CharField(verbose_name=_('Follow Grade'), max_length=100, blank=True, null=True)
     result = models.TextField(verbose_name=_('Result'), max_length=4000, blank=True, null=True)
     session = models.ForeignKey(Session, verbose_name=_('Session'), on_delete=models.SET_NULL, null=True)
     assigner = models.ForeignKey(Assigner, verbose_name=_('Task Assigner'), on_delete=models.SET_NULL, null=True)
-    review_date = models.DateTimeField(verbose_name=_('Review Date'), blank=False, default=set_now)
+    _review_date = models.DateTimeField(verbose_name=_('Review Date'), blank=False, default=set_now)
 
     class Meta:
         verbose_name = _('Enactment')
         verbose_name_plural = _('Enactments')
-        ordering = ['-review_date', '-date', 'session', 'subject', 'row']
+        ordering = ['-_review_date', '-_date', 'session', 'subject', 'row']
 
     def __str__(self):
         return '%s: %s' % (self.session, self.row)
@@ -164,17 +165,17 @@ class Enactment(models.Model):
 
     result_short.short_description = _('Result')
 
-    def date_jalali(self):
-        return to_jalali(self.date)
+    def date(self):
+        return to_jalali(self._date) if translation.get_language() == 'fa' else format_date(self._date)
 
-    date_jalali.short_description = _('Assignment Date')
-    date_jalali.admin_order_field = 'date'
+    date.short_description = _('Assignment Date')
+    date.admin_order_field = '_date'
 
-    def review_date_jalali(self):
-        return to_jalali(self.review_date)
+    def review_date(self):
+        return to_jalali(self._review_date) if translation.get_language() == 'fa' else format_date(self._review_date)
 
-    review_date_jalali.short_description = _('Review Date')
-    review_date_jalali.admin_order_field = 'review_date'
+    review_date.short_description = _('Review Date')
+    review_date.admin_order_field = '_review_date'
 
     def first_supervisor(self):
         return self.first_actor.supervisor

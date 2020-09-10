@@ -195,22 +195,22 @@ class UserAdmin(ModelAdminJalaliMixin, _UserAdmin, BaseModelAdmin):
 @admin.register(Enactment)
 class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     model = Enactment
-    fields = (('row', 'session', 'date', 'review_date'),
+    fields = (('row', 'session', '_date', '_review_date'),
               ('assigner', 'subject', 'code'),
               'description', 'result',
               ('first_actor', 'first_supervisor'),
               ('second_actor', 'second_supervisor'),
               )
-    list_display = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+    list_display = ['row', 'session', 'date', 'review_date', 'subject', 'description_short',
                     'result_short']
-    list_display_links = ['row', 'session', 'date_jalali', 'review_date_jalali', 'subject', 'description_short',
+    list_display_links = ['row', 'session', 'date', 'review_date', 'subject', 'description_short',
                           'result_short']
     list_filter = [ReviewJalaliDateFilter, JalaliDateFilter, 'session', 'subject', 'assigner', ActorFilter,
                    SupervisorFilter]
     search_fields = ['session__name', 'subject__name', 'assigner__name', 'description', 'result',
                      'first_actor__fname', 'first_actor__lname', 'second_actor__fname', 'second_actor__lname', 'row']
     inlines = [AttachmentInline, ]
-    readonly_fields = ['row', 'description_short', 'result_short', 'date_jalali', 'review_date_jalali',
+    readonly_fields = ['row', 'description_short', 'result_short', 'date', 'review_date',
                        'first_supervisor',
                        'second_supervisor']
     form = EnactmentAdminForm
@@ -218,9 +218,10 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
     def changelist_view(self, request, extra_context=None):
         request.session['filtered_enactment_query_set'] = False
         response = super(EnactmentAdmin, self).changelist_view(request, extra_context)
-        request.session['enactment_query_set'] = list(response.context_data["cl"].queryset.values('pk'))
-        if self.get_preserved_filters(request):
-            request.session['filtered_enactment_query_set'] = True
+        if hasattr(response, 'context_data') and 'cl' in response.context_data:
+            request.session['enactment_query_set'] = list(response.context_data["cl"].queryset.values('pk'))
+            if self.get_preserved_filters(request):
+                request.session['filtered_enactment_query_set'] = True
         return response
 
     def get_queryset(self, request):
@@ -236,17 +237,18 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if not (request.user.is_superuser or request.user.is_secretary):
-            return self.readonly_fields + ['code', 'session', 'date', 'review_date', 'assigner', 'subject',
+            return self.readonly_fields + ['code', 'session', '_date', '_review_date', 'assigner', 'subject',
                                            'description', 'first_actor', 'second_actor', 'follow_grade']
         elif obj:
-            return self.readonly_fields + ['date', 'review_date']
+            return self.readonly_fields + ['_date', '_review_date']
 
         return self.readonly_fields
 
     @atomic
     def save_model(self, request, obj, form, change):
+        new_obj = False
         if obj.pk:
-            obj.review_date = timezone.now()
+            obj._review_date = timezone.now()
             query = '''
                     UPDATE tblmosavabat
                     SET tblmosavabat.natije = ?
@@ -262,16 +264,16 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                 params.extend((obj.description,
                                obj.first_actor.lname if obj.first_actor else '-',
                                obj.second_actor.lname if obj.second_actor else '-',
-                               int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
+                               int(to_jalali(obj._date, no_time=True).replace('/', '')) - 13000000,
                                obj.session.name,
                                obj.subject.name,
                                obj.assigner.name,
                                obj.first_actor.supervisor.name if obj.first_actor and obj.first_actor.supervisor else '-',
                                obj.second_actor.supervisor.name if obj.second_actor and obj.second_actor.supervisor else '-',
                                obj.code,
-                               to_jalali(obj.review_date, True),
-                               obj.date,
-                               obj.review_date))
+                               obj.review_date(),
+                               obj._date,
+                               obj._review_date))
             query += '''
                     WHERE ID = ?
                    '''
@@ -287,7 +289,7 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
             params = (obj.description,
                       obj.first_actor.lname if obj.first_actor else '-',
                       obj.second_actor.lname if obj.second_actor else '-',
-                      int(to_jalali(obj.date, True).replace('/', '')) - 13000000,
+                      int(to_jalali(obj._date, True).replace('/', '')) - 13000000,
                       obj.follow_grade,
                       obj.result,
                       obj.session.name,
@@ -296,12 +298,17 @@ class EnactmentAdmin(ModelAdminJalaliMixin, BaseModelAdmin):
                       obj.first_actor.supervisor.name if obj.first_actor and obj.first_actor.supervisor else '-',
                       obj.second_actor.supervisor.name if obj.second_actor and obj.second_actor.supervisor else '-',
                       obj.code,
-                      to_jalali(obj.review_date, True),
-                      obj.date,
-                      obj.review_date)
+                      obj.review_date(),
+                      obj._date,
+                      obj._review_date)
             obj.row = execute_query(query, params, insert=True)
+            new_obj = True
 
         super(EnactmentAdmin, self).save_model(request, obj, form, change)
+        if new_obj:
+            enactment_query_set = request.session['enactment_query_set']
+            enactment_query_set.append({'pk': obj.pk})
+            request.session['enactment_query_set'] = list(enactment_query_set)
 
     @atomic
     def delete_model(self, request, obj):

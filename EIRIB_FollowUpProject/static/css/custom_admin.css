@@ -117,6 +117,8 @@
 .fieldBox.field-box.field-user,
 .fieldBox.field-box.field-status,
 .fieldBox.field-box.field-activity,
+.fieldBox.field-box.field-_date,
+.fieldBox.field-box.field-_review_date,
 .fieldBox.field-box.field-row {
     white-space: nowrap;
 }
