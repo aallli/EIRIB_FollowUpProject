@@ -18,7 +18,7 @@ from EIRIB_FollowUp.models import User, Enactment, AccessLevel, Session, Assigne
 
 class ReviewJalaliDateFilter(SimpleListFilter):
     title = _('Review Date')
-    parameter_name = 'review_date'
+    parameter_name = '_review_date'
 
     def lookups(self, request, model_admin):
         return [('today', _('Today')), ('this_week', _('This week')), ('10days', _('Last 10 days')),
@@ -49,7 +49,7 @@ class ReviewJalaliDateFilter(SimpleListFilter):
         if self.value() == '180days':
             enddate = startdate - datetime.timedelta(days=179)
 
-        return queryset.filter(review_date__range=[enddate, startdate]) if enddate else queryset
+        return queryset.filter(_review_date__range=[enddate, startdate]) if enddate else queryset
 
 
 class ActorFilter(SimpleListFilter):
