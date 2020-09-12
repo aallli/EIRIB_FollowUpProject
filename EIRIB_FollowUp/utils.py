@@ -57,14 +57,14 @@ def get_enactments():
             'subject': Subject.objects.get(name=settings.WITHOUT_SUBJECT_TITLE if r.muzoo in [None, ''] else r.muzoo),
             'first_actor': Actor.objects.filter(lname=r.peygiri1).first(),
             'second_actor': Actor.objects.filter(lname=r.peygiri2).first(),
-            'date': r.date or timezone.now(),
+            '_date': r.date or timezone.now(),
             'follow_grade': r.lozoomepeygiri,
             'result': r.natije,
             'session': Session.objects.get(
                 name=settings.WITHOUT_SESSION_TITLE if r.jalaseh in [None, ''] else r.jalaseh),
             'assigner': Assigner.objects.get(
                 name=settings.WITHOUT_ASSIGNER_TITLE if r.gooyandeh in [None, ''] else r.gooyandeh),
-            'review_date': r.review_date or timezone.now()}) for r in result])
+            '_review_date': r.review_date or timezone.now()}) for r in result])
     except Exception as e:
         print(e)
         tries = -1
