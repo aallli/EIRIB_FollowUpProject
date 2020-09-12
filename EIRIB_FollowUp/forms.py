@@ -9,7 +9,7 @@ class EnactmentAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
-            last_obj = Enactment.objects.latest('row')
+            last_obj = Enactment.objects.order_by('row').latest('row')
             kwargs['initial'].update({
                 'session': last_obj.session,
                 'subject': last_obj.subject,

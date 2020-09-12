@@ -25,11 +25,11 @@
                                 {% endif %}
                                 <tr class="model-{{ model.object_name|lower }}">
                                     <th scope="row"><a href="javascript: void(0);">{% trans 'Update data' %}</a></th>
-                                    <td></td>
                                     {% if data_loading.0 %}
-                                        <td scope="row"><img src="{% static 'img/loading-gears-animation.gif' %}"
+                                        <td scope="row" colspan="2"><img src="{% static 'img/loading-gears-animation.gif' %}"
                                                              class="startedlink"/>{% trans 'Updating' %}</td>
                                     {% else %}
+                                        <td></td>
                                         <td scope="row"><a href="/admin/start_sync/"
                                                            class="startlink">{% trans 'Start' %}</a></td>
                                     {% endif %}
